@@ -75,6 +75,12 @@ class AdminSpvController extends Controller
 
     public function destroy(User $spv)
     {
+        if ($spv->pemantauanLapangans()->count() > 0) {
+            return back()->with('error', 'Gagal menghapus! SPV ini sudah memiliki laporan pemantauan.');
+        }
+        if ($spv->areas()->count() > 0) {
+            $spv->areas()->detach();
+        }
         $spv->delete();
         return redirect()->route('admin.spv.index')->with('success', 'Akun SPV berhasil dihapus.');
     }

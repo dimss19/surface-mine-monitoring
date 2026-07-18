@@ -54,9 +54,10 @@ class AdminController extends Controller
         $pemantauans = $query->get();
 
         $filename = "Laporan_Pemantauan_" . date('Y-m-d_His') . ".xls";
+        $sanitized = str_replace(['"', "\r", "\n"], '', $filename);
         
         return response()->view('admin.export.excel', compact('pemantauans'))
             ->header('Content-Type', 'application/vnd.ms-excel')
-            ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
+            ->header('Content-Disposition', 'attachment; filename="' . $sanitized . '"');
     }
 }

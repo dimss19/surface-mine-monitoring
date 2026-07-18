@@ -44,7 +44,11 @@ class SpvPemantauanController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'area_id' => 'required|exists:areas,id',
+            'area_id' => ['required', 'exists:areas,id', function ($attribute, $value, $fail) {
+                if (!Auth::user()->areas()->where('areas.id', $value)->exists()) {
+                    $fail('Area yang dipilih tidak valid atau tidak ditugaskan kepada Anda.');
+                }
+            }],
             'alat_id' => 'required|exists:alats,id',
             'tanggal' => 'required|date',
             'shift' => 'required|in:siang,malam',
@@ -52,7 +56,7 @@ class SpvPemantauanController extends Controller
             'kendala' => 'nullable|string',
             'progress_persen' => 'required|integer|min:0|max:100',
             'progress_status' => 'required|in:belum_mulai,proses,selesai',
-            'foto' => 'required|array|min:1',
+            'foto' => 'required|array|min:1|max:10',
             'foto.*' => 'image|max:5120'
         ]);
         

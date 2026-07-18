@@ -15,7 +15,7 @@ Route::get('/absensi', [AbsensiController::class, 'create'])->name('absensi.crea
 Route::post('/absensi', [AbsensiController::class, 'store'])->name('absensi.store');
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function () {
