@@ -1,101 +1,135 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html class="dark" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
     <title>{{ config('app.name', 'Surface Mine') }} @yield('title')</title>
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap" rel="stylesheet" />
-
-    <!-- Tailwind / Vite -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
-    <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .industrial-grid {
+            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.03) 1px, transparent 0);
+            background-size: 40px 40px;
+        }
         [x-cloak] { display: none !important; }
     </style>
+    @stack('styles')
 </head>
-<body class="bg-gray-50 h-screen overflow-hidden flex text-gray-900 antialiased">
-    
-    <!-- Sidebar -->
-    <aside class="w-64 bg-gray-900 text-white flex flex-col hidden sm:flex">
-        <div class="h-16 flex items-center px-6 bg-gray-900 border-b border-gray-800">
-            <span class="font-bold text-xl text-blue-400">Surface Mine</span>
-        </div>
-        <div class="flex-1 overflow-y-auto py-4">
-            <nav class="px-2 space-y-1">
+<body class="bg-surface font-sans text-on-surface flex min-h-screen">
+    <aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container-lowest flex flex-col justify-between py-6 z-50">
+        <div class="space-y-8">
+            <div class="px-6 flex items-center space-x-3">
+                <div class="w-10 h-10 bg-primary-container rounded flex items-center justify-center">
+                    <span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">precision_manufacturing</span>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold text-primary leading-tight">Surface Mine</h1>
+                    <p class="text-xs text-on-surface-variant opacity-70">
+                        @if(auth()->user()->role === 'admin') Admin Panel @else Supervisor Panel @endif
+                    </p>
+                </div>
+            </div>
+            @php
+                $isActive = fn($path) => request()->is($path) || request()->is($path . '/*');
+            @endphp
+            <nav class="space-y-1">
                 @if(auth()->user()->role === 'admin')
-                    <a href="/admin/dashboard" class="bg-gray-800 text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                        Dashboard Admin
+                    <a href="/admin/dashboard" class="flex items-center space-x-3 px-4 py-3 rounded-lg mx-2 transition-all duration-200 ease-in-out {{ $isActive('admin/dashboard') ? 'bg-primary-container text-on-primary-container' : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-variant' }}">
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' {{ $isActive('admin/dashboard') ? 1 : 0 }};">dashboard</span>
+                        <span class="text-sm font-bold">Dashboard Admin</span>
                     </a>
-                    <a href="/admin/spv" class="text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                        Kelola SPV
+                    <a href="/admin/spv" class="flex items-center space-x-3 px-4 py-3 rounded-lg mx-2 transition-all duration-200 ease-in-out {{ $isActive('admin/spv') ? 'bg-primary-container text-on-primary-container' : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-variant' }}">
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' {{ $isActive('admin/spv') ? 1 : 0 }};">supervisor_account</span>
+                        <span class="text-sm font-bold">Kelola SPV</span>
                     </a>
-                    <a href="/admin/alat" class="text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                        Kelola Alat
+                    <a href="/admin/alat" class="flex items-center space-x-3 px-4 py-3 rounded-lg mx-2 transition-all duration-200 ease-in-out {{ $isActive('admin/alat') ? 'bg-primary-container text-on-primary-container' : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-variant' }}">
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' {{ $isActive('admin/alat') ? 1 : 0 }};">construction</span>
+                        <span class="text-sm font-bold">Kelola Alat</span>
+                    </a>
+                    <a href="/admin/pegawai" class="flex items-center space-x-3 px-4 py-3 rounded-lg mx-2 transition-all duration-200 ease-in-out {{ $isActive('admin/pegawai') ? 'bg-primary-container text-on-primary-container' : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-variant' }}">
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' {{ $isActive('admin/pegawai') ? 1 : 0 }};">badge</span>
+                        <span class="text-sm font-bold">Kelola Pegawai</span>
                     </a>
                 @else
-                    <a href="/spv/dashboard" class="bg-gray-800 text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                        Dashboard SPV
+                    <a href="/spv/dashboard" class="flex items-center space-x-3 px-4 py-3 rounded-lg mx-2 transition-all duration-200 ease-in-out {{ $isActive('spv/dashboard') ? 'bg-primary-container text-on-primary-container' : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-variant' }}">
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' {{ $isActive('spv/dashboard') ? 1 : 0 }};">dashboard</span>
+                        <span class="text-sm font-bold">Dashboard SPV</span>
                     </a>
-                    <a href="/spv/pemantauan" class="text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                        Laporan Pemantauan
+                    <a href="/spv/pemantauan" class="flex items-center space-x-3 px-4 py-3 rounded-lg mx-2 transition-all duration-200 ease-in-out {{ $isActive('spv/pemantauan') ? 'bg-primary-container text-on-primary-container' : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-variant' }}">
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' {{ $isActive('spv/pemantauan') ? 1 : 0 }};">monitoring</span>
+                        <span class="text-sm font-bold">Laporan Pemantauan</span>
                     </a>
                 @endif
             </nav>
         </div>
-        <div class="p-4 border-t border-gray-800">
-            <div class="flex items-center">
-                <div class="ml-3">
-                    <p class="text-sm font-medium text-white">{{ auth()->user()->name }}</p>
-                    <p class="text-xs font-medium text-gray-400 capitalize">{{ auth()->user()->role }}</p>
+        <div class="space-y-4">
+            <div class="px-6 py-4 mx-4 bg-surface-container-high rounded-xl">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-sm border-2 border-outline-variant">
+                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold text-on-surface">{{ auth()->user()->name }}</p>
+                        <p class="text-[10px] uppercase tracking-wider text-on-surface-variant">{{ auth()->user()->role }}</p>
+                    </div>
                 </div>
             </div>
-            <form method="POST" action="{{ route('logout') }}" class="mt-4">
-                @csrf
-                <button type="submit" class="w-full text-left text-sm text-red-400 hover:text-red-300 font-medium px-2 py-1 rounded hover:bg-gray-800">
-                    Logout
-                </button>
-            </form>
+            <div class="space-y-1">
+                <form method="POST" action="{{ route('logout') }}" class="px-4">
+                    @csrf
+                    <button type="submit" class="w-full flex items-center space-x-3 px-4 py-3 text-error hover:bg-error-container/20 rounded-lg transition-all duration-200 ease-in-out">
+                        <span class="material-symbols-outlined">logout</span>
+                        <span class="text-sm font-bold">Logout</span>
+                    </button>
+                </form>
+            </div>
         </div>
     </aside>
-
-    <!-- Main Content wrapper -->
-    <div class="flex-1 flex flex-col overflow-hidden">
-        <!-- Top navbar for mobile -->
-        <header class="h-16 bg-white shadow-sm flex items-center justify-between px-4 sm:hidden">
-            <span class="font-bold text-xl text-blue-600">Surface Mine</span>
-            <button class="text-gray-500 hover:text-gray-700 focus:outline-none">
-                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-            </button>
-        </header>
-
-        <!-- Main section -->
-        <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-6">
-                <!-- Header -->
-                <div class="mb-6">
-                    <h1 class="text-2xl font-bold text-gray-900">@yield('page_title', 'Dashboard')</h1>
-                </div>
-
-                <!-- Flash Messages -->
-                @if(session('success'))
-                    <div class="mb-6 rounded-md bg-green-50 p-4 border border-green-200">
-                        <p class="text-sm font-medium text-green-800">{{ session('success') }}</p>
-                    </div>
-                @endif
-
-                @yield('content')
+    <main class="flex-1 ml-64 min-h-screen industrial-grid relative">
+        <header class="flex justify-between items-center w-full h-16 px-6 border-b border-outline-variant bg-surface/80 backdrop-blur-md sticky top-0 z-40">
+            <div class="flex items-center gap-4">
+                <span class="text-lg font-bold text-primary">@yield('page_title', 'Dashboard')</span>
             </div>
-        </main>
-    </div>
-    
+        </header>
+        <div class="p-6 lg:p-10 space-y-8">
+            @if(session('success'))
+                <div class="bg-surface-container-high border border-outline-variant rounded-xl p-4 flex items-center space-x-3" x-data="{ show: true }" x-show="show" x-transition>
+                    <span class="material-symbols-outlined text-green-500">check_circle</span>
+                    <p class="text-sm font-medium text-on-surface flex-1">{{ session('success') }}</p>
+                    <button type="button" @click="show = false" class="text-on-surface-variant hover:text-on-surface">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+            @endif
+            @if(session('error'))
+                <div class="bg-surface-container-high border border-error-container rounded-xl p-4 flex items-center space-x-3">
+                    <span class="material-symbols-outlined text-error">error</span>
+                    <p class="text-sm font-medium text-on-surface">{{ session('error') }}</p>
+                </div>
+            @endif
+            @yield('content')
+        </div>
+    </main>
+    <script>
+        document.querySelectorAll('.bg-surface-container-high, [class*="rounded-xl"][class*="border"]').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                if (card.tagName !== 'BUTTON' && !card.closest('table')) {
+                    card.style.transform = 'translateY(-2px)';
+                    card.style.boxShadow = '0 10px 20px -5px rgba(0,0,0,0.3)';
+                }
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+                card.style.boxShadow = 'none';
+            });
+        });
+    </script>
+    @stack('scripts')
 </body>
 </html>

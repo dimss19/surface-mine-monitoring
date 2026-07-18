@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Surface Mine - Dashboard Supervisor</title>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#2f3131",
+                        "tertiary-container": "#737474",
+                        "outline-variant": "#5d3f3b",
+                        "secondary-fixed": "#e2e2e5",
+                        "inverse-on-surface": "#2e3134",
+                        "surface-variant": "#323538",
+                        "on-error": "#690005",
+                        "on-secondary-fixed": "#1a1c1e",
+                        "primary-container": "#e2231a",
+                        "inverse-primary": "#c00005",
+                        "surface-tint": "#ffb4a9",
+                        "on-primary": "#690001",
+                        "surface": "#111416",
+                        "on-surface": "#e1e2e6",
+                        "inverse-surface": "#e1e2e6",
+                        "on-tertiary-container": "#fbfcfc",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "on-surface-variant": "#e7bdb7",
+                        "on-secondary": "#2f3133",
+                        "primary-fixed-dim": "#ffb4a9",
+                        "on-primary-fixed-variant": "#930003",
+                        "background": "#111416",
+                        "error": "#ffb4ab",
+                        "surface-bright": "#36393d",
+                        "secondary-fixed-dim": "#c6c6c9",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "on-primary-container": "#fffaff",
+                        "outline": "#ae8882",
+                        "error-container": "#93000a",
+                        "surface-container-high": "#272a2d",
+                        "surface-container-highest": "#323538",
+                        "primary-fixed": "#ffdad5",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "on-secondary-fixed-variant": "#454749",
+                        "secondary": "#c6c6c9",
+                        "secondary-container": "#454749",
+                        "tertiary": "#c6c6c7",
+                        "on-background": "#e1e2e6",
+                        "on-secondary-container": "#b4b5b7",
+                        "primary": "#ffb4a9",
+                        "on-primary-fixed": "#410000",
+                        "surface-container": "#1d2023",
+                        "surface-container-lowest": "#0b0f11",
+                        "surface-dim": "#111416",
+                        "tertiary-fixed": "#e2e2e2",
+                        "surface-container-low": "#191c1f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "input-padding": "12px 16px",
+                        "gutter": "24px",
+                        "section-gap": "48px",
+                        "container-padding": "40px",
+                        "form-row-gap": "24px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "label-bold": ["Plus Jakarta Sans"],
+                        "display-lg-mobile": ["Plus Jakarta Sans"],
+                        "label-sm": ["Plus Jakarta Sans"],
+                        "headline-sm": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "label-bold": ["14px", {"lineHeight": "16px", "fontWeight": "700"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-sm": ["18px", {"lineHeight": "24px", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .industrial-grid {
+            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.03) 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface flex min-h-screen">
+<!-- SideNavBar Anchor -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container-low dark:bg-surface-container-lowest flex flex-col justify-between py-6 z-50">
+<div class="space-y-8">
+<!-- Brand Logo Area -->
+<div class="px-6 flex items-center space-x-3">
+<div class="w-10 h-10 bg-primary-container rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">precision_manufacturing</span>
+</div>
+<div>
+<h1 class="text-headline-md font-headline-md text-primary leading-tight">Surface Mine</h1>
+<p class="text-label-sm font-label-sm text-on-surface-variant opacity-70">Supervisor Panel</p>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="space-y-1">
+<a class="flex items-center space-x-3 px-4 py-3 bg-primary-container text-on-primary-container rounded-lg mx-2 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-label-bold text-label-bold">Dashboard SPV</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:text-on-surface hover:bg-surface-variant rounded-lg mx-2 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-label-bold text-label-bold">Laporan Pemantauan</span>
+</a>
+</nav>
+</div>
+<div class="space-y-4">
+<div class="px-6 py-4 mx-4 bg-surface-container-high rounded-xl">
+<div class="flex items-center space-x-3">
+<img class="w-10 h-10 rounded-full border-2 border-outline-variant" data-alt="Professional headshot of a mining supervisor in safety gear, set against an industrial mining background with high contrast and dark tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBoA2ECI9rcjn0TKYjCMiPi1KqNG0ZMubZV-9OssDUTBl-IIIScUAGmkpoazC_4ta411QX78pt1WhjraNpyNpEiYWA_qPWIArBS9ppuTXoyCp_iVpo5cKpza9gYNmFQqwmymMhobcvcjY4ObE0lcx-Gci2JUmbwsDHC3GVqTYVHVgSYKyYGFhyBHcrr5qtlytqJ087_BJJg0Ut-TxXiLBnPEVcoqXJ0RwnI3232CzhSFzElsQcfl1EusQ"/>
+<div>
+<p class="font-label-bold text-label-bold text-on-surface">Supervisor 1</p>
+<p class="text-[10px] uppercase tracking-wider text-on-surface-variant">Active Duty</p>
+</div>
+</div>
+</div>
+<div class="space-y-1">
+<a class="flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:text-on-surface hover:bg-surface-variant rounded-lg mx-2 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-bold text-label-bold">Settings</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 text-error hover:bg-error-container/20 rounded-lg mx-2 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-bold text-label-bold">Logout</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 ml-64 min-h-screen industrial-grid relative">
+<!-- TopAppBar Anchor -->
+<header class="flex justify-between items-center w-full h-16 px-gutter border-b border-outline-variant bg-surface dark:bg-surface-dim sticky top-0 z-40">
+<div class="flex items-center gap-4">
+<span class="font-headline-sm text-headline-sm text-primary dark:text-primary-fixed">Dashboard Supervisor</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-variant transition-colors active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-on-surface">notifications</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-variant transition-colors active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-on-surface">help</span>
+</button>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="p-gutter lg:p-container-padding space-y-10">
+<!-- Hero Section -->
+<section class="space-y-2">
+<h2 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface tracking-tight">Halo, Supervisor 1!</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+                    Pantau area yang ditugaskan kepada Anda dan buat laporan pemantauan harian untuk memastikan standar operasional terpenuhi.
+                </p>
+</section>
+<!-- Metrics & Actions Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Stats Column -->
+<div class="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Metric 1 -->
+<div class="bg-surface-container-high rounded-xl p-gutter border border-outline-variant flex flex-col justify-between group hover:border-primary transition-colors cursor-default">
+<div class="flex justify-between items-start">
+<span class="text-label-sm font-label-bold text-on-surface-variant uppercase tracking-widest">Area Ditugaskan</span>
+<div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">public</span>
+</div>
+</div>
+<div class="mt-8">
+<span class="text-6xl font-bold text-on-surface leading-none">0</span>
+</div>
+</div>
+<!-- Metric 2 -->
+<div class="bg-surface-container-high rounded-xl p-gutter border border-outline-variant flex flex-col justify-between group hover:border-primary transition-colors cursor-default">
+<div class="flex justify-between items-start">
+<span class="text-label-sm font-label-bold text-on-surface-variant uppercase tracking-widest">Laporan (Bulan Ini)</span>
+<div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">description</span>
+</div>
+</div>
+<div class="mt-8">
+<span class="text-6xl font-bold text-on-surface leading-none">0</span>
+</div>
+</div>
+<!-- Information Card (Industrial Precision Sidebar) -->
+<div class="md:col-span-2 bg-[#1d2023] rounded-xl p-6 border-l-4 border-primary flex items-start space-x-4 shadow-lg">
+<span class="material-symbols-outlined text-primary-container text-4xl mt-1">warning</span>
+<div class="space-y-1">
+<h4 class="font-headline-sm text-headline-sm text-white">Catatan Keselamatan</h4>
+<p class="text-body-md text-on-surface-variant">Pastikan semua APD telah diverifikasi sebelum memulai inspeksi lapangan di area tambang terbuka.</p>
+</div>
+</div>
+</div>
+<!-- Action Column -->
+<div class="lg:col-span-5 h-full">
+<button class="w-full h-full bg-primary-container rounded-xl p-container-padding text-left flex flex-col justify-center items-center group relative overflow-hidden transition-all duration-300 hover:shadow-[0_0_40px_rgba(226,35,26,0.3)] hover:-translate-y-1">
+<!-- Decorative Background Accent -->
+<div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-[120px] select-none">add_circle</span>
+</div>
+<div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined text-white text-5xl font-bold">add</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-white mb-2">Buat Laporan Baru</h3>
+<p class="text-white/80 text-center font-body-md max-w-xs">
+                            Catat progres pemantauan lapangan hari ini untuk menjaga integritas data operasional.
+                        </p>
+<!-- Industrial Corner Detail -->
+<div class="absolute bottom-0 right-0 w-16 h-16 bg-white/10" style="clip-path: polygon(100% 0, 0 100%, 100% 100%);"></div>
+</button>
+</div>
+</div>
+<!-- Dashboard Visual/Contextual Section -->
+<section class="relative h-[300px] w-full rounded-2xl overflow-hidden group">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Cinematic aerial view of an open-pit mine at dusk, illuminated by large industrial floodlights. The scene is dominated by dark charcoal and red light accents, conveying high-precision engineering and a rugged industrial atmosphere consistent with a modern corporate dashboard." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAy2t3foZaU9uHuAVtlt2u3ZVVZ3ANs7jGAd0nK89krjAPvEDvDtN0idbbJ56C5hZE5kzO_-KO9GLeU3aBNhUJy4SEgrRDEfODtICsmPC-uBHarm--uGQ-QWJtcbyVVHIwnm5UoF8eiWnxVMdcWhz146r17djHEpfVX3d_FOi64MnPZSDZir_9yCBAe580dPinyBeF7pkVyzwNjkycHrjq_jQ49gYa7S612UOp7kenM_gJ5dthGr_1-Gg')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-gutter">
+<div class="flex items-center space-x-3 mb-2">
+<div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+<span class="text-label-sm font-label-bold text-white uppercase tracking-widest">Live Site View</span>
+</div>
+<h3 class="text-headline-md font-headline-md text-white">Pit A-12 Monitoring Area</h3>
+</div>
+</section>
+</div>
+</main>
+<!-- Micro-interaction Scripts -->
+<script>
+        // Simple hover effect tracking for metric cards
+        document.querySelectorAll('.bg-surface-container-high').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-2px)';
+                card.style.boxShadow = '0 10px 20px -5px rgba(0,0,0,0.3)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+                card.style.boxShadow = 'none';
+            });
+        });
+    </script>
+</body></html>

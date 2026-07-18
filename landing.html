@@ -1,0 +1,203 @@
+<!DOCTYPE html><html lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Civil Mining Surface - Data Entry</title>
+<!-- Tailwind CSS v3 CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Font Configuration -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style data-purpose="custom-layout">
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #0c0c0c;
+    }
+    .main-background {
+      background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://lh3.googleusercontent.com/aida-public/AB6AXuCPjbk1oNQREl1TMqzlhJkhc1VQczUH2Mq-RqyFZMLpMUX8gOAv-jr5zl0oNVxsImgy7W_qpSwj9ZOS1PUF5qauVyhVmGFcQ4_A2j1EqsRqaKXyUv5UatiLPefAPIJjzMkjeTC6fyLq9xs6LulIiKMWSAtaylqT5B7zXkowotmV9v89HEfVjMd9bu9CL0mKw6YB8amPpYpu4pS9uYw_Xr15VUvA_idRzSVMk6w2uwdgd8wQrnHb8RsV34jU9mUFKh7ufmY');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+    .form-card {
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+    .sidebar-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.3s ease;
+    }
+    .sidebar-card:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(239, 68, 68, 0.2);
+    }
+    .form-input-focus:focus {
+      border-color: #ef4444;
+      ring-color: #ef4444;
+    }
+    /* Red Accent for Header */
+    .header-accent {
+      clip-path: polygon(0 0, 100% 0, 95% 100%, 0% 100%);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col text-gray-100 main-background" style="background-color: #111416; background-image: none;">
+<!-- BEGIN: MainHeader -->
+<!-- END: MainHeader -->
+<!-- BEGIN: MainContent -->
+<main class="flex-grow container mx-auto px-4 py-12 max-w-7xl">
+<!-- Hero Text Section -->
+<div class="mb-12" data-purpose="page-hero">
+<span class="text-red-500 text-xs font-bold uppercase tracking-widest">Form Input</span>
+<h1 class="text-4xl md:text-5xl font-extrabold mt-2 mb-4">
+        Civil Mining <span class="text-red-600">Surface</span>
+</h1>
+<p class="text-gray-400 text-lg">Input data HM unit dan Ritasi dan Pekerjaan General</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- BEGIN: FormCard -->
+<section class="bg-white rounded-2xl p-8 md:p-12 text-zinc-800 form-card lg:col-span-10 lg:col-start-2" data-purpose="main-form-container">
+<!-- Info Banner -->
+<div class="bg-red-50 border border-red-100 rounded-lg p-4 mb-10 flex gap-4">
+<div class="bg-red-500 rounded-full h-5 w-5 flex items-center justify-center shrink-0 mt-0.5">
+<span class="text-white text-xs font-bold">i</span>
+</div>
+<p class="text-sm text-zinc-600 leading-relaxed">Saat Anda mengirimkan formulir ini, detail Anda seperti nama dan alamat email tidak akan dikumpulkan secara otomatis kecuali jika Anda memberikannya sendiri.</p>
+</div>
+<div class="mb-8">
+<span class="text-red-600 text-sm font-semibold">* Required</span>
+</div>
+<form action="#" class="space-y-10" method="POST">
+<!-- Row 1: Date & Shift -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+<!-- 1. Tanggal -->
+<div class="space-y-4">
+<label class="flex items-center gap-3 font-bold text-zinc-900">
+<span class="bg-red-600 text-white w-6 h-6 rounded flex items-center justify-center text-xs">1</span>
+                Tanggal <span class="text-red-600 ml-1">*</span>
+</label>
+<input class="w-full border-gray-200 rounded-lg focus:border-red-500 focus:ring-red-500 p-3 text-gray-700" type="date" value="2026-07-18">
+</div>
+<!-- 2. Shift -->
+<div class="space-y-4">
+<label class="flex items-center gap-3 font-bold text-zinc-900">
+<span class="bg-red-600 text-white w-6 h-6 rounded flex items-center justify-center text-xs">2</span>
+                Shift <span class="text-red-600 ml-1">*</span>
+</label>
+<div class="space-y-3">
+<label class="flex items-center gap-3 cursor-pointer">
+<input class="text-red-600 focus:ring-red-500" name="shift" type="radio" value="siang">
+<span class="text-zinc-700">Siang</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer">
+<input class="text-red-600 focus:ring-red-500" name="shift" type="radio" value="malam">
+<span class="text-zinc-700">Malam</span>
+</label>
+</div>
+</div>
+</div>
+<!-- 3. Type Unit -->
+<div class="space-y-4">
+<label class="flex items-center gap-3 font-bold text-zinc-900">
+<span class="bg-red-600 text-white w-6 h-6 rounded flex items-center justify-center text-xs">3</span>
+              Type Unit / Pekerjaan <span class="text-red-600 ml-1">*</span>
+</label>
+<div class="space-y-3">
+<label class="flex items-center gap-3 cursor-pointer">
+<input class="text-red-600 focus:ring-red-500" name="type" type="radio">
+<span class="text-zinc-700">Unit Non Ritasi</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer">
+<input class="text-red-600 focus:ring-red-500" name="type" type="radio">
+<span class="text-zinc-700">Unit Ritasi</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer">
+<input class="text-red-600 focus:ring-red-500" name="type" type="radio">
+<span class="text-zinc-700">Pekerjaan General</span>
+</label>
+</div>
+</div>
+<!-- 4. Nama Pegawai -->
+<div class="space-y-4">
+<label class="flex items-center gap-3 font-bold text-zinc-900">
+<span class="bg-red-600 text-white w-6 h-6 rounded flex items-center justify-center text-xs">4</span>
+              Nama Pegawai <span class="text-red-600 ml-1">*</span>
+</label>
+<select class="w-full border-gray-200 rounded-lg focus:border-red-500 focus:ring-red-500 p-3 text-gray-500 bg-white">
+<option value="">Pilih nama Anda</option>
+<option value="1">John Doe</option>
+<option value="2">Jane Smith</option>
+</select>
+</div>
+<!-- Row 2: Area & Alat -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+<div class="space-y-4">
+<label class="flex items-center gap-3 font-bold text-zinc-900">
+<span class="bg-red-600 text-white w-6 h-6 rounded flex items-center justify-center text-xs">5</span>
+                Area Lokasi <span class="text-red-600 ml-1">*</span>
+</label>
+<select class="w-full border-gray-200 rounded-lg focus:border-red-500 focus:ring-red-500 p-3 text-gray-500 bg-white">
+<option value="">Pilih area lokasi</option>
+<option value="pit_a">Pit Alpha</option>
+<option value="pit_b">Pit Bravo</option>
+</select>
+</div>
+<div class="space-y-4">
+<label class="flex items-center gap-3 font-bold text-zinc-900">
+<span class="bg-red-600 text-white w-6 h-6 rounded flex items-center justify-center text-xs">6</span>
+                Alat yang Digunakan <span class="text-red-600 ml-1">*</span>
+</label>
+<select class="w-full border-gray-200 rounded-lg focus:border-red-500 focus:ring-red-500 p-3 text-gray-500 bg-white">
+<option value="">Pilih alat berat</option>
+<option value="excavator">Excavator CAT 320</option>
+<option value="truck">Dump Truck HINO</option>
+</select>
+</div>
+</div>
+<!-- Row 3: HM Awal & HM Akhir -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+<div class="space-y-4">
+<label class="flex items-center gap-3 font-bold text-zinc-900">
+<span class="bg-red-600 text-white w-6 h-6 rounded flex items-center justify-center text-xs">7</span>
+                HM Awal <span class="text-red-600 ml-1">*</span>
+</label>
+<input class="w-full border-gray-200 rounded-lg focus:border-red-500 focus:ring-red-500 p-3" placeholder="Contoh: 100.23" type="text">
+</div>
+<div class="space-y-4">
+<label class="flex items-center gap-3 font-bold text-zinc-900">
+<span class="bg-red-600 text-white w-6 h-6 rounded flex items-center justify-center text-xs">8</span>
+                HM Akhir <span class="text-red-600 ml-1">*</span>
+</label>
+<input class="w-full border-gray-200 rounded-lg focus:border-red-500 focus:ring-red-500 p-3" placeholder="Contoh: 100.28" type="text">
+</div>
+</div>
+<!-- 9. Deskripsi Pekerjaan -->
+<div class="space-y-4">
+<label class="flex items-center gap-3 font-bold text-zinc-900">
+<span class="bg-red-600 text-white w-6 h-6 rounded flex items-center justify-center text-xs">9</span>
+              Deskripsi Pekerjaan
+            </label>
+<textarea class="w-full border-gray-200 rounded-lg focus:border-red-500 focus:ring-red-500 p-3" placeholder="Tuliskan catatan tambahan jika ada..." rows="4"></textarea>
+</div>
+<!-- Submit Action -->
+<div class="pt-6 border-t border-zinc-100 flex flex-col items-start gap-4">
+<button class="bg-red-600 hover:bg-red-700 text-white font-bold py-3.5 px-10 rounded-xl transition-all flex items-center gap-3 shadow-lg shadow-red-500/20 active:scale-95" type="submit">
+<svg class="h-5 w-5 transform rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+              Submit
+            </button>
+<p class="text-xs text-zinc-500">Jangan pernah memberikan kata sandi Anda. <a class="text-red-600 font-semibold hover:underline" href="#">Laporkan penyalahgunaan</a></p>
+</div>
+</form>
+</section>
+<!-- END: FormCard -->
+<!-- BEGIN: SidebarInfo -->
+
+<!-- END: SidebarInfo -->
+</div>
+</main>
+<!-- END: MainContent -->
+<!-- BEGIN: MainFooter -->
+<!-- END: MainFooter -->
+
+
+</body></html>

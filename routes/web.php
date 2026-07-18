@@ -5,6 +5,10 @@ use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SpvController;
+use App\Http\Controllers\AdminSpvController;
+use App\Http\Controllers\AdminAlatController;
+use App\Http\Controllers\AdminPegawaiController;
+use App\Http\Controllers\SpvPemantauanController;
 
 Route::get('/', [AbsensiController::class, 'create'])->name('home');
 Route::get('/absensi', [AbsensiController::class, 'create'])->name('absensi.create');
@@ -16,8 +20,17 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function () {
     // SPV Routes
-    Route::get('/spv/dashboard', [SpvController::class, 'index'])->name('spv.dashboard');
+    Route::middleware('role:spv')->prefix('spv')->name('spv.')->group(function () {
+        Route::get('/dashboard', [SpvController::class, 'index'])->name('dashboard');
+        Route::resource('pemantauan', SpvPemantauanController::class);
+    });
 
     // Admin Routes
-    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+        Route::get('/export', [AdminController::class, 'export'])->name('export');
+        Route::resource('spv', AdminSpvController::class);
+        Route::resource('alat', AdminAlatController::class);
+        Route::resource('pegawai', AdminPegawaiController::class);
+    });
 });

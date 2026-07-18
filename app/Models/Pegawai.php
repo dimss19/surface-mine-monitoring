@@ -12,3 +12,4 @@ class Pegawai extends Model
     {
         return $this->hasMany(AbsensiPegawai::class);
     }
+}

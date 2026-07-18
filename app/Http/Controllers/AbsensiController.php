@@ -27,7 +27,15 @@ class AbsensiController extends Controller
             'alat_id' => 'required|exists:alats,id',
             'shift' => 'required|in:siang,malam',
             'tanggal' => 'required|date',
+            'tipe_pekerjaan' => 'required|in:unit_non_ritasi,unit_ritasi,pekerjaan_general',
+            'hm_awal' => 'required|numeric|min:0',
+            'hm_akhir' => 'required|numeric|min:0',
+            'deskripsi_pekerjaan' => 'nullable|string',
         ]);
+
+        if ($validated['hm_akhir'] < $validated['hm_awal']) {
+            return back()->with('error', 'HM Akhir harus lebih besar atau sama dengan HM Awal.')->withInput();
+        }
 
         // Validate if already submitted for this date/shift
         $exists = AbsensiPegawai::where('pegawai_id', $validated['pegawai_id'])
@@ -38,6 +46,8 @@ class AbsensiController extends Controller
         if ($exists) {
             return back()->with('error', 'Pegawai ini sudah melakukan absensi pada shift dan tanggal tersebut.')->withInput();
         }
+
+        $validated['hm_total'] = $validated['hm_akhir'] - $validated['hm_awal'];
 
         AbsensiPegawai::create($validated);
 

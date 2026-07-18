@@ -22,3 +22,4 @@ class AbsensiPegawai extends Model
     {
         return $this->belongsTo(Alat::class);
     }
+}

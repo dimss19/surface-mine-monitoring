@@ -27,4 +27,4 @@ class PemantauanLapangan extends Model implements HasMedia
     {
         return $this->belongsTo(Alat::class);
     }
-
+}

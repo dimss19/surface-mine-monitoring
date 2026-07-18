@@ -17,3 +17,4 @@ class Alat extends Model
     {
         return $this->hasMany(PemantauanLapangan::class);
     }
+}

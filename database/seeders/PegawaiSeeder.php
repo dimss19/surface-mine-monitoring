@@ -12,8 +12,13 @@ class PegawaiSeeder extends Seeder
      */
     public function run(): void
     {
+        $firstNames = ['Budi', 'Joko', 'Rudi', 'Agus', 'Hendra', 'Eko', 'Ahmad', 'Dedi', 'Bambang', 'Wawan', 'Andi', 'Iwan', 'Arief', 'Hasan', 'Fajar', 'Aditya', 'Rizky', 'Dimas', 'Ilham', 'Taufik'];
+        $lastNames = ['Santoso', 'Wijaya', 'Kurniawan', 'Setiawan', 'Nugroho', 'Pratama', 'Saputra', 'Wibowo', 'Hidayat', 'Putra', 'Mahendra', 'Syahputra', 'Ramadhan', 'Fadillah', 'Pangestu'];
+
         for ($i = 1; $i <= 66; $i++) {
-            \App\Models\Pegawai::create(['nama' => 'Pegawai ' . $i]);
+            $firstName = $firstNames[array_rand($firstNames)];
+            $lastName = $lastNames[array_rand($lastNames)];
+            \App\Models\Pegawai::create(['nama' => $firstName . ' ' . $lastName]);
         }
     }
 }

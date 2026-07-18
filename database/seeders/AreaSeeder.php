@@ -12,8 +12,10 @@ class AreaSeeder extends Seeder
      */
     public function run(): void
     {
-        for ($i = 1; $i <= 31; $i++) {
-            \App\Models\Area::create(['nama' => 'Area ' . $i]);
+        $areaNames = ['Pit A', 'Pit B', 'Pit C', 'Pit D', 'Pit E', 'Pit F', 'Pit North', 'Pit South', 'Pit East', 'Pit West', 'Disposal 1', 'Disposal 2', 'Disposal 3', 'Disposal North', 'Disposal South', 'Hauling Road A', 'Hauling Road B', 'Hauling Road C', 'Stockpile 1', 'Stockpile 2', 'Stockpile 3', 'Crusher Area 1', 'Crusher Area 2', 'Port Area', 'Workshop Area', 'Office Area', 'Camp Area', 'Fuel Station 1', 'Fuel Station 2', 'Explosive Magazine', 'Nursery Area'];
+
+        for ($i = 0; $i < 31; $i++) {
+            \App\Models\Area::create(['nama' => $areaNames[$i] ?? ('Area Tambang ' . ($i + 1))]);
         }
     }
 }
