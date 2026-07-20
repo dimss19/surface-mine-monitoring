@@ -15,39 +15,39 @@
 
 ---
 
-## 📋 Tentang Proyek
+## Tentang Proyek
 
-**Surface Mine Production** adalah sistem informasi berbasis web untuk mendigitalkan proses absensi *Hour Meter* (HM) alat berat di lapangan serta pemantauan area kerja tambang permukaan (surface mine). Sistem ini memiliki **3 role pengguna**:
+**Surface Mine Production** adalah sistem informasi berbasis web untuk mendigitalkan proses absensi Hour Meter (HM) alat berat di lapangan serta pemantauan area kerja tambang permukaan (surface mine). Sistem ini memiliki 3 role pengguna:
 
 | Role | Deskripsi |
 |------|-----------|
-| 👷 **Pegawai** | Mengisi absensi HM alat berat tanpa perlu login (form publik) |
-| 👁️ **SPV** | Login untuk memantau area kerja, melihat rekap absensi, dan membuat laporan pemantauan lapangan |
-| 🔧 **Admin** | Login untuk mengelola master data, akun SPV, serta melihat & mengekspor seluruh data |
+| **Pegawai** | Mengisi absensi HM alat berat tanpa perlu login (form publik) |
+| **SPV** | Login untuk memantau area kerja, melihat rekap absensi, dan membuat laporan pemantauan lapangan |
+| **Admin** | Login untuk mengelola master data, akun SPV, serta melihat & mengekspor seluruh data |
 
 ### Fitur Utama
 
-- ✅ Landing page publik untuk absensi pegawai (tanpa login)
-- ✅ Login berbasis session untuk SPV & Admin (password Argon2id)
-- ✅ Dashboard SPV: pemantauan area, rekap absensi, laporan pemantauan (foto, deskripsi, kendala, progress)
-- ✅ Dashboard Admin: manajemen SPV, CRUD master data (Pegawai, Alat/Unit, Area)
-- ✅ Upload foto (multiple) untuk laporan pemantauan lapangan
-- ✅ Export data ke `.xlsx`
-- ✅ PWA — bisa di-install ke homescreen mobile
-- ✅ Full CRUD master data oleh Admin
+- Landing page publik untuk absensi pegawai (tanpa login)
+- Login berbasis session untuk SPV & Admin (password Argon2id)
+- Dashboard SPV: pemantauan area, rekap absensi, laporan pemantauan (foto, deskripsi, kendala, progress)
+- Dashboard Admin: manajemen SPV, CRUD master data (Pegawai, Alat/Unit, Area)
+- Upload foto (multiple) untuk laporan pemantauan lapangan
+- Export data ke `.xlsx`
+- PWA — dapat di-install ke homescreen mobile
+- Full CRUD master data oleh Admin
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
-| Teknologi | Versi / Keterangan |
-|-----------|--------------------|
+| Teknologi | Keterangan |
+|-----------|------------|
 | **Framework** | [Laravel 13.x](https://laravel.com) |
 | **Bahasa** | PHP ^8.3 |
 | **Database** | MySQL via Eloquent ORM |
 | **Frontend** | Laravel Blade + Alpine.js + Tailwind CSS |
 | **Admin Panel** | [Filament](https://filamentphp.com) |
-| **Auth** | Session-based (guard `web`), 2 role login: `spv` & `admin` |
+| **Auth** | Session-based (guard `web`), 2 role login: spv & admin |
 | **Hashing** | Argon2id |
 | **File Upload** | Local disk storage (`storage/app/public/pemantauan`) |
 | **Export Excel** | [Maatwebsite/Laravel-Excel](https://docs.laravel-excel.com) |
@@ -55,21 +55,19 @@
 
 ---
 
-## 📦 Persyaratan Sistem
+## Persyaratan Sistem
 
-Sebelum memulai instalasi, pastikan sistem Anda sudah memiliki:
-
-1. **PHP** >= 8.3 ([unduh](https://www.php.net/downloads))
-2. **Composer** ([unduh](https://getcomposer.org/download/))
+1. **PHP** >= 8.3
+2. **Composer** (manajer dependensi PHP)
 3. **MySQL** / MariaDB (disarankan via [Laragon](https://laragon.org) atau [XAMPP](https://www.apachefriends.org/))
-4. **Node.js** & **NPM** ([unduh](https://nodejs.org/))
-5. **Git** ([unduh](https://git-scm.com/downloads))
+4. **Node.js** & **NPM**
+5. **Git**
 
-> **💡 Rekomendasi:** Gunakan [Laragon](https://laragon.org) untuk kemudahan pengembangan — Laragon menyediakan Apache/Nginx, PHP, MySQL, dan Node.js dalam satu paket.
+> Rekomendasi: Gunakan [Laragon](https://laragon.org) untuk kemudahan pengembangan — Laragon menyediakan Apache/Nginx, PHP, MySQL, dan Node.js dalam satu paket.
 
 ---
 
-## 🚀 Instalasi
+## Instalasi
 
 ### Langkah 1 — Clone Repository
 
@@ -269,69 +267,152 @@ php artisan serve
 # Terminal 2: Queue worker (untuk job & export excel)
 php artisan queue:listen --tries=1 --timeout=0
 
-# Terminal 3: Log viewer (Pail)
+
+---
+
+## 📂 Struktur Direktori (Inti)
+
+```
+surface-mine-production/
+├── app/
+│   ├── Http/Controllers/       # Controller aplikasi
+│   ├── Livewire/               # Komponen Livewire (jika ada)
+│   ├── Models/                 # Eloquent Models
+│   │   ├── User.php            # Model User (Admin & SPV)
+│   │   ├── Pegawai.php         # Model Pegawai
+│   │   ├── Alat.php            # Model Alat/Unit
+│   │   ├── Area.php            # Model Area/Lokasi
+│   │   ├── Absensi.php         # Model Absensi
+│   │   └── Pemantauan.php      # Model Pemantauan Lapangan
+│   └── Filament/               # Resource Filament Panel (Admin)
+├── config/                     # Konfigurasi aplikasi
+├── database/
+│   ├── migrations/             # Schema database
+│   └── seeders/                # Data awal (seeder)
+├── public/                     # Entry point web & assets
+├── resources/views/            # Template Blade
+├── routes/                     # Definisi route (web, api, dll)
+└── storage/
+    ├── app/public/pemantauan/  # Foto upload pemantauan
+    └── logs/laravel.log        # Log aplikasi
+```
+
+---
+
+## 🔗 Tautan Penting
+
+| Halaman | URL | Akses |
+|---------|-----|-------|
+| **Landing Page (Absensi Pegawai)** | `/` | Publik (tanpa login) |
+| **Login Admin / SPV** | `/admin/login` | Admin & SPV |
+| **Dashboard Admin** | `/admin` | Admin |
+| **Dashboard SPV** | `/spv` | SPV |
+
+---
+
+## 📊 Export Data
+
+Admin dapat mengekspor data ke file `.xlsx` melalui dashboard Filament:
+
+- **Export Absensi Pegawai** — data absensi lengkap dengan detail pegawai, alat, dan HM
+- **Export Pemantauan Lapangan** — data laporan pemantauan termasuk file foto (sebagai nama file/link)
+
+> Fitur export menggunakan [Maatwebsite/Laravel-Excel](https://docs.laravel-excel.com).
+
+---
+
+## 🖼 Upload Foto
+
+Foto laporan pemantauan lapangan disimpan di:
+
+```
+storage/app/public/pemantauan/
+```
+
+Dan dapat diakses melalui URL:
+
+```
+/storage/pemantauan/nama-file.jpg
+```
+
+> **Aturan:** Minimal 1 foto per laporan, boleh lebih dari 1 foto.
+
+---
+
+## 🔧 Troubleshooting
+
+| Masalah | Solusi |
+|---------|--------|
+| **`composer install` error** | Pastikan PHP >= 8.3 dan ekstensi berikut aktif di `php.ini`: `fileinfo`, `pdo_mysql`, `mbstring`, `gd`, `xml`, `curl`, `bcmath`, `json`, `openssl`, `tokenizer` |
+| **`PDOException: could not find driver`** | Aktifkan ekstensi `pdo_mysql` di `php.ini`, lalu restart web server |
+| **`SQLSTATE[HY000] [1049] Unknown database`** | Database belum dibuat — ikuti **[Langkah 5 — Buat Database MySQL](#langkah-5--buat-database-mysql)** |
+| **`SQLSTATE[HY000] [1045] Access denied`** | Username/password MySQL salah — periksa `DB_USERNAME` & `DB_PASSWORD` di `.env` |
+| **403 Forbidden saat akses `/storage/...`** | Jalankan `php artisan storage:link` |
+| **White screen / Error 500** | Cek log di `storage/logs/laravel.log` |
+| **Vite error / HMR tidak jalan** | Jalankan `npm install && npm run build` |
+| **Queue tidak berjalan** | Jalankan `php artisan queue:listen` di terminal terpisah |
+| **Session timeout terus** | Periksa `SESSION_DRIVER=database` di `.env` dan pastikan migrate sudah jalan |
+| **Class not found (setelah update)** | Jalankan `composer dump-autoload` |
+
+---
+
+## 🧑‍💻 Panduan Pengembangan
+
+### Membuat Migration Baru
+
+```bash
+php artisan make:migration create_nama_tabel_table
+```
+
+### Membuat Seeder Baru
+
+```bash
+php artisan make:seeder NamaSeeder
+```
+
+### Menambahkan Data ke Seeder
+
+Edit file di `database/seeders/` dan jalankan:
+
+```bash
+php artisan db:seed --class=NamaSeeder
+```
+
+### Reset Database (Hapus Semua Tabel & Buat Ulang)
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+> **⚠️ HATI-HATI:** Perintah di atas akan **menghapus semua data** yang ada, lalu membuat ulang tabel dan mengisi data awal dari seeder. Gunakan hanya di lingkungan development.
+
+### Membuat Akun SPV Baru
+
+Admin dapat membuat akun SPV baru melalui dashboard Filament di `/admin/users/create`.
+
+### Debugging dengan Log
+
+```bash
+# Melihat log secara real-time
 php artisan pail --timeout=0
 
-# Terminal 4: Vite dev server (hot reload untuk frontend)
-npm run dev
+# Atau baca file log langsung
+tail -f storage/logs/laravel.log
 ```
 
 ---
 
-## 🧪 Menjalankan Test
+## 📄 Lisensi
 
-```bash
-php artisan test
-```
-
-Atau melalui Composer script:
-
-```bash
-composer run test
-```
-
-> **Catatan:** Perintah `db:create` bukan bawaan Laravel. Jika belum ada, gunakan opsi A, B, atau C.
+Proyek ini adalah open-source dengan lisensi [MIT](https://opensource.org/licenses/MIT).
 
 ---
 
-### Langkah 6 — Sesuaikan Koneksi Database di `.env`
+## 👥 Kontributor
 
-Edit file `.env` dan sesuaikan bagian database dengan konfigurasi MySQL Anda:
+- **Dimss19** — Developer & Maintainer ([@dimss19](https://github.com/dimss19))
 
-```env
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=surface_mine_production
-DB_USERNAME=root
-DB_PASSWORD=
-```
+---
 
-**Penyesuaian:**
+> Dibangun dengan ❤️ menggunakan [Laravel 13](https://laravel.com), [Filament](https://filamentphp.com), dan [Tailwind CSS](https://tailwindcss.com).
 
-| Skenario | Konfigurasi |
-|----------|-------------|
-| **Laragon / XAMPP (default)** | `DB_USERNAME=root` dan `DB_PASSWORD=` (kosongkan) |
-| **MySQL dengan password** | Isi `DB_PASSWORD` dengan password MySQL Anda |
-| **MySQL di port berbeda** | Sesuaikan `DB_PORT` (misal `3307`) |
-| **Nama database berbeda** | Ubah `DB_DATABASE` sesuai keinginan (misal `surface_mine`) |
-
-> **Pastikan nama database di `.env` sudah sesuai dengan database yang Anda buat di Langkah 5.**
-
-Salin file `.env.example` menjadi `.env`:
-
-```bash
-cp .env.example .env
-```
-
-Atau di Windows:
-
-```bash
-copy .env.example .env
-```
-
-Kemudian generate **APP_KEY**:
-
-```bash
-php artisan key:generate
-```
