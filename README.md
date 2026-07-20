@@ -1,58 +1,337 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Surface Mine Production — Sistem Absensi & Pemantauan Lapangan
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <a href="https://laravel.com" target="_blank">
+    <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo">
+  </a>
 </p>
 
-## About Laravel
+<p align="center">
+  <a href="https://github.com/dimss19/surface-mine-monitoring"><img src="https://img.shields.io/badge/status-active-brightgreen" alt="Status"></a>
+  <a href="https://laravel.com"><img src="https://img.shields.io/badge/Laravel-13.x-red" alt="Laravel 13.x"></a>
+  <a href="https://www.php.net/releases/8.3/"><img src="https://img.shields.io/badge/PHP-8.3+-purple" alt="PHP 8.3+"></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue" alt="License"></a>
+</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📋 Tentang Proyek
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+**Surface Mine Production** adalah sistem informasi berbasis web untuk mendigitalkan proses absensi *Hour Meter* (HM) alat berat di lapangan serta pemantauan area kerja tambang permukaan (surface mine). Sistem ini memiliki **3 role pengguna**:
 
-## Learning Laravel
+| Role | Deskripsi |
+|------|-----------|
+| 👷 **Pegawai** | Mengisi absensi HM alat berat tanpa perlu login (form publik) |
+| 👁️ **SPV** | Login untuk memantau area kerja, melihat rekap absensi, dan membuat laporan pemantauan lapangan |
+| 🔧 **Admin** | Login untuk mengelola master data, akun SPV, serta melihat & mengekspor seluruh data |
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Fitur Utama
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- ✅ Landing page publik untuk absensi pegawai (tanpa login)
+- ✅ Login berbasis session untuk SPV & Admin (password Argon2id)
+- ✅ Dashboard SPV: pemantauan area, rekap absensi, laporan pemantauan (foto, deskripsi, kendala, progress)
+- ✅ Dashboard Admin: manajemen SPV, CRUD master data (Pegawai, Alat/Unit, Area)
+- ✅ Upload foto (multiple) untuk laporan pemantauan lapangan
+- ✅ Export data ke `.xlsx`
+- ✅ PWA — bisa di-install ke homescreen mobile
+- ✅ Full CRUD master data oleh Admin
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+---
 
-## Agentic Development
+## 🛠 Tech Stack
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+| Teknologi | Versi / Keterangan |
+|-----------|--------------------|
+| **Framework** | [Laravel 13.x](https://laravel.com) |
+| **Bahasa** | PHP ^8.3 |
+| **Database** | MySQL via Eloquent ORM |
+| **Frontend** | Laravel Blade + Alpine.js + Tailwind CSS |
+| **Admin Panel** | [Filament](https://filamentphp.com) |
+| **Auth** | Session-based (guard `web`), 2 role login: `spv` & `admin` |
+| **Hashing** | Argon2id |
+| **File Upload** | Local disk storage (`storage/app/public/pemantauan`) |
+| **Export Excel** | [Maatwebsite/Laravel-Excel](https://docs.laravel-excel.com) |
+| **Media Library** | [Spatie Laravel MediaLibrary](https://spatie.be/docs/laravel-medialibrary) |
+
+---
+
+## 📦 Persyaratan Sistem
+
+Sebelum memulai instalasi, pastikan sistem Anda sudah memiliki:
+
+1. **PHP** >= 8.3 ([unduh](https://www.php.net/downloads))
+2. **Composer** ([unduh](https://getcomposer.org/download/))
+3. **MySQL** / MariaDB (disarankan via [Laragon](https://laragon.org) atau [XAMPP](https://www.apachefriends.org/))
+4. **Node.js** & **NPM** ([unduh](https://nodejs.org/))
+5. **Git** ([unduh](https://git-scm.com/downloads))
+
+> **💡 Rekomendasi:** Gunakan [Laragon](https://laragon.org) untuk kemudahan pengembangan — Laragon menyediakan Apache/Nginx, PHP, MySQL, dan Node.js dalam satu paket.
+
+---
+
+## 🚀 Instalasi
+
+### Langkah 1 — Clone Repository
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/dimss19/surface-mine-monitoring.git
+cd surface-mine-production
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Atau jika menggunakan **Laragon**, letakkan folder project di dalam direktori `laragon/www/`:
 
-## Contributing
+```bash
+cd D:\laragon\www
+git clone https://github.com/dimss19/surface-mine-monitoring.git
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Langkah 2 — Install Dependency PHP (Composer)
 
-## Code of Conduct
+```bash
+composer install
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+> Jika ada error terkait ekstensi PHP, pastikan ekstensi yang dibutuhkan sudah aktif (biasanya tercantum di pesan error, misal `ext-fileinfo`, `ext-pdo`, `ext-mbstring`, `ext-gd`, dll).
 
-## Security Vulnerabilities
+### Langkah 3 — Install Dependency Frontend (NPM)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+npm install
+npm run build
+```
 
-## License
+### Langkah 4 — Konfigurasi Environment
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+### Langkah 5 — Buat Database MySQL
+
+#### 📘 Tutorial Membuat Database
+
+Berikut adalah beberapa cara membuat database **`surface_mine_production`** yang diperlukan oleh aplikasi ini.
+
+---
+
+##### Opsi A — Melalui phpMyAdmin (Termudah)
+
+1. Buka **phpMyAdmin** di browser:
+   - Laragon: <http://localhost/phpmyadmin>
+   - XAMPP: <http://localhost/phpmyadmin>
+2. Login dengan user `root` (password kosong jika default).
+3. Klik tab **Databases** / **New**.
+4. Masukkan nama database: **`surface_mine_production`**
+5. Pilih _Collation_: **`utf8mb4_unicode_ci`**
+6. Klik **Create**.
+
+![phpMyAdmin Create Database](https://docs.phpmyadmin.net/en/latest/_images/phpmyadmin-create-database.png)
+
+---
+
+##### Opsi B — Melalui Command Line (MySQL CLI)
+
+```bash
+# Masuk ke MySQL
+mysql -u root -p
+
+# Setelah masuk ke prompt MySQL, jalankan:
+CREATE DATABASE IF NOT EXISTS surface_mine_production
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+
+# Keluar
+EXIT;
+```
+
+---
+
+##### Opsi C — Melalui Laragon MySQL CLI
+
+1. Buka **Laragon** → Klik kanan icon Laragon → **MySQL** → **Open MySQL**
+2. Atau buka terminal dan jalankan:
+
+```bash
+# Cari direktori MySQL di Laragon
+cd D:\laragon\bin\mysql\mysql-8.0.30\bin
+mysql -u root
+```
+
+> **Catatan:** Versi folder MySQL menyesuaikan dengan versi yang terinstall di Laragon Anda.
+
+3. Setelah masuk ke prompt MySQL (`mysql>`), jalankan:
+
+```sql
+CREATE DATABASE IF NOT EXISTS surface_mine_production
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+```
+
+4. Verifikasi database telah dibuat:
+
+```sql
+SHOW DATABASES;
+```
+
+5. Keluar:
+
+```sql
+EXIT;
+```
+
+---
+
+##### Opsi D — Melalui Laravel Artisan (Custom Command)
+
+Jika Anda sudah membuat custom Artisan command untuk membuat database:
+
+```bash
+php artisan db:create
+```
+
+---
+
+### Langkah 7 — Jalankan Migration & Seeder
+
+Migration akan membuat tabel-tabel yang dibutuhkan secara otomatis. Seeder akan mengisi data awal (master data Pegawai, Alat/Unit, Area, dan akun default SPV/Admin).
+
+```bash
+php artisan migrate --seed
+```
+
+Proses ini akan membuat tabel-tabel berikut (dan lainnya):
+
+| Tabel | Fungsi |
+|-------|--------|
+| `users` | Akun SPV & Admin |
+| `pegawais` | Data pegawai |
+| `alats` | Data alat/unit |
+| `areas` | Data area/lokasi |
+| `area_spv` | Relasi area dengan SPV (many-to-many) |
+| `absensis` | Data absensi pegawai |
+| `pemantauans` | Laporan pemantauan lapangan |
+| `sessions` | Session login |
+| `cache` | Cache aplikasi |
+| `jobs` & `failed_jobs` | Antrian job |
+
+#### Akun Default (Seeder)
+
+Setelah migrasi + seeder selesai, akun default yang tersedia untuk login:
+
+| Role | Email | Password |
+|------|-------|----------|
+| **Admin** | `admin@example.com` | `password` |
+| **SPV** | `spv@example.com` | `password` |
+
+> **⚠️ Peringatan:** Ganti password default ini segera setelah pertama kali login pada lingkungan production!
+
+---
+
+### Langkah 8 — Buat Symlink Storage
+
+```bash
+php artisan storage:link
+```
+
+Perintah ini membuat link simbolis dari `public/storage` ke `storage/app/public` agar file upload (foto pemantauan) dapat diakses dari browser.
+
+---
+
+### Langkah 9 — Jalankan Aplikasi
+
+#### ✅ Mode Development (via Laragon)
+
+Jika menggunakan **Laragon**, cukup:
+1. Klik tombol **Start All**
+2. Akses di browser: <http://surface-mine-production.test> (jika auto-virtual-host aktif)
+3. Atau akses via <http://localhost/surface-mine-production/public>
+
+#### ✅ Mode Development (via Artisan Serve)
+
+```bash
+php artisan serve
+```
+
+Akses di browser: <http://localhost:8000>
+
+#### ✅ Mode Development Lengkap (Queue + Vite + Logs)
+
+Menjalankan server, queue listener, logs, dan Vite secara bersamaan:
+
+```bash
+composer run dev
+```
+
+Atau jalankan secara terpisah di 4 terminal:
+
+```bash
+# Terminal 1: Laravel dev server
+php artisan serve
+
+# Terminal 2: Queue worker (untuk job & export excel)
+php artisan queue:listen --tries=1 --timeout=0
+
+# Terminal 3: Log viewer (Pail)
+php artisan pail --timeout=0
+
+# Terminal 4: Vite dev server (hot reload untuk frontend)
+npm run dev
+```
+
+---
+
+## 🧪 Menjalankan Test
+
+```bash
+php artisan test
+```
+
+Atau melalui Composer script:
+
+```bash
+composer run test
+```
+
+> **Catatan:** Perintah `db:create` bukan bawaan Laravel. Jika belum ada, gunakan opsi A, B, atau C.
+
+---
+
+### Langkah 6 — Sesuaikan Koneksi Database di `.env`
+
+Edit file `.env` dan sesuaikan bagian database dengan konfigurasi MySQL Anda:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=surface_mine_production
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+**Penyesuaian:**
+
+| Skenario | Konfigurasi |
+|----------|-------------|
+| **Laragon / XAMPP (default)** | `DB_USERNAME=root` dan `DB_PASSWORD=` (kosongkan) |
+| **MySQL dengan password** | Isi `DB_PASSWORD` dengan password MySQL Anda |
+| **MySQL di port berbeda** | Sesuaikan `DB_PORT` (misal `3307`) |
+| **Nama database berbeda** | Ubah `DB_DATABASE` sesuai keinginan (misal `surface_mine`) |
+
+> **Pastikan nama database di `.env` sudah sesuai dengan database yang Anda buat di Langkah 5.**
+
+Salin file `.env.example` menjadi `.env`:
+
+```bash
+cp .env.example .env
+```
+
+Atau di Windows:
+
+```bash
+copy .env.example .env
+```
+
+Kemudian generate **APP_KEY**:
+
+```bash
+php artisan key:generate
+```

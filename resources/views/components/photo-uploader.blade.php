@@ -38,7 +38,7 @@
         </div>
     </div>
 
-    <div class="mt-4 grid grid-cols-3 gap-4" x-show="files.length > 0" x-cloak>
+    <div class="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4" x-show="files.length > 0" x-cloak>
         <template x-for="(url, index) in files" :key="url">
             <div class="relative group">
                 <img :src="url" class="h-24 w-full object-cover rounded-xl border border-outline-variant">

@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <div class="mt-8">
-                    <span class="text-6xl font-bold text-on-surface leading-none">{{ $metrics['total_spv'] }}</span>
+                    <span class="text-4xl sm:text-5xl md:text-6xl font-bold text-on-surface leading-none">{{ $metrics['total_spv'] }}</span>
                 </div>
             </div>
 
@@ -33,7 +33,7 @@
                     </div>
                 </div>
                 <div class="mt-8">
-                    <span class="text-6xl font-bold text-on-surface leading-none">{{ $metrics['total_area'] }}</span>
+                    <span class="text-4xl sm:text-5xl md:text-6xl font-bold text-on-surface leading-none">{{ $metrics['total_area'] }}</span>
                 </div>
             </div>
 
@@ -45,7 +45,7 @@
                     </div>
                 </div>
                 <div class="mt-8">
-                    <span class="text-6xl font-bold text-on-surface leading-none">{{ $metrics['laporan_hari_ini'] }}</span>
+                    <span class="text-4xl sm:text-5xl md:text-6xl font-bold text-on-surface leading-none">{{ $metrics['laporan_hari_ini'] }}</span>
                 </div>
             </div>
 

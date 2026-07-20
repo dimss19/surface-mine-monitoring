@@ -6,34 +6,36 @@
     <title>{{ config('app.name', 'Surface Mine') }} @yield('title')</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .industrial-grid {
-            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.03) 1px, transparent 0);
-            background-size: 40px 40px;
-        }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .industrial-grid { background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.03) 1px, transparent 0); background-size: 40px 40px; }
         [x-cloak] { display: none !important; }
     </style>
     @stack('styles')
 </head>
-<body class="bg-surface font-sans text-on-surface flex min-h-screen">
-    <aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container-lowest flex flex-col justify-between py-6 z-50">
+<body class="bg-surface font-sans text-on-surface min-h-screen" x-data="{ sidebarOpen: false }">
+    <div class="fixed inset-0 bg-black/50 z-40 lg:hidden" x-show="sidebarOpen" x-cloak @click="sidebarOpen = false" x-transition.opacity></div>
+
+    <aside class="fixed top-0 left-0 z-50 h-screen w-64 bg-surface-container-lowest flex flex-col justify-between py-6 transition-transform duration-300 ease-in-out lg:translate-x-0 {{-- mobile --}} -translate-x-full"
+        :class="{ 'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen }">
         <div class="space-y-8">
-            <div class="px-6 flex items-center space-x-3">
-                <div class="w-10 h-10 bg-primary-container rounded flex items-center justify-center">
-                    <span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">precision_manufacturing</span>
+            <div class="px-6 flex items-center justify-between lg:justify-start space-x-3">
+                <div class="flex items-center space-x-3 min-w-0">
+                    <div class="w-10 h-10 bg-primary-container rounded flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">precision_manufacturing</span>
+                    </div>
+                    <div class="min-w-0">
+                        <h1 class="text-xl font-bold text-primary leading-tight truncate">Surface Mine</h1>
+                        <p class="text-xs text-on-surface-variant opacity-70 truncate">
+                            @if(auth()->user()->role === 'admin') Admin Panel @else Supervisor Panel @endif
+                        </p>
+                    </div>
                 </div>
-                <div>
-                    <h1 class="text-xl font-bold text-primary leading-tight">Surface Mine</h1>
-                    <p class="text-xs text-on-surface-variant opacity-70">
-                        @if(auth()->user()->role === 'admin') Admin Panel @else Supervisor Panel @endif
-                    </p>
-                </div>
+                <button class="lg:hidden text-on-surface-variant hover:text-on-surface" @click="sidebarOpen = false">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
             </div>
             @php
                 $isActive = fn($path) => request()->is($path) || request()->is($path . '/*');
@@ -71,12 +73,12 @@
         <div class="space-y-4">
             <div class="px-6 py-4 mx-4 bg-surface-container-high rounded-xl">
                 <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-sm border-2 border-outline-variant">
+                    <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-sm border-2 border-outline-variant shrink-0">
                         {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                     </div>
-                    <div>
-                        <p class="text-sm font-bold text-on-surface">{{ auth()->user()->name }}</p>
-                        <p class="text-[10px] uppercase tracking-wider text-on-surface-variant">{{ auth()->user()->role }}</p>
+                    <div class="min-w-0">
+                        <p class="text-sm font-bold text-on-surface truncate">{{ auth()->user()->name }}</p>
+                        <p class="text-[10px] uppercase tracking-wider text-on-surface-variant truncate">{{ auth()->user()->role }}</p>
                     </div>
                 </div>
             </div>
@@ -91,43 +93,38 @@
             </div>
         </div>
     </aside>
-    <main class="flex-1 ml-64 min-h-screen industrial-grid relative">
-        <header class="flex justify-between items-center w-full h-16 px-6 border-b border-outline-variant bg-surface/80 backdrop-blur-md sticky top-0 z-40">
-            <div class="flex items-center gap-4">
-                <span class="text-lg font-bold text-primary">@yield('page_title', 'Dashboard')</span>
-            </div>
+
+    <main class="flex-1 flex flex-col min-h-screen industrial-grid lg:ml-64">
+        <header class="flex items-center w-full h-16 px-4 lg:px-6 border-b border-outline-variant bg-surface/80 backdrop-blur-md sticky top-0 z-30">
+            <button class="lg:hidden mr-3 text-on-surface-variant hover:text-on-surface" @click="sidebarOpen = true">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+            <span class="text-lg font-bold text-primary truncate">@yield('page_title', 'Dashboard')</span>
         </header>
-        <div class="p-6 lg:p-10 space-y-8">
+        <div class="flex-1 p-4 sm:p-6 lg:p-10 space-y-6 sm:space-y-8 overflow-auto">
             @if(session('success'))
                 <div class="bg-surface-container-high border border-outline-variant rounded-xl p-4 flex items-center space-x-3" x-data="{ show: true }" x-show="show" x-transition>
-                    <span class="material-symbols-outlined text-green-500">check_circle</span>
+                    <span class="material-symbols-outlined text-green-500 shrink-0">check_circle</span>
                     <p class="text-sm font-medium text-on-surface flex-1">{{ session('success') }}</p>
-                    <button type="button" @click="show = false" class="text-on-surface-variant hover:text-on-surface">
+                    <button type="button" @click="show = false" class="text-on-surface-variant hover:text-on-surface shrink-0">
                         <span class="material-symbols-outlined">close</span>
                     </button>
                 </div>
             @endif
             @if(session('error'))
                 <div class="bg-surface-container-high border border-error-container rounded-xl p-4 flex items-center space-x-3">
-                    <span class="material-symbols-outlined text-error">error</span>
+                    <span class="material-symbols-outlined text-error shrink-0">error</span>
                     <p class="text-sm font-medium text-on-surface">{{ session('error') }}</p>
                 </div>
             @endif
             @yield('content')
         </div>
     </main>
+
     <script>
-        document.querySelectorAll('.bg-surface-container-high, [class*="rounded-xl"][class*="border"]').forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                if (card.tagName !== 'BUTTON' && !card.closest('table')) {
-                    card.style.transform = 'translateY(-2px)';
-                    card.style.boxShadow = '0 10px 20px -5px rgba(0,0,0,0.3)';
-                }
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'translateY(0)';
-                card.style.boxShadow = 'none';
-            });
+        document.querySelectorAll('.bg-surface-container-high:not(.border-error-container):not(td *)').forEach(card => {
+            card.addEventListener('mouseenter', () => { card.style.transform = 'translateY(-2px)'; card.style.boxShadow = '0 10px 20px -5px rgba(0,0,0,0.3)'; });
+            card.addEventListener('mouseleave', () => { card.style.transform = 'translateY(0)'; card.style.boxShadow = 'none'; });
         });
     </script>
     @stack('scripts')
