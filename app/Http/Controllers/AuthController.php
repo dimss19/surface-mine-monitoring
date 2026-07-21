@@ -15,11 +15,13 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email' => 'required|email',
+            'login' => 'required',
             'password' => 'required'
         ]);
 
-        if (Auth::attempt($credentials)) {
+        $field = filter_var($request->login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+
+        if (Auth::attempt([$field => $request->login, 'password' => $request->password])) {
             $request->session()->regenerate();
 
             return match (Auth::user()->role) {
@@ -31,8 +33,8 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'Email atau password salah.',
-        ])->onlyInput('email');
+            'login' => 'Username/Email atau password salah.',
+        ])->onlyInput('login');
     }
 
     public function logout(Request $request)

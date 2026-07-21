@@ -7,6 +7,7 @@ use App\Models\Area;
 use App\Models\Alat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PegawaiController extends Controller
 {
@@ -15,15 +16,32 @@ class PegawaiController extends Controller
         return view('pegawai.index');
     }
 
-    public function createAbsensi()
+    public function createRekapan()
     {
         $areaOptions = Area::orderBy('nama')->pluck('nama', 'id')->toArray();
         $alatOptions = Alat::orderBy('nama')->pluck('nama', 'id')->toArray();
 
-        return view('pegawai.absensi.create', compact('areaOptions', 'alatOptions'));
+        return view('pegawai.rekapan.create', compact('areaOptions', 'alatOptions'));
     }
 
-    public function storeAbsensi(Request $request)
+    public function riwayat()
+    {
+        $pegawaiId = Auth::user()->pegawai_id;
+
+        $rekapans = AbsensiPegawai::with(['area', 'alat'])
+            ->where('pegawai_id', $pegawaiId)
+            ->orderBy('tanggal', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
+
+        $totalHm = AbsensiPegawai::where('pegawai_id', $pegawaiId)
+            ->whereNotNull('hm_total')
+            ->sum('hm_total');
+
+        return view('pegawai.rekapan.index', compact('rekapans', 'totalHm'));
+    }
+
+    public function storeRekapan(Request $request)
     {
         $validated = $request->validate([
             'area_id' => 'required|exists:areas,id',
@@ -75,7 +93,7 @@ class PegawaiController extends Controller
             return response()->json(['success' => true]);
         }
 
-        return redirect()->route('pegawai.absensi.create')->with('success', 'Absensi berhasil disubmit! Terima kasih.');
+        return redirect()->route('pegawai.rekapan.create')->with('success', 'Rekapan operator berhasil disubmit! Terima kasih.');
     }
 
     private function failure(Request $request, string $message)

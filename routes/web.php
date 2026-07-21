@@ -9,6 +9,7 @@ use App\Http\Controllers\AdminSpvController;
 use App\Http\Controllers\AdminAlatController;
 use App\Http\Controllers\AdminPegawaiController;
 use App\Http\Controllers\SpvPemantauanController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', fn () => view('welcome'))->name('home');
 
@@ -19,10 +20,19 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/csrf-token', fn () => response()->json(['token' => csrf_token()]));
 
 Route::middleware(['auth'])->group(function () {
+    Route::prefix('profil')->name('profile.')->group(function () {
+        Route::get('/', [ProfileController::class, 'show'])->name('show');
+        Route::post('/photo', [ProfileController::class, 'updatePhoto'])->name('photo');
+        Route::delete('/photo', [ProfileController::class, 'removePhoto'])->name('photo.remove');
+        Route::put('/password', [ProfileController::class, 'updatePassword'])->name('password');
+        Route::put('/', [ProfileController::class, 'updateProfile'])->name('update');
+    });
+
     Route::middleware('role:pegawai')->prefix('pegawai')->name('pegawai.')->group(function () {
         Route::get('/', [PegawaiController::class, 'index'])->name('index');
-        Route::get('/absensi', [PegawaiController::class, 'createAbsensi'])->name('absensi.create');
-        Route::post('/absensi', [PegawaiController::class, 'storeAbsensi'])->name('absensi.store');
+        Route::get('/riwayat', [PegawaiController::class, 'riwayat'])->name('riwayat');
+        Route::get('/rekapan', [PegawaiController::class, 'createRekapan'])->name('rekapan.create');
+        Route::post('/rekapan', [PegawaiController::class, 'storeRekapan'])->name('rekapan.store');
     });
 
     Route::middleware('role:spv')->prefix('spv')->name('spv.')->group(function () {
@@ -39,4 +49,5 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
-Route::get('/absensi', fn () => redirect()->route('pegawai.absensi.create'));
+Route::get('/absensi', fn () => redirect()->route('pegawai.rekapan.create'));
+Route::get('/rekapan', fn () => redirect()->route('pegawai.rekapan.create'));

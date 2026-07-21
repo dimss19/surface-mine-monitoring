@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password', 'role', 'pegawai_id'])]
+#[Fillable(['name', 'username', 'email', 'password', 'role', 'pegawai_id', 'profile_photo'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -33,6 +33,13 @@ class User extends Authenticatable
     public function pegawai()
     {
         return $this->belongsTo(Pegawai::class);
+    }
+
+    public function getPhotoUrlAttribute(): ?string
+    {
+        return $this->profile_photo
+            ? \Illuminate\Support\Facades\Storage::url($this->profile_photo)
+            : null;
     }
 
     public function areas()

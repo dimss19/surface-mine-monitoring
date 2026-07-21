@@ -1,4 +1,4 @@
-﻿# Surface Mine Production — Sistem Absensi dan Pemantauan Lapangan
+﻿# Surface Mine Production — Sistem Rekapan Operator dan Pemantauan Lapangan
 
 <p align="center">
   <img src="public/icons/icon-192x192.png" width="120" height="120" alt="Surface Mine Production">
@@ -15,11 +15,11 @@
 
 ## Tentang Proyek
 
-**Surface Mine Production** adalah sistem informasi berbasis web untuk mendigitalkan absensi Hour Meter (HM) alat berat di area tambang permukaan serta pemantauan lapangan oleh Supervisor. Sistem memiliki **3 role pengguna** dan mendukung **operasi offline penuh** untuk area terpencil.
+**Surface Mine Production** adalah sistem informasi berbasis web untuk mendigitalkan rekapan operator Hour Meter (HM) alat berat di area tambang permukaan serta pemantauan lapangan oleh Supervisor. Sistem memiliki **3 role pengguna** dan mendukung **operasi offline penuh** untuk area terpencil.
 
 | Role | Deskripsi |
 |------|-----------|
-| **Pegawai** | Login → isi absensi HM alat berat (tanggal, shift, area, alat, HM awal/akhir, tipe pekerjaan) |
+| **Pegawai** | Login → isi rekapan operator HM alat berat (tanggal, shift, area, alat, HM awal/akhir, tipe pekerjaan) |
 | **SPV** | Login → dashboard, membuat laporan pemantauan lapangan (deskripsi, kendala, progress, upload foto) |
 | **Admin** | Login → dashboard, kelola master data (SPV, Alat, Pegawai, Area), export laporan ke Excel |
 
@@ -35,7 +35,7 @@
 - **Replay safety**: deteksi duplikat (tanggal+shift+pegawai_id / spv_id+area_id+tanggal+shift), return 200 saat replay
 - **CSRF token refresh** untuk setiap replay offline
 - Upload foto lapangan via Spatie MediaLibrary (max 5MB per file)
-- Backward compatibility: `/absensi` redirect ke `/pegawai/absensi`
+- Backward compatibility: `/absensi` dan `/rekapan` redirect ke `/pegawai/rekapan`
 
 ---
 
@@ -163,7 +163,8 @@ Akses di browser: http://localhost:8000
 | Landing Page | `/` | Publik |
 | Login | `/login` | Publik |
 | Dashboard Pegawai | `/pegawai` | Pegawai |
-| Form Absensi | `/pegawai/absensi` | Pegawai |
+| Form Rekapan Operator | `/pegawai/rekapan` | Pegawai |
+| Riwayat Rekapan | `/pegawai/riwayat` | Pegawai |
 | Dashboard SPV | `/spv/dashboard` | SPV |
 | Laporan Pemantauan | `/spv/pemantauan` | SPV |
 | Dashboard Admin | `/admin/dashboard` | Admin |
@@ -184,7 +185,7 @@ Akses di browser: http://localhost:8000
 | `2026_07_17_154506` | areas |
 | `2026_07_17_154507` | pegawais |
 | `2026_07_17_154508` | alats |
-| `2026_07_17_154509` | absensi_pegawais |
+| `2026_07_17_154509` | absensi_pegawais (rekapan operator) |
 | `2026_07_17_154510` | pemantauan_lapangans |
 | `2026_07_17_154511` | pemantauan_fotos |
 | `2026_07_17_154512` | area_spv (pivot) |
@@ -236,7 +237,7 @@ surface-mine-production/
 ├── app/
 │   ├── Http/Controllers/
 │   │   ├── AuthController.php           # Login / Logout
-│   │   ├── PegawaiController.php         # Absensi pegawai
+│   │   ├── PegawaiController.php         # Rekapan operator pegawai
 │   │   ├── SpvController.php             # SPV dashboard
 │   │   ├── SpvPemantauanController.php   # CRUD pemantauan + foto
 │   │   ├── AdminController.php           # Dashboard + export
@@ -264,6 +265,7 @@ surface-mine-production/
 │   ├── views/
 │   │   ├── auth/login.blade.php
 │   │   ├── layouts/
+│   │   ├── pegawai/rekapan/  # create + index
 │   │   ├── pegawai/
 │   │   ├── spv/
 │   │   ├── admin/
