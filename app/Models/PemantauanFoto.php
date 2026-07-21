@@ -12,3 +12,4 @@ class PemantauanFoto extends Model
     {
         return $this->belongsTo(PemantauanLapangan::class);
     }
+}

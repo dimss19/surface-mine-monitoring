@@ -77,6 +77,10 @@
                     <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' {{ $isActive('spv/pemantauan') ? 1 : 0 }};">monitoring</span>
                     <span class="font-bold text-sm">Laporan Pemantauan</span>
                 </a>
+                <div x-data="{ outbox: window.outboxCount || 0 }" x-init="window.addEventListener('outbox:changed', e => outbox = e.detail)" x-show="outbox > 0" x-cloak class="mx-2 px-4 py-3 rounded-lg bg-primary-container/20 text-primary-container border border-primary-container/40 text-sm font-bold inline-flex items-center gap-2">
+                    <span class="material-symbols-outlined" style="font-size: 18px;">cloud_upload</span>
+                    <span><span x-text="outbox"></span> antrian offline</span>
+                </div>
             </nav>
         </div>
         <div class="space-y-4">

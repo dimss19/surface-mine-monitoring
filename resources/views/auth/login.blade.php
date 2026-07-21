@@ -36,7 +36,7 @@
                         Masuk ke Sistem
                     </h1>
                     <p class="text-sm text-on-surface-variant text-center px-4">
-                        Silakan masukkan kredensial Anda untuk mengakses Surface Mine.
+                        Login Pegawai / SPV / Admin — masukkan kredensial untuk akses Surface Mine.
                     </p>
                 </div>
 

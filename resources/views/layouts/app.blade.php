@@ -18,7 +18,7 @@
     <!-- PWA -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#2563eb">
-    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="/icons/icon-180x180.png">
     
     <style>
         body { font-family: 'Inter', sans-serif; }
@@ -28,7 +28,7 @@
 <body class="bg-gray-100 min-h-screen text-gray-900 antialiased">
     
     <!-- Navbar -->
-    @if(!request()->routeIs('home') && !request()->routeIs('absensi.create') && !request()->routeIs('login'))
+    @if(!request()->routeIs('home') && !request()->routeIs('login'))
     <nav class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-sm border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
@@ -52,7 +52,7 @@
                     @endauth
                     @guest
                         @if(!request()->routeIs('login'))
-                            <a href="{{ route('login') }}" class="text-sm font-semibold text-white bg-gray-900 dark:bg-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-100 px-4 py-2 rounded-xl transition-all shadow-sm hover:shadow">Login SPV/Admin</a>
+                            <a href="{{ route('login') }}" class="text-sm font-semibold text-white bg-gray-900 dark:bg-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-100 px-4 py-2 rounded-xl transition-all shadow-sm hover:shadow">Masuk</a>
                         @endif
                     @endguest
                 </div>

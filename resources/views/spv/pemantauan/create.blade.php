@@ -11,8 +11,22 @@
     </p>
 </section>
 
+<div class="flex items-center justify-between gap-3 flex-wrap mb-4"
+     x-data="{ online: navigator.onLine, outbox: window.outboxCount || 0 }"
+     x-init="window.addEventListener('online', () => online = true); window.addEventListener('offline', () => online = false); window.addEventListener('outbox:changed', e => outbox = e.detail)">
+    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold border"
+         :class="online ? 'bg-green-500/10 text-green-400 border-green-500/30' : 'bg-amber-500/10 text-amber-400 border-amber-500/30'">
+        <span class="w-2 h-2 rounded-full" :class="online ? 'bg-green-400 animate-pulse' : 'bg-amber-400'"></span>
+        <span x-text="online ? 'Online' : 'Offline'"></span>
+    </div>
+    <div x-show="outbox > 0" x-cloak class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold bg-[#e2231a]/10 text-[#ffb4a9] border border-[#e2231a]/30">
+        <span class="material-symbols-outlined" style="font-size: 16px;">cloud_upload</span>
+        <span><span x-text="outbox"></span> item antrian offline</span>
+    </div>
+</div>
+
 <div class="bg-surface-container-high rounded-2xl border border-outline-variant max-w-4xl">
-    <form action="{{ route('spv.pemantauan.store') }}" method="POST" enctype="multipart/form-data" class="p-6 md:p-8" x-data="{ loading: false }" @submit="loading = true">
+    <form action="{{ route('spv.pemantauan.store') }}" method="POST" enctype="multipart/form-data" data-offline-form data-sync-tag="pemantauan-sync" class="p-6 md:p-8" x-data="{ loading: false }" @submit="loading = true">
         @csrf
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

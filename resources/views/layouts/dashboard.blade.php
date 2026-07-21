@@ -100,6 +100,20 @@
                 <span class="material-symbols-outlined">menu</span>
             </button>
             <span class="text-lg font-bold text-primary truncate">@yield('page_title', 'Dashboard')</span>
+            <div class="ml-auto flex items-center gap-2"
+                 x-data="{ online: navigator.onLine, outbox: window.outboxCount || 0 }"
+                 x-init="window.addEventListener('online', () => online = true); window.addEventListener('offline', () => online = false); window.addEventListener('outbox:changed', e => outbox = e.detail)">
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold border"
+                      :class="online ? 'bg-green-500/10 text-green-400 border-green-500/30' : 'bg-amber-500/10 text-amber-400 border-amber-500/30'">
+                    <span class="w-1.5 h-1.5 rounded-full" :class="online ? 'bg-green-400 animate-pulse' : 'bg-amber-400'"></span>
+                    <span x-text="online ? 'Online' : 'Offline'" x-cloak></span>
+                </span>
+                <span x-show="outbox > 0" x-cloak
+                      class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-primary-container/20 text-primary border border-primary-container/40">
+                    <span class="material-symbols-outlined" style="font-size: 14px;">cloud_upload</span>
+                    <span><span x-text="outbox"></span> antrian</span>
+                </span>
+            </div>
         </header>
         <div class="flex-1 p-4 sm:p-6 lg:p-10 space-y-6 sm:space-y-8 overflow-auto">
             @if(session('success'))

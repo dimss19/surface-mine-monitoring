@@ -59,16 +59,19 @@ class SpvPemantauanController extends Controller
             'foto' => 'required|array|min:1|max:10',
             'foto.*' => 'image|max:5120'
         ]);
-        
-        // Prevent duplicate report for same shift/area
+
         $exists = PemantauanLapangan::where('spv_id', Auth::id())
             ->where('area_id', $validated['area_id'])
             ->where('tanggal', $validated['tanggal'])
             ->where('shift', $validated['shift'])
             ->exists();
-            
+
         if ($exists) {
-            return back()->with('error', 'Anda sudah membuat laporan untuk Area dan Shift ini pada tanggal yang sama.')->withInput();
+            if ($request->header('X-Offline-Replay') === '1') {
+                return response()->json(['success' => true, 'replayed' => true], 200);
+            }
+
+            return $this->failure($request, 'Anda sudah membuat laporan untuk Area dan Shift ini pada tanggal yang sama.');
         }
 
         DB::beginTransaction();
@@ -85,7 +88,6 @@ class SpvPemantauanController extends Controller
                 'progress_status' => $validated['progress_status'],
             ]);
 
-            // Handle Media Upload via Spatie Media Library
             if ($request->hasFile('foto')) {
                 foreach ($request->file('foto') as $file) {
                     $pemantauan->addMedia($file)->toMediaCollection('pemantauan_fotos');
@@ -93,11 +95,35 @@ class SpvPemantauanController extends Controller
             }
 
             DB::commit();
-            return redirect()->route('spv.pemantauan.index')->with('success', 'Laporan pemantauan berhasil disimpan.');
+
+            return $this->success($request, $pemantauan->id);
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', 'Gagal menyimpan laporan: ' . $e->getMessage())->withInput();
+            return $this->failure($request, 'Gagal menyimpan laporan: ' . $e->getMessage());
         }
+    }
+
+    private function wantsJson(Request $request): bool
+    {
+        return $request->acceptsJson() || $request->header('X-Requested-With') === 'XMLHttpRequest';
+    }
+
+    private function success(Request $request, int $id)
+    {
+        if ($this->wantsJson($request)) {
+            return response()->json(['success' => true, 'id' => $id]);
+        }
+
+        return redirect()->route('spv.pemantauan.index')->with('success', 'Laporan pemantauan berhasil disimpan.');
+    }
+
+    private function failure(Request $request, string $message)
+    {
+        if ($this->wantsJson($request)) {
+            return response()->json(['success' => false, 'message' => $message], 422);
+        }
+
+        return back()->with('error', $message)->withInput();
     }
 
     public function show(PemantauanLapangan $pemantauan)

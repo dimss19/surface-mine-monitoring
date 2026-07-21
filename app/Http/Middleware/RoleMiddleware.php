@@ -16,10 +16,12 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next, string $role): Response
     {
-        if (!Auth::check() || Auth::user()->role !== $role) {
+        $roles = explode(',', $role);
+
+        if (!Auth::check() || !in_array(Auth::user()->role, $roles, true)) {
             abort(403, 'Unauthorized access');
         }
-        
+
         return $next($request);
     }
 }

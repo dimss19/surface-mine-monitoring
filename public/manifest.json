@@ -3,7 +3,7 @@
     "short_name": "Surface Mine",
     "start_url": "/login",
     "background_color": "#ffffff",
-    "theme_color": "#2563eb",
+    "theme_color": "#e2231a",
     "display": "standalone",
     "orientation": "portrait",
     "icons": [
@@ -15,6 +15,11 @@
         {
             "src": "/icons/icon-512x512.png",
             "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/icon-180x180.png",
+            "sizes": "180x180",
             "type": "image/png"
         }
     ]
