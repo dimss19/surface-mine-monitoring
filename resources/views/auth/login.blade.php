@@ -65,7 +65,7 @@
                             Identitas Akun <span class="text-primary-container">*</span>
                         </label>
                         <div class="relative">
-                            <input name="email" type="email" value="{{ old('email') }}" placeholder="Username atau Alamat Email" class="w-full px-4 py-3 bg-surface-container border border-outline-variant focus:border-primary focus:ring-0 text-on-surface text-sm placeholder:text-on-surface-variant/50 rounded-xl transition-all outline-none" required>
+                            <input name="login" type="text" value="{{ old('login') }}" placeholder="Username atau Alamat Email" class="w-full px-4 py-3 bg-surface-container border border-outline-variant focus:border-primary focus:ring-0 text-on-surface text-sm placeholder:text-on-surface-variant/50 rounded-xl transition-all outline-none" required>
                             <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant/40">person</span>
                         </div>
                     </div>
