@@ -41,17 +41,25 @@
 
 ## Tech Stack
 
-| Teknologi | Keterangan |
-|-----------|------------|
-| **Framework** | Laravel 13.x |
-| **Bahasa** | PHP ^8.3 |
-| **Database** | MySQL via Eloquent ORM |
-| **Frontend** | Blade + Alpine.js + Tailwind CSS + Vite |
-| **Auth** | Session-based (guard web), 3 role login |
-| **Hashing** | Argon2id |
-| **Media Library** | Spatie Laravel MediaLibrary |
-| **PWA** | Service Worker + Manifest JSON + IndexedDB |
-| **Ikon** | Material Symbols (Google Fonts) |
+| Teknologi | Keterangan | Alasan |
+|-----------|------------|--------|
+| **PHP 8.3+** | Bahasa pemrograman backend | Maturitas tinggi, ekosistem Laravel matang, performa baik untuk web app monolitik, dukungan JIT dan type system modern |
+| **Laravel 13.x** | Full-stack PHP framework | Routing ekspresif, Eloquent ORM memudahkan query database, middleware role-based, queue/job untuk proses async, Artisan CLI untuk produktivitas, ekosistem package yang luas |
+| **Filament** | Admin panel builder | CRUD generator instant untuk dashboard Admin (kelola SPV, alat, pegawai), komponen UI siap pakai (tabel, form, filter), mendukung export + role-based access, mempercepat development dashboard admin secara drastis |
+| **Maatwebsite/Laravel-Excel** | Export/Import Excel | Fitur export laporan ke Excel di dashboard Admin, mendukung format XLSX dengan styling dan chunk reading untuk data besar |
+| **MySQL** | Database relasional | Cocok untuk data terstruktur dengan relasi (pegawai ↔ absensi, SPV ↔ area, dll), transaksional ACID, performa baik untuk query join, didukung penuh oleh Laragon |
+| **Eloquent ORM** | Database abstraction layer | Mapping 1:1 dengan tabel database, eager loading optimasi query, mendukung relasi (belongsTo, hasMany, morphMany), migration version control untuk skema database |
+| **Blade** | Templating engine Laravel | Component-based (data-table, form-input, photo-uploader, spv-card, select-dropdown, progress-input), layout inheritance, sintaks bersih, kompatibel penuh dengan data offline dan CSRF |
+| **Alpine.js** | JavaScript reaktif ringan | Interaktivitas UI tanpa build step berat (show/hide, form binding, event handling), ukuran ~7kB, ideal untuk enhancement pada Blade tanpa perlu Vue/React penuh |
+| **Tailwind CSS 4.x** | Utility-first CSS | Development cepat tanpa menulis CSS kustom, bundle kecil berkat JIT + purge, desain konsisten dengan utility classes, dark mode built-in untuk tampilan industrial |
+| **Vite** | Build tool & HMR dev server | HMR instan untuk development frontend, integrasi first-class dengan Laravel via `laravel-vite-plugin`, tree-shaking dan code splitting untuk produksi |
+| **Session-based Auth** | Autentikasi server-side | 3 role login (admin/spv/pegawai) dengan guard web default, middleware `role:` untuk proteksi route, session terenkripsi, cocok untuk web tradisional tanpa SPA |
+| **Argon2id** | Password hashing | Algoritma hashing terkuat saat ini (pemenang PHC), tahan terhadap GPU/ASIC attacks, direkomendasikan OWASP, built-in di PHP 8.3+ |
+| **Spatie Laravel MediaLibrary** | Upload & manage media | Upload foto lapangan dari SPV, auto-konversi thumbnail, organisasi file per model (PemantauanLapangan), integrasi mudah dengan Eloquent dan Blade |
+| **IndexedDB** | Client-side storage (offline) | Database NoSQL di browser untuk menyimpan data absensi saat offline, kapasitas besar ( > 250MB ), mendukung structured data dan transaksional query |
+| **Service Worker** | PWA offline caching | Cache shell aplikasi (CSS, JS, HTML) agar tetap bisa diakses di area tambang tanpa sinyal, intercept fetch request, fallback ke `offline.html` |
+| **Queue (database driver)** | Job processing | Menjalankan proses berat di background (export Excel, upload foto, sync data), antrian disimpan di tabel MySQL, dijalankan via `php artisan queue:listen` |
+| **Material Symbols** | Icon font (Google Fonts) | Vektor ikon konsisten dengan bobot variabel (FILL, wght, GRAD), ringan (subset), mudah dikustom ukuran dan warna via CSS font-variation-settings |
 
 ---
 
