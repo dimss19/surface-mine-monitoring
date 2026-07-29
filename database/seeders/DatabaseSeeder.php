@@ -20,6 +20,12 @@ class DatabaseSeeder extends Seeder
             AlatSeeder::class,
             PegawaiSeeder::class,
             UserSeeder::class,
+            MaterialSeeder::class,
+            UnitSeeder::class,
+            PermissionSeeder::class,
+            RolePermissionSeeder::class,
+            RitasiSeeder::class,
+            NonRitasiSeeder::class,
         ]);
     }
 }
