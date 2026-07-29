@@ -11,9 +11,24 @@ use Illuminate\Support\Facades\DB;
 
 class PegawaiController extends Controller
 {
+    public function dashboard()
+    {
+        $user = Auth::user();
+        $pegawai = $user->pegawai;
+        
+        $totalRitasi = $pegawai->ritasis()->count();
+        $totalNonRitasi = $pegawai->nonRitasis()->count();
+        $totalHm = $pegawai->absensiPegawais()->sum('hm_total');
+        
+        return view('operator.dashboard', compact('pegawai', 'totalRitasi', 'totalNonRitasi', 'totalHm'));
+    }
+
     public function index()
     {
-        return view('pegawai.index');
+        $areaOptions = Area::orderBy('nama')->pluck('nama', 'id')->toArray();
+        $alatOptions = Alat::orderBy('nama')->pluck('nama', 'id')->toArray();
+
+        return view('pegawai.rekapan.create', compact('areaOptions', 'alatOptions'));
     }
 
     public function createRekapan()
@@ -52,12 +67,13 @@ class PegawaiController extends Controller
             'hm_awal' => 'required|numeric|min:0',
             'hm_akhir' => 'required|numeric|min:0',
             'deskripsi_pekerjaan' => 'nullable|string',
+            'konsumsi_fuel' => 'nullable|numeric|min:0',
         ]);
 
         $pegawaiId = Auth::user()->pegawai_id;
 
         if ($validated['hm_akhir'] < $validated['hm_awal']) {
-            return $this->failure($request, 'HM Akhir harus lebih besar atau sama dengan HM Awal.');
+            return back()->with('error', 'HM Akhir harus lebih besar atau sama dengan HM Awal.');
         }
 
         $exists = AbsensiPegawai::where('pegawai_id', $pegawaiId)
@@ -70,7 +86,7 @@ class PegawaiController extends Controller
                 return response()->json(['success' => true, 'replayed' => true], 200);
             }
 
-            return $this->failure($request, 'Anda sudah melakukan absensi pada shift dan tanggal tersebut.');
+            return back()->with('error', 'Anda sudah melakukan absensi pada shift dan tanggal tersebut.');
         }
 
         $validated['pegawai_id'] = $pegawaiId;
@@ -78,30 +94,6 @@ class PegawaiController extends Controller
 
         AbsensiPegawai::create($validated);
 
-        return $this->success($request);
-    }
-
-    private function wantsJson(Request $request): bool
-    {
-        return $request->acceptsJson()
-            || $request->header('X-Requested-With') === 'XMLHttpRequest';
-    }
-
-    private function success(Request $request)
-    {
-        if ($this->wantsJson($request)) {
-            return response()->json(['success' => true]);
-        }
-
-        return redirect()->route('pegawai.rekapan.create')->with('success', 'Rekapan operator berhasil disubmit! Terima kasih.');
-    }
-
-    private function failure(Request $request, string $message)
-    {
-        if ($this->wantsJson($request)) {
-            return response()->json(['success' => false, 'message' => $message], 422);
-        }
-
-        return back()->with('error', $message)->withInput();
+        return back()->with('success', 'Rekapan operator berhasil disubmit! Terima kasih.');
     }
 }
