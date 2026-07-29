@@ -42,9 +42,29 @@ class User extends Authenticatable
             : null;
     }
 
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
+    }
+
+    public function area()
+    {
+        return $this->belongsTo(Area::class);
+    }
+
     public function areas()
     {
         return $this->belongsToMany(Area::class, 'area_spv', 'spv_id', 'area_id');
+    }
+
+    public function hasPermission(string $permission): bool
+    {
+        if ($this->role === 'admin') return true;
+
+        return Permission::where('name', $permission)
+            ->where('rolePermissions.role', $this->role)
+            ->where('rolePermissions.allowed', true)
+            ->exists();
     }
 
     public function pemantauanLapangans()

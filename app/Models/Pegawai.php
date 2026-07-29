@@ -12,4 +12,19 @@ class Pegawai extends Model
     {
         return $this->hasMany(AbsensiPegawai::class);
     }
+
+    public function ritasis()
+    {
+        return $this->hasMany(Ritasi::class);
+    }
+
+    public function nonRitasis()
+    {
+        return $this->hasMany(NonRitasi::class);
+    }
+
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
 }

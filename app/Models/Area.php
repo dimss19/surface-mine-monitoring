@@ -13,6 +13,11 @@ class Area extends Model
         return $this->belongsToMany(User::class, 'area_spv', 'area_id', 'spv_id');
     }
 
+    public function units()
+    {
+        return $this->belongsToMany(Unit::class, 'unit_area')->withTimestamps();
+    }
+
     public function absensiPegawais()
     {
         return $this->hasMany(AbsensiPegawai::class);
