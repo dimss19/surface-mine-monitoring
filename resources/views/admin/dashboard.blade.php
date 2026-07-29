@@ -1,191 +1,288 @@
-@extends('layouts.dashboard')
+@extends('layouts.admin')
 
-@section('title', '- Admin Dashboard')
-@section('page_title', 'Dashboard Administrator')
+@section('title', 'Dashboard')
 
 @section('content')
-    <section class="space-y-2">
-        <h2 class="text-3xl md:text-4xl font-bold text-on-surface tracking-tight">Halo, Admin!</h2>
-        <p class="text-base text-on-surface-variant max-w-2xl">
-            Pantau aktivitas operasional, kelola akun SPV, dan lihat laporan pemantauan secara real-time.
-        </p>
-    </section>
+<div class="mb-6">
+    <h1 class="text-2xl font-heading font-bold text-[var(--primary)]">Monitoring Dashboard</h1>
+    <p class="text-slate-500">Live operational telemetry and site metrics.</p>
+</div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div class="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="bg-surface-container-high rounded-xl p-6 border border-outline-variant flex flex-col justify-between group hover:border-primary transition-colors cursor-default">
-                <div class="flex justify-between items-start">
-                    <span class="text-xs font-bold text-on-surface-variant uppercase tracking-widest">Total SPV</span>
-                    <div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center text-primary">
-                        <span class="material-symbols-outlined text-3xl">supervisor_account</span>
-                    </div>
-                </div>
-                <div class="mt-8">
-                    <span class="text-4xl sm:text-5xl md:text-6xl font-bold text-on-surface leading-none">{{ $metrics['total_spv'] }}</span>
-                </div>
+{{-- Action buttons --}}
+<div class="flex gap-3 mb-6">
+    <a href="{{ route('admin.export') }}" class="btn-secondary flex items-center gap-2">
+        <span class="material-symbols-outlined text-lg">download</span>
+        Export
+    </a>
+    <button class="bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+        <span class="material-symbols-outlined text-lg">sync</span>
+        Sync Data
+    </button>
+</div>
+
+{{-- KPI Cards --}}
+<div class="grid grid-cols-4 gap-4 mb-6">
+    <x-kpi-card title="Total Ritasi" value="{{ number_format($metrics['total_ritasi'] ?? 1284) }}" icon="local_shipping" color="blue" />
+    <x-kpi-card title="Total Unit Aktif" value="{{ $metrics['unit_aktif'] ?? '42 / 50' }}" icon="precision_manufacturing" color="orange" />
+    <x-kpi-card title="Total Jam Kerja" value="{{ $metrics['jam_kerja'] ?? '342h' }}" icon="schedule" color="green" />
+    <x-kpi-card title="Pekerjaan General" value="{{ $metrics['general_tasks'] ?? '18 Tasks' }}" icon="assignment" color="purple" />
+</div>
+
+{{-- Daily Breakdown Activity --}}
+<div class="card p-6 mb-6">
+    <h2 class="text-lg font-heading font-bold mb-4">Daily Breakdown Activity</h2>
+    <div class="grid grid-cols-3 gap-6">
+        {{-- Bar Chart --}}
+        <div>
+            <div class="bg-slate-100 rounded-lg p-4 mb-4 text-center">
+                <span class="text-sm text-slate-500">Daily All Hauling</span>
+                <p class="text-2xl font-bold text-[var(--accent)]">4,278</p>
             </div>
+            <canvas id="dailyChart" height="200"></canvas>
+        </div>
 
-            <div class="bg-surface-container-high rounded-xl p-6 border border-outline-variant flex flex-col justify-between group hover:border-primary transition-colors cursor-default">
-                <div class="flex justify-between items-start">
-                    <span class="text-xs font-bold text-on-surface-variant uppercase tracking-widest">Total Area Kerja</span>
-                    <div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center text-primary">
-                        <span class="material-symbols-outlined text-3xl">public</span>
+        {{-- Day Shift --}}
+        <div>
+            <h3 class="text-center font-semibold mb-4">Day Shift</h3>
+            <div class="space-y-3">
+                @foreach([
+                    ['name' => 'EX022 Long Arm', 'hours' => 8.0, 'type' => 'active'],
+                    ['name' => 'EX024 PC320', 'hours' => 8.0, 'type' => 'active'],
+                    ['name' => 'EX025 PC320', 'hours' => 8.0, 'type' => 'active'],
+                    ['name' => 'EX027 PC340', 'hours' => 7.5, 'type' => 'active'],
+                    ['name' => 'EX028 PC320', 'hours' => 7.0, 'type' => 'active'],
+                    ['name' => 'EX029 SY215', 'hours' => 8.0, 'type' => 'partial'],
+                    ['name' => 'EX032 SY215', 'hours' => 8.0, 'type' => 'partial'],
+                    ['name' => 'EX033 SY215', 'hours' => 6.0, 'type' => 'active'],
+                    ['name' => 'EX034 SY215', 'hours' => 4.0, 'type' => 'partial'],
+                ] as $unit)
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs text-slate-600 w-24 truncate" title="{{ $unit['name'] }}">{{ $unit['name'] }}</span>
+                        <div class="flex-1 bg-slate-100 rounded-full h-4 overflow-hidden">
+                            <div class="h-4 rounded-full {{ $unit['type'] === 'active' ? 'bg-red-400' : 'bg-green-400' }}"
+                                 style="width: {{ ($unit['hours'] / 12) * 100 }}%"></div>
+                        </div>
                     </div>
-                </div>
-                <div class="mt-8">
-                    <span class="text-4xl sm:text-5xl md:text-6xl font-bold text-on-surface leading-none">{{ $metrics['total_area'] }}</span>
-                </div>
-            </div>
-
-            <div class="bg-surface-container-high rounded-xl p-6 border border-outline-variant flex flex-col justify-between group hover:border-primary transition-colors cursor-default">
-                <div class="flex justify-between items-start">
-                    <span class="text-xs font-bold text-on-surface-variant uppercase tracking-widest">Laporan Hari Ini</span>
-                    <div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center text-primary">
-                        <span class="material-symbols-outlined text-3xl">description</span>
+                @endforeach
+                <div class="flex items-center gap-2 mt-2">
+                    <span class="text-xs text-slate-400 w-24"></span>
+                    <div class="flex-1 flex justify-between text-[10px] text-slate-400">
+                        <span>0.0</span><span>4.0</span><span>8.0</span><span>12.0</span>
                     </div>
-                </div>
-                <div class="mt-8">
-                    <span class="text-4xl sm:text-5xl md:text-6xl font-bold text-on-surface leading-none">{{ $metrics['laporan_hari_ini'] }}</span>
-                </div>
-            </div>
-
-            <div class="md:col-span-1 bg-surface-container rounded-xl p-6 border-l-4 border-primary flex items-start space-x-4 shadow-lg">
-                <span class="material-symbols-outlined text-primary-container text-4xl mt-1">info</span>
-                <div class="space-y-1">
-                    <h4 class="text-lg font-bold text-on-surface">Informasi Sistem</h4>
-                    <p class="text-sm text-on-surface-variant">Data dashboard diperbarui secara real-time. Pantau kinerja SPV dan progres laporan harian.</p>
                 </div>
             </div>
         </div>
 
-        <div class="lg:col-span-5 h-full">
-            <a href="{{ route('admin.spv.index') }}" class="w-full h-full bg-primary-container rounded-xl p-8 text-left flex flex-col justify-center items-center group relative overflow-hidden transition-all duration-300 hover:shadow-[0_0_40px_rgba(226,35,26,0.3)] hover:-translate-y-1 block">
-                <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
-                    <span class="material-symbols-outlined text-[120px] select-none">group_add</span>
+        {{-- Night Shift --}}
+        <div>
+            <h3 class="text-center font-semibold mb-4">Night Shift</h3>
+            <div class="space-y-3">
+                @foreach([
+                    ['name' => 'EX022 Long Arm', 'hours' => 8.0, 'type' => 'active'],
+                    ['name' => 'EX024 PC320', 'hours' => 8.0, 'type' => 'active'],
+                    ['name' => 'EX025 PC320', 'hours' => 8.0, 'type' => 'active'],
+                    ['name' => 'EX027 PC340', 'hours' => 8.0, 'type' => 'active'],
+                    ['name' => 'EX028 PC320', 'hours' => 8.0, 'type' => 'active'],
+                    ['name' => 'EX029 SY215', 'hours' => 8.0, 'type' => 'active'],
+                    ['name' => 'EX032 SY215', 'hours' => 8.0, 'type' => 'active'],
+                    ['name' => 'EX033 SY215', 'hours' => 7.0, 'type' => 'active'],
+                    ['name' => 'EX034 SY215', 'hours' => 8.0, 'type' => 'active'],
+                ] as $unit)
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs text-slate-600 w-24 truncate" title="{{ $unit['name'] }}">{{ $unit['name'] }}</span>
+                        <div class="flex-1 bg-slate-100 rounded-full h-4 overflow-hidden">
+                            <div class="h-4 rounded-full {{ $unit['type'] === 'active' ? 'bg-red-400' : 'bg-green-400' }}"
+                                 style="width: {{ ($unit['hours'] / 12) * 100 }}%"></div>
+                        </div>
+                    </div>
+                @endforeach
+                <div class="flex items-center gap-2 mt-2">
+                    <span class="text-xs text-slate-400 w-24"></span>
+                    <div class="flex-1 flex justify-between text-[10px] text-slate-400">
+                        <span>0.0</span><span>4.0</span><span>8.0</span><span>12.0</span>
+                    </div>
                 </div>
-                <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <span class="material-symbols-outlined text-white text-5xl font-bold">add</span>
-                </div>
-                <h3 class="text-2xl font-bold text-white mb-2">Kelola SPV</h3>
-                <p class="text-white/80 text-center text-base max-w-xs">
-                    Tambah, edit, atau nonaktifkan akun supervisor untuk menjaga integritas data operasional.
-                </p>
-                <div class="absolute bottom-0 right-0 w-16 h-16 bg-white/10" style="clip-path: polygon(100% 0, 0 100%, 100% 100%);"></div>
-            </a>
+            </div>
         </div>
     </div>
+</div>
 
-    <div class="mb-8">
-        <div class="flex items-center justify-between mb-6">
-            <h2 class="text-xl font-bold text-on-surface">Daftar Supervisor (SPV)</h2>
-            <a href="{{ route('admin.spv.index') }}" class="text-sm font-bold text-primary hover:text-primary-fixed transition-colors">Lihat Semua &rarr;</a>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            @foreach($spvList as $spv)
-                <x-spv-card
-                    :spv="$spv"
-                    :areaCount="$spv->areas_count"
-                    :latestReport="$spv->pemantauanLapangans->first()"
-                />
-            @endforeach
-
-            @if($spvList->isEmpty())
-                <div class="col-span-full py-12 bg-surface-container-high border border-dashed border-outline-variant rounded-xl text-center">
-                    <span class="material-symbols-outlined text-5xl text-on-surface-variant">person_off</span>
-                    <h3 class="mt-2 text-sm font-bold text-on-surface">Belum Ada SPV</h3>
-                    <p class="mt-1 text-sm text-on-surface-variant">Silakan tambahkan akun SPV baru.</p>
-                </div>
-            @endif
-        </div>
-    </div>
-
-    <div class="bg-surface-container-high rounded-2xl overflow-hidden border border-outline-variant">
-        <div class="p-6 md:p-8 border-b border-outline-variant">
-            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-                <div>
-                    <h3 class="text-xl font-bold text-on-surface">Semua Laporan Pemantauan</h3>
-                    <p class="mt-1 text-sm text-on-surface-variant">Riwayat laporan dari semua SPV dan area kerja.</p>
-                </div>
-
-                <div class="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
-                    <form method="GET" action="{{ route('admin.dashboard') }}" class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-                        <input type="date" name="tanggal" value="{{ request('tanggal') }}" class="block w-full sm:w-auto rounded-xl border-outline-variant bg-surface-container text-on-surface shadow-sm focus:border-primary focus:ring-primary sm:text-sm px-4 py-2.5 transition-colors">
-
-                        <select name="spv_id" class="block w-full sm:w-auto rounded-xl border-outline-variant bg-surface-container text-on-surface shadow-sm focus:border-primary focus:ring-primary sm:text-sm px-4 py-2.5 transition-colors cursor-pointer">
-                            <option value="">Semua SPV</option>
-                            @foreach($spvs as $id => $name)
-                                <option value="{{ $id }}" {{ request('spv_id') == $id ? 'selected' : '' }}>{{ $name }}</option>
-                            @endforeach
-                        </select>
-
-                        <button type="submit" class="w-full sm:w-auto bg-primary-container text-on-primary-container px-5 py-2.5 rounded-xl text-sm font-bold hover:opacity-90 transition-all shadow-sm flex items-center justify-center">
-                            <span class="material-symbols-outlined text-lg mr-1">filter_alt</span>
-                            Filter
-                        </button>
-                    </form>
-
-                    <a href="{{ route('admin.export', request()->all()) }}" target="_blank" class="w-full sm:w-auto bg-[#1b5e20] text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-[#2e7d32] transition-all shadow-sm hover:shadow-md flex items-center justify-center whitespace-nowrap">
-                        <span class="material-symbols-outlined text-lg mr-1">download</span>
-                        Export Excel
-                    </a>
-                </div>
+{{-- Grafik All Hauling (WTD) --}}
+<div class="card p-6 mb-6">
+    <h2 class="text-lg font-heading font-bold mb-4">Grafik All Hauling (WTD)</h2>
+    <div class="grid grid-cols-2 gap-6">
+        {{-- Weekly Chart --}}
+        <div>
+            <div class="bg-slate-100 rounded-lg p-4 mb-4">
+                <span class="text-sm text-slate-500">Weekly All Hauling</span>
+                <p class="text-2xl font-bold text-[var(--accent)]">8,568</p>
             </div>
+            <canvas id="weeklyChart" height="220"></canvas>
         </div>
 
-        <x-data-table :headers="['SPV', 'Tanggal & Shift', 'Area', 'Progress', 'Status']" :actions="true" :pagination="$pemantauans->links()">
-            @forelse($pemantauans as $item)
-                <tr class="hover:bg-surface-variant/50 transition-colors group/row">
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <div class="h-8 w-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-xs mr-3 shadow-sm">
-                                {{ strtoupper(substr($item->spv->name ?? '?', 0, 1)) }}
+        {{-- Availability & UoA --}}
+        <div>
+            {{-- Availability --}}
+            <div class="mb-6">
+                <h3 class="font-semibold mb-4">Availability</h3>
+                <div class="grid grid-cols-4 gap-4">
+                    @foreach(['Exc' => '45.5%', 'Sany' => '33.3%', 'ADT' => '66.7%', 'Dozer' => '31.3%'] as $name => $value)
+                        <div class="text-center">
+                            <div class="w-20 h-20 mx-auto relative">
+                                <canvas id="avail-{{ $name }}" width="80" height="80"></canvas>
+                                <span class="absolute inset-0 flex items-center justify-center text-xs font-bold">{{ $value }}</span>
                             </div>
-                            <span class="text-sm font-bold text-on-surface">{{ $item->spv->name ?? '-' }}</span>
+                            <p class="text-xs mt-1 text-slate-600">{{ $name }}</p>
                         </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm font-medium text-on-surface">{{ \Carbon\Carbon::parse($item->tanggal)->format('d M Y') }}</div>
-                        <div class="text-xs text-on-surface-variant mt-0.5 inline-flex items-center px-2 py-0.5 rounded-full bg-surface-container font-medium">Shift {{ ucfirst($item->shift) }}</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm font-medium text-on-surface flex items-center">
-                            <span class="material-symbols-outlined text-base text-on-surface-variant mr-1.5">location_on</span>
-                            {{ $item->area->nama ?? '-' }}
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <span class="text-sm font-bold text-on-surface w-10">{{ $item->progress_persen }}%</span>
-                            <div class="w-24 bg-surface-container rounded-full h-2 ml-2 shadow-inner overflow-hidden">
-                                <div class="h-2 rounded-full {{ $item->progress_persen == 100 ? 'bg-[#2e7d32]' : 'bg-primary' }} transition-all duration-1000" style="width: {{ $item->progress_persen }}%"></div>
+                    @endforeach
+                </div>
+            </div>
+
+            {{-- UoA --}}
+            <div>
+                <h3 class="font-semibold mb-4">UoA</h3>
+                <div class="grid grid-cols-4 gap-4">
+                    @foreach(['Exc' => '49.1%', 'Sany' => '41.8%', 'ADT' => '74.4%', 'Dozer' => '38.2%'] as $name => $value)
+                        <div class="text-center">
+                            <div class="w-20 h-20 mx-auto relative">
+                                <canvas id="uoa-{{ $name }}" width="80" height="80"></canvas>
+                                <span class="absolute inset-0 flex items-center justify-center text-xs font-bold">{{ $value }}</span>
                             </div>
+                            <p class="text-xs mt-1 text-slate-600">{{ $name }}</p>
                         </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        @if($item->progress_status == 'selesai')
-                            <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full bg-[#1b5e20]/30 text-[#66bb6a] border border-[#2e7d32]">Selesai</span>
-                        @elseif($item->progress_status == 'proses')
-                            <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full bg-[#e65100]/30 text-[#ffb74d] border border-[#e65100]">Proses</span>
-                        @else
-                            <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full bg-surface-container text-on-surface-variant border border-outline-variant">Belum Mulai</span>
-                        @endif
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <a href="#" onclick="alert('Detail Laporan SPV')" class="inline-flex items-center text-primary hover:text-primary-fixed bg-primary-container/20 hover:bg-primary-container/40 px-3 py-1.5 rounded-lg transition-colors">
-                            Detail
-                            <span class="material-symbols-outlined text-base ml-1 opacity-0 group-hover/row:opacity-100 transition-opacity">chevron_right</span>
-                        </a>
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="6" class="px-6 py-16 text-center">
-                        <span class="material-symbols-outlined text-5xl text-on-surface-variant mb-4 block">description</span>
-                        <h3 class="text-sm font-bold text-on-surface">Belum ada laporan</h3>
-                        <p class="mt-1 text-sm text-on-surface-variant">Belum ada laporan pemantauan lapangan dari SPV yang sesuai dengan filter.</p>
-                    </td>
-                </tr>
-            @endforelse
-        </x-data-table>
+                    @endforeach
+                </div>
+            </div>
+        </div>
     </div>
+</div>
+
+{{-- Monthly MTD Report --}}
+<div class="card p-6">
+    <h2 class="text-lg font-heading font-bold mb-4">Monthly - MTD Report</h2>
+    <div class="bg-slate-100 rounded-lg p-4 mb-4">
+        <span class="text-sm text-slate-500">All Materials Hauling</span>
+        <p class="text-2xl font-bold text-[var(--accent)]">75,709</p>
+    </div>
+    <canvas id="monthlyChart" height="150"></canvas>
+    <div class="flex justify-center gap-6 mt-4">
+        <div class="flex items-center gap-2 text-sm">
+            <span class="w-3 h-3 rounded bg-[#0f172a] inline-block"></span> Ore
+        </div>
+        <div class="flex items-center gap-2 text-sm">
+            <span class="w-3 h-3 rounded bg-[#93c5fd] inline-block"></span> Others
+        </div>
+        <div class="flex items-center gap-2 text-sm">
+            <span class="w-8 h-0.5 bg-[#f59e0b] inline-block"></span> Cumulative
+        </div>
+    </div>
+</div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const accentColor = '#f59e0b';
+    const primaryColor = '#0f172a';
+    const blueColor = '#3b82f6';
+    const lightBlueColor = '#93c5fd';
+    const greenColor = '#22c55e';
+
+    // Daily Chart
+    new Chart(document.getElementById('dailyChart'), {
+        type: 'bar',
+        data: {
+            labels: ['Tuff Paste', 'KCN', 'CakeDST', 'Tuff Off', 'Batu Pica', 'Mining Tuff', 'Pasir Hitam', 'Mud', 'Lumpur', 'Waste'],
+            datasets: [{
+                data: [1227, 700, 260, 175, 120, 90, 40, 26, 0, 0],
+                backgroundColor: primaryColor,
+                borderRadius: 4,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true, ticks: { font: { size: 10 } } },
+                x: { ticks: { font: { size: 9 }, maxRotation: 45 } }
+            }
+        }
+    });
+
+    // Weekly Chart
+    new Chart(document.getElementById('weeklyChart'), {
+        type: 'bar',
+        data: {
+            labels: ['Waste', 'Mud - Lumpur', 'Pasir Hitam', 'Mining Tuff', 'Batu Pica (5/15)', 'Tuff Off', 'CakeDST'],
+            datasets: [{
+                data: [26, 40, 90, 120, 175, 260, 700],
+                backgroundColor: primaryColor,
+                borderRadius: 4,
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { beginAtZero: true, ticks: { font: { size: 10 } } },
+                y: { ticks: { font: { size: 10 } } }
+            }
+        }
+    });
+
+    // Monthly Chart
+    new Chart(document.getElementById('monthlyChart'), {
+        type: 'bar',
+        data: {
+            labels: ['1-May', '4-May', '7-May', '10-May', '13-May', '16-May', '19-May', '22-May', '25-May', '28-May', '31-May'],
+            datasets: [
+                { type: 'bar', label: 'Ore', data: [40, 35, 45, 50, 42, 48, 55, 52, 58, 54, 60], backgroundColor: primaryColor, borderRadius: 2 },
+                { type: 'bar', label: 'Others', data: [30, 28, 32, 35, 30, 34, 38, 36, 40, 38, 42], backgroundColor: lightBlueColor, borderRadius: 2 },
+                { type: 'line', label: 'Cumulative', data: [70, 63, 77, 85, 72, 82, 93, 88, 98, 92, 102], borderColor: accentColor, fill: false, tension: 0.3, pointRadius: 3 }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true, stacked: true },
+                x: { stacked: true }
+            }
+        }
+    });
+
+    // Donut charts for Availability
+    function createDonut(canvasId, value, color) {
+        const numValue = parseFloat(value);
+        new Chart(document.getElementById(canvasId), {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [numValue, 100 - numValue],
+                    backgroundColor: [color, '#e2e8f0'],
+                    borderWidth: 0,
+                }]
+            },
+            options: {
+                responsive: true,
+                cutout: '70%',
+                plugins: { legend: { display: false }, tooltip: { enabled: false } },
+            }
+        });
+    }
+
+    // Availability donuts
+    createDonut('avail-Exc', '45.5', blueColor);
+    createDonut('avail-Sany', '33.3', blueColor);
+    createDonut('avail-ADT', '66.7', blueColor);
+    createDonut('avail-Dozer', '31.3', blueColor);
+
+    // UoA donuts
+    createDonut('uoa-Exc', '49.1', greenColor);
+    createDonut('uoa-Sany', '41.8', greenColor);
+    createDonut('uoa-ADT', '74.4', greenColor);
+    createDonut('uoa-Dozer', '38.2', greenColor);
+});
+</script>
+@endpush
