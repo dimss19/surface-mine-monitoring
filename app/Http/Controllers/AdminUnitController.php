@@ -4,32 +4,81 @@ namespace App\Http\Controllers;
 
 use App\Models\Unit;
 use App\Models\Area;
+use App\Models\Material;
+use App\Models\User;
+use App\Models\Permission;
 use Illuminate\Http\Request;
 
 class AdminUnitController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Unit::query();
-        
-        if ($request->filled('search')) {
-            $query->where(function ($q) use ($request) {
-                $q->where('kode', 'like', "%{$request->search}%")
-                  ->orWhere('nama', 'like', "%{$request->search}%")
-                  ->orWhere('model', 'like', "%{$request->search}%");
-            });
+        $activeTab = $request->input('tab', 'unit');
+        $search = $request->input('search');
+        $data = ['activeTab' => $activeTab];
+
+        switch ($activeTab) {
+            case 'unit':
+                $query = Unit::query();
+                if ($search) {
+                    $query->where(function ($q) use ($search) {
+                        $q->where('kode', 'like', "%{$search}%")
+                          ->orWhere('nama', 'like', "%{$search}%")
+                          ->orWhere('model', 'like', "%{$search}%");
+                    });
+                }
+                if ($request->filled('status')) {
+                    $query->where('status', $request->status);
+                }
+                $data['units'] = $query->orderBy('kode')->paginate(10);
+                break;
+
+            case 'material':
+                $query = Material::query();
+                if ($search) {
+                    $query->where(function ($q) use ($search) {
+                        $q->where('kode', 'like', "%{$search}%")
+                          ->orWhere('nama', 'like', "%{$search}%");
+                    });
+                }
+                if ($request->filled('status')) {
+                    $query->where('status', $request->status);
+                }
+                $data['materials'] = $query->orderBy('kode')->paginate(10);
+                break;
+
+            case 'area':
+                $query = Area::query();
+                if ($search) {
+                    $query->where(function ($q) use ($search) {
+                        $q->where('nama', 'like', "%{$search}%")
+                          ->orWhere('kode', 'like', "%{$search}%");
+                    });
+                }
+                $data['areas'] = $query->orderBy('nama')->paginate(10);
+                break;
+
+            case 'user':
+                $query = User::with('area', 'pegawai');
+                if ($search) {
+                    $query->where(function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%")
+                          ->orWhere('username', 'like', "%{$search}%");
+                    });
+                }
+                if ($request->filled('role')) {
+                    $query->where('role', $request->role);
+                }
+                $data['users'] = $query->orderBy('name')->paginate(10);
+                break;
+
+            case 'hak-akses':
+                $data['permissions'] = Permission::with('rolePermissions')->orderBy('group')->get();
+                $data['roles'] = ['admin', 'spv', 'pegawai'];
+                break;
         }
-        
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
-        
-        $units = $query->orderBy('kode')->paginate(10);
-        
-        return view('admin.master-data.index', [
-            'activeTab' => 'unit',
-            'units' => $units,
-        ]);
+
+        return view('admin.master-data.index', $data);
     }
 
     public function store(Request $request)
