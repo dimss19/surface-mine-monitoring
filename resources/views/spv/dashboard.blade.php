@@ -1,87 +1,242 @@
 @extends('layouts.admin')
 
-@section('title', 'Dashboard')
+@section('title', 'Dashboard SPV')
 
 @section('content')
 <div class="mb-6">
-    <h1 class="text-2xl font-heading font-bold text-[var(--primary)]">Monitoring Dashboard</h1>
+    <h1 class="text-2xl font-bold" style="color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif;">Monitoring Dashboard</h1>
     <p class="text-slate-500">Live operational telemetry and site metrics.</p>
 </div>
 
-<div class="flex gap-3 mb-6">
-    <a href="{{ route('spv.laporan.index') }}" class="btn-secondary flex items-center gap-2">
+{{-- Info Panel --}}
+<div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+    <div class="stat-card border-l-4 border-blue-500">
+        <div>
+            <p class="text-sm text-slate-500">Total Jam Running</p>
+            <p class="text-2xl font-bold">{{ $totalHours ?? 0 }} jam</p>
+        </div>
+    </div>
+    <div class="stat-card border-l-4 border-green-500">
+        <div>
+            <p class="text-sm text-slate-500">Pencapaian</p>
+            <p class="text-2xl font-bold">{{ $pencapaian ?? 0 }}%</p>
+        </div>
+    </div>
+    <div class="stat-card border-l-4 border-amber-500">
+        <div>
+            <p class="text-sm text-slate-500">Unit Running</p>
+            <p class="text-2xl font-bold">{{ $runningUnits ?? 0 }} unit</p>
+        </div>
+    </div>
+    <div class="stat-card border-l-4 border-slate-400">
+        <div>
+            <p class="text-sm text-slate-500">Unit Standby</p>
+            <p class="text-2xl font-bold">{{ $standbyUnits ?? 0 }} unit</p>
+        </div>
+    </div>
+    <div class="stat-card border-l-4 border-red-500">
+        <div>
+            <p class="text-sm text-slate-500">Unit BD</p>
+            <p class="text-2xl font-bold">{{ $bdUnits ?? 0 }} unit</p>
+        </div>
+    </div>
+</div>
+
+{{-- Action buttons --}}
+<div class="flex gap-3 mb-6 justify-end">
+    <a href="{{ route('spv.laporan.index') }}" class="bg-white border border-slate-200 text-slate-700 font-semibold px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-slate-50 transition-colors">
         <span class="material-symbols-outlined text-lg">download</span>
         Export
     </a>
-    <button class="bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded-lg flex items-center gap-2">
+    <button class="bg-amber-500 hover:bg-amber-600 text-white font-semibold px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
         <span class="material-symbols-outlined text-lg">sync</span>
         Sync Data
     </button>
 </div>
 
-<div class="grid grid-cols-4 gap-4 mb-6">
-    <x-kpi-card title="Total Ritasi" value="{{ number_format($metrics['total_ritasi'] ?? 1284) }}" icon="local_shipping" color="blue" />
-    <x-kpi-card title="Total Unit Aktif" value="{{ $metrics['unit_aktif'] ?? '42 / 50' }}" icon="precision_manufacturing" color="orange" />
-    <x-kpi-card title="Total Jam Kerja" value="{{ $metrics['jam_kerja'] ?? '342h' }}" icon="schedule" color="green" />
-    <x-kpi-card title="Pekerjaan General" value="{{ $metrics['general_tasks'] ?? '18 Tasks' }}" icon="assignment" color="purple" />
+{{-- KPI Cards --}}
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <div class="stat-card" style="border-left: 4px solid #3b82f6;">
+        <div class="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center">
+            <span class="material-symbols-outlined text-blue-500 text-xl">local_shipping</span>
+        </div>
+        <div>
+            <p class="text-sm text-slate-500">Total Ritasi</p>
+            <p class="text-2xl font-bold" style="color: var(--text);">{{ number_format($metrics['total_ritasi'] ?? 0) }}</p>
+        </div>
+    </div>
+    <div class="stat-card" style="border-left: 4px solid #10b981;">
+        <div class="w-12 h-12 rounded-lg bg-green-50 flex items-center justify-center">
+            <span class="material-symbols-outlined text-green-500 text-xl">precision_manufacturing</span>
+        </div>
+        <div>
+            <p class="text-sm text-slate-500">Total Unit Aktif</p>
+            <p class="text-2xl font-bold" style="color: var(--text);">{{ $metrics['unit_aktif'] ?? '0 / 0' }}</p>
+        </div>
+    </div>
+    <div class="stat-card" style="border-left: 4px solid #f59e0b;">
+        <div class="w-12 h-12 rounded-lg bg-amber-50 flex items-center justify-center">
+            <span class="material-symbols-outlined text-amber-500 text-xl">schedule</span>
+        </div>
+        <div>
+            <p class="text-sm text-slate-500">Total Jam Kerja</p>
+            <p class="text-2xl font-bold" style="color: var(--text);">{{ $metrics['jam_kerja'] ?? '0h' }}</p>
+        </div>
+    </div>
+    <div class="stat-card" style="border-left: 4px solid #8b5cf6;">
+        <div class="w-12 h-12 rounded-lg bg-purple-50 flex items-center justify-center">
+            <span class="material-symbols-outlined text-purple-500 text-xl">assignment</span>
+        </div>
+        <div>
+            <p class="text-sm text-slate-500">Pekerjaan General</p>
+            <p class="text-2xl font-bold" style="color: var(--text);">{{ $metrics['general_tasks'] ?? '0 Tasks' }}</p>
+        </div>
+    </div>
+    <div class="stat-card border-l-4 border-orange-500">
+        <span class="material-symbols-outlined text-orange-500">local_gas_station</span>
+        <div>
+            <p class="text-sm text-slate-500">Total Fuel Hari Ini</p>
+            <p class="text-2xl font-bold">{{ $totalFuel ?? 0 }} Liter</p>
+        </div>
+    </div>
 </div>
 
-<div class="card p-6 mb-6">
-    <h2 class="text-lg font-heading font-bold mb-4">Daily Breakdown Activity</h2>
-    <div class="grid grid-cols-3 gap-6">
-        <div>
-            <div class="bg-slate-100 rounded-lg p-4 mb-4">
-                <span class="text-sm text-slate-500">Daily All Hauling</span>
-                <p class="text-2xl font-bold text-[var(--accent)]">4,278</p>
+{{-- Target Bar --}}
+<div class="bg-white rounded-xl border border-slate-200 p-6 mb-6">
+    <h2 class="section-title mb-4">Target Harian Material</h2>
+    <div class="space-y-4">
+        @foreach($targets ?? [] as $item)
+        <div class="flex items-center gap-4">
+            <span class="w-20 font-bold text-sm">{{ $item['material'] }}</span>
+            <div class="flex-1 bg-gray-200 rounded-full h-6 overflow-hidden">
+                <div class="h-6 rounded-full flex items-center justify-center text-xs text-white font-medium
+                    {{ $item['percentage'] >= 100 ? 'bg-green-500' : ($item['percentage'] >= 75 ? 'bg-yellow-500' : 'bg-red-500') }}"
+                    style="width: {{ min(100, $item['percentage']) }}%">
+                    {{ $item['actual'] }}/{{ $item['target'] }}
+                </div>
+            </div>
+            <span class="w-16 text-right text-sm font-bold">{{ $item['percentage'] }}%</span>
+        </div>
+        @endforeach
+    </div>
+</div>
+
+{{-- Daily Breakdown Activity --}}
+<div class="bg-white rounded-xl border border-slate-200 p-6 mb-6">
+    <h2 class="section-title mb-4">Daily Breakdown Activity</h2>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="bg-slate-50 rounded-lg p-4">
+            <div class="bg-white rounded-lg px-4 py-2 mb-4 inline-block">
+                <p class="text-sm font-semibold">Daily All Hauling</p>
+                <p class="text-2xl font-bold text-amber-500">{{ number_format($metrics['daily_hauling'] ?? 0) }}</p>
             </div>
             <canvas id="dailyChart" height="200"></canvas>
         </div>
-
         <div>
-            <h3 class="text-center font-semibold mb-4">Day Shift</h3>
-            <div class="space-y-3" id="dayShiftBars"></div>
+            <h3 class="font-bold text-center mb-4">Day Shift</h3>
+            <div class="space-y-2">
+                @php $shifts = $metrics['day_shift'] ?? []; @endphp
+                @forelse($shifts as $shift)
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs w-24 truncate">{{ $shift['unit'] ?? '-' }}</span>
+                        <div class="flex-1 h-4 bg-slate-100 rounded-full overflow-hidden">
+                            <div class="h-full bg-red-400 rounded-full" style="width: {{ $shift['percent'] ?? 0 }}%"></div>
+                        </div>
+                    </div>
+                @empty
+                    <p class="text-slate-400 text-center text-sm py-4">Belum ada data</p>
+                @endforelse
+            </div>
         </div>
-
         <div>
-            <h3 class="text-center font-semibold mb-4">Night Shift</h3>
-            <div class="space-y-3" id="nightShiftBars"></div>
+            <h3 class="font-bold text-center mb-4">Night Shift</h3>
+            <div class="space-y-2">
+                @php $shifts = $metrics['night_shift'] ?? []; @endphp
+                @forelse($shifts as $shift)
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs w-24 truncate">{{ $shift['unit'] ?? '-' }}</span>
+                        <div class="flex-1 h-4 bg-slate-100 rounded-full overflow-hidden">
+                            <div class="h-full bg-green-400 rounded-full" style="width: {{ $shift['percent'] ?? 0 }}%"></div>
+                        </div>
+                    </div>
+                @empty
+                    <p class="text-slate-400 text-center text-sm py-4">Belum ada data</p>
+                @endforelse
+            </div>
         </div>
     </div>
 </div>
 
-<div class="card p-6 mb-6">
-    <h2 class="text-lg font-heading font-bold mb-4">Grafik All Hauling (WTD)</h2>
-    <div class="grid grid-cols-2 gap-6">
-        <div>
-            <div class="bg-slate-100 rounded-lg p-4 mb-4">
-                <span class="text-sm text-slate-500">Weekly All Hauling</span>
-                <p class="text-2xl font-bold text-[var(--accent)]">8,568</p>
-            </div>
-            <canvas id="weeklyChart" height="200"></canvas>
-        </div>
-
-        <div>
-            <div class="mb-6">
-                <h3 class="font-semibold mb-4">Availability</h3>
-                <div class="grid grid-cols-4 gap-4">
-                    @foreach(['Exc' => '45.5%', 'Sany' => '33.3%', 'ADT' => '66.7%', 'Dozer' => '31.3%'] as $name => $value)
-                        <div class="text-center">
-                            <canvas id="avail-{{ $name }}" width="80" height="80"></canvas>
-                            <p class="text-xs mt-1">{{ $name }}</p>
-                            <p class="text-sm font-bold">{{ $value }}</p>
-                        </div>
-                    @endforeach
+{{-- Jam Values per Unit --}}
+<div class="bg-white rounded-xl border border-slate-200 p-6 mb-6">
+    <h2 class="section-title mb-4">Jam Kerja Unit ({{ $currentShift === 'siang' ? 'Day Shift' : 'Night Shift' }})</h2>
+    <div class="space-y-3">
+        @foreach($unitHours ?? [] as $item)
+        <div class="flex items-center gap-2">
+            <span class="w-24 text-sm font-medium">{{ $item['unit'] }}</span>
+            <div class="flex-1 flex h-8 rounded overflow-hidden">
+                <div class="bg-green-500 flex items-center justify-center text-xs text-white font-medium"
+                     style="width: {{ ($item['actual'] / $item['target']) * 100 }}%">
+                    {{ $item['actual'] }}h
                 </div>
+                @if($item['remaining'] > 0)
+                <div class="bg-red-500 flex items-center justify-center text-xs text-white font-medium"
+                     style="width: {{ ($item['remaining'] / $item['target']) * 100 }}%">
+                    {{ $item['remaining'] }}h
+                </div>
+                @endif
             </div>
+            <span class="w-12 text-right text-sm font-bold">{{ $item['target'] }}h</span>
+        </div>
+        @endforeach
+    </div>
+</div>
 
+{{-- Grafik All Hauling --}}
+<div class="bg-white rounded-xl border border-slate-200 p-6 mb-6">
+    <h2 class="section-title mb-4">Grafik All Hauling (WTD)</h2>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-slate-50 rounded-lg p-4">
+            <div class="bg-white rounded-lg px-4 py-2 mb-4 inline-block">
+                <p class="text-sm font-semibold">Weekly All Hauling</p>
+                <p class="text-2xl font-bold text-amber-500">{{ number_format($metrics['weekly_hauling'] ?? 0) }}</p>
+            </div>
+            <div class="space-y-2">
+                @php $materials = $metrics['material_breakdown'] ?? []; @endphp
+                @forelse($materials as $mat)
+                    <div class="flex items-center gap-3">
+                        <span class="text-sm w-32">{{ $mat['name'] ?? '-' }}</span>
+                        <div class="w-4 h-4 bg-slate-700 rounded"></div>
+                        <span class="text-sm font-semibold">{{ $mat['total'] ?? 0 }}</span>
+                    </div>
+                @empty
+                    <p class="text-slate-400 text-center text-sm py-4">Belum ada data</p>
+                @endforelse
+            </div>
+        </div>
+        <div class="space-y-6">
             <div>
-                <h3 class="font-semibold mb-4">UoA</h3>
+                <h3 class="font-bold mb-3">Availability</h3>
                 <div class="grid grid-cols-4 gap-4">
-                    @foreach(['Exc' => '49.1%', 'Sany' => '41.8%', 'ADT' => '74.4%', 'Dozer' => '38.2%'] as $name => $value)
+                    @php $avail = $metrics['availability'] ?? []; @endphp
+                    @foreach(['Exc', 'Sany', 'ADT', 'Dozer'] as $type)
                         <div class="text-center">
-                            <canvas id="uoa-{{ $name }}" width="80" height="80"></canvas>
-                            <p class="text-xs mt-1">{{ $name }}</p>
-                            <p class="text-sm font-bold">{{ $value }}</p>
+                            <div class="w-16 h-16 mx-auto rounded-full border-4 border-blue-200 border-t-blue-500 flex items-center justify-center" style="transform: rotate({{ $avail[$type]['deg'] ?? 0 }}deg);"></div>
+                            <p class="text-sm font-semibold mt-2">{{ $type }}</p>
+                            <p class="text-xs text-slate-500">{{ $avail[$type]['percent'] ?? '0%' }}</p>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+            <div>
+                <h3 class="font-bold mb-3">UoA</h3>
+                <div class="grid grid-cols-4 gap-4">
+                    @php $uoa = $metrics['uoa'] ?? []; @endphp
+                    @foreach(['Exc', 'Sany', 'ADT', 'Dozer'] as $type)
+                        <div class="text-center">
+                            <div class="w-16 h-16 mx-auto rounded-full border-4 border-purple-200 border-t-purple-500 flex items-center justify-center" style="transform: rotate({{ $uoa[$type]['deg'] ?? 0 }}deg);"></div>
+                            <p class="text-sm font-semibold mt-2">{{ $type }}</p>
+                            <p class="text-xs text-slate-500">{{ $uoa[$type]['percent'] ?? '0%' }}</p>
                         </div>
                     @endforeach
                 </div>
@@ -90,50 +245,52 @@
     </div>
 </div>
 
-<div class="card p-6">
-    <h2 class="text-lg font-heading font-bold mb-4">Monthly - MTD Report</h2>
-    <div class="bg-slate-100 rounded-lg p-4 mb-4">
-        <span class="text-sm text-slate-500">All Materials Hauling</span>
-        <p class="text-2xl font-bold text-[var(--accent)]">75,709</p>
+{{-- Monthly MTD Report --}}
+<div class="bg-white rounded-xl border border-slate-200 p-6">
+    <h2 class="section-title mb-4">Monthly - MTD Report</h2>
+    <div class="bg-slate-50 rounded-lg p-4">
+        <div class="bg-white rounded-lg px-4 py-2 mb-4 inline-block">
+            <p class="text-sm font-semibold">All Materials Hauling</p>
+            <p class="text-2xl font-bold text-amber-500">{{ number_format($metrics['monthly_hauling'] ?? 0) }}</p>
+        </div>
+        <canvas id="monthlyChart" height="150"></canvas>
     </div>
-    <canvas id="monthlyChart" height="150"></canvas>
+    <div class="flex items-center justify-center gap-6 mt-4">
+        <div class="flex items-center gap-2"><div class="w-4 h-4 bg-blue-600 rounded"></div><span class="text-sm">Ore</span></div>
+        <div class="flex items-center gap-2"><div class="w-4 h-4 bg-blue-200 rounded"></div><span class="text-sm">Others</span></div>
+        <div class="flex items-center gap-2"><div class="w-4 h-1 bg-blue-500 rounded"></div><span class="text-sm">Cumulative</span></div>
+    </div>
 </div>
-@endsection
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    new Chart(document.getElementById('dailyChart'), {
-        type: 'bar',
-        data: {
-            labels: ['Tuff Paste', 'KCN', 'CakeDST', 'Tuff Off', 'Batu Pica', 'Mining Tuff', 'Pasir Hitam', 'Mud', 'Lumpur', 'Waste'],
-            datasets: [{
-                data: [1227, 700, 260, 175, 120, 90, 40, 26, 0, 0],
-                backgroundColor: '#0f172a',
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: { legend: { display: false } },
-            scales: { y: { beginAtZero: true } }
-        }
-    });
-
-    new Chart(document.getElementById('monthlyChart'), {
-        type: 'bar',
-        data: {
-            labels: ['1-May', '4-May', '7-May', '10-May', '13-May', '16-May', '19-May', '22-May', '25-May', '28-May', '31-May'],
-            datasets: [
-                { type: 'bar', label: 'Ore', data: [40, 35, 45, 50, 42, 48, 55, 52, 58, 54, 60], backgroundColor: '#0f172a' },
-                { type: 'bar', label: 'Others', data: [30, 28, 32, 35, 30, 34, 38, 36, 40, 38, 42], backgroundColor: '#93c5fd' },
-                { type: 'line', label: 'Cumulative', data: [70, 63, 77, 85, 72, 82, 93, 88, 98, 92, 102], borderColor: '#f59e0b', fill: false }
-            ]
-        },
-        options: {
-            responsive: true,
-            scales: { y: { beginAtZero: true } }
-        }
-    });
-});
+    const dailyCtx = document.getElementById('dailyChart');
+    if (dailyCtx) {
+        new Chart(dailyCtx, {
+            type: 'bar',
+            data: {
+                labels: {!! json_encode($metrics['daily_labels'] ?? ['Tuff', 'Paste', 'KCN', 'Cake', 'Ore', 'Batu', 'Mining', 'Pasir', 'Mud', 'Waste']) !!},
+                datasets: [{ data: {!! json_encode($metrics['daily_data'] ?? [1227, 700, 260, 175, 120, 90, 40, 26, 0, 0]) !!}, backgroundColor: '#1e3a5f', borderRadius: 4 }]
+            },
+            options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true }, x: { ticks: { font: { size: 10 } } } } }
+        });
+    }
+    const monthlyCtx = document.getElementById('monthlyChart');
+    if (monthlyCtx) {
+        new Chart(monthlyCtx, {
+            type: 'bar',
+            data: {
+                labels: {!! json_encode($metrics['monthly_labels'] ?? []) !!},
+                datasets: [
+                    { type: 'bar', label: 'Ore', data: {!! json_encode($metrics['monthly_ore'] ?? []) !!}, backgroundColor: '#1e3a5f', borderRadius: 4 },
+                    { type: 'bar', label: 'Others', data: {!! json_encode($metrics['monthly_others'] ?? []) !!}, backgroundColor: '#93c5fd', borderRadius: 4 },
+                    { type: 'line', label: 'Cumulative', data: {!! json_encode($metrics['monthly_cumulative'] ?? []) !!}, borderColor: '#3b82f6', borderWidth: 2, fill: false, tension: 0.3 }
+                ]
+            },
+            options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, stacked: true }, x: { stacked: true } } }
+        });
+    }
 </script>
 @endpush
+@endsection
