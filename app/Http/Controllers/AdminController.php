@@ -84,6 +84,7 @@ class AdminController extends Controller
             'metrics',
             'targets',
             'unitHours',
+            'currentShift',
             'runningUnits',
             'standbyUnits',
             'bdUnits',
