@@ -1,40 +1,33 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LandingController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SpvController;
 use App\Http\Controllers\AdminUnitController;
 use App\Http\Controllers\AdminMaterialController;
 use App\Http\Controllers\AdminAreaController;
 use App\Http\Controllers\AdminPermissionController;
+use App\Http\Controllers\AdminLaporanController;
+use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\PegawaiRitasiController;
 use App\Http\Controllers\PegawaiNonRitasiController;
 use App\Http\Controllers\PegawaiGeneralController;
 use App\Http\Controllers\SpvLaporanController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\AdminLaporanController;
+use Illuminate\Support\Facades\Route;
 
 // Public
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 
-// Auth
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::get('/csrf-token', fn () => response()->json(['token' => csrf_token()]));
+// Legacy redirects
+Route::get('/absensi', fn () => redirect()->route('pegawai.ritasi.create'));
+Route::get('/rekapan', fn () => redirect()->route('pegawai.ritasi.create'));
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware('auth')->group(function () {
     // Profile
-    Route::prefix('profil')->name('profile.')->group(function () {
-        Route::get('/', [ProfileController::class, 'show'])->name('show');
-        Route::put('/', [ProfileController::class, 'update'])->name('update');
-        Route::put('/password', [ProfileController::class, 'updatePassword'])->name('password');
-        Route::post('/photo', [ProfileController::class, 'updatePhoto'])->name('photo');
-        Route::delete('/photo', [ProfileController::class, 'removePhoto'])->name('photo.remove');
-    });
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Pegawai (Operator)
     Route::middleware('role:pegawai')->prefix('pegawai')->name('pegawai.')->group(function () {
@@ -53,11 +46,6 @@ Route::middleware(['auth'])->group(function () {
         // General
         Route::get('general/create', [PegawaiGeneralController::class, 'create'])->name('general.create');
         Route::post('general', [PegawaiGeneralController::class, 'store'])->name('general.store');
-        
-        // Legacy
-        Route::get('rekapan/create', [PegawaiController::class, 'createRekapan'])->name('rekapan.create');
-        Route::post('rekapan', [PegawaiController::class, 'storeRekapan'])->name('rekapan.store');
-        Route::get('riwayat', [PegawaiController::class, 'riwayat'])->name('riwayat');
     });
 
     // SPV
@@ -72,6 +60,9 @@ Route::middleware(['auth'])->group(function () {
             Route::get('bulanan', [SpvLaporanController::class, 'bulanan'])->name('bulanan');
             Route::post('export/{type}', [SpvLaporanController::class, 'export'])->name('export');
         });
+        
+        // Utilization
+        Route::get('utilization', [\App\Http\Controllers\SpvUtilizationController::class, 'index'])->name('utilization.index');
     });
 
     // Admin
@@ -102,9 +93,10 @@ Route::middleware(['auth'])->group(function () {
         
         // Export
         Route::get('export', [AdminController::class, 'export'])->name('export');
+        
+        // Utilization
+        Route::get('utilization', [\App\Http\Controllers\AdminUtilizationController::class, 'index'])->name('utilization.index');
     });
 });
 
-// Legacy redirects
-Route::get('/absensi', fn () => redirect()->route('pegawai.ritasi.create'));
-Route::get('/rekapan', fn () => redirect()->route('pegawai.ritasi.create'));
+require __DIR__.'/auth.php';
