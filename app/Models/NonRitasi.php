@@ -9,7 +9,23 @@ class NonRitasi extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'pegawai_id',
+        'unit_id',
+        'area_id',
+        'shift',
+        'tanggal',
+        'hm_awal',
+        'hm_akhir',
+        'hm_total',
+        'jam_mulai',
+        'jam_selesai',
+        'is_overtime',
+        'lokasi_pekerjaan',
+        'deskripsi_pekerjaan',
+        'status',
+        'fuel_consumption',
+    ];
 
     protected $casts = [
         'tanggal' => 'date',
