@@ -17,6 +17,7 @@
                 'unit' => 'Unit',
                 'material' => 'Material',
                 'hak-akses' => 'Hak Akses',
+                'target' => 'Target Harian',
             ];
         @endphp
         @foreach($tabs as $key => $label)
@@ -40,5 +41,7 @@
     @include('admin.master-data.partials.material-table')
 @elseif($activeTab === 'hak-akses')
     @include('admin.master-data.partials.hak-akses')
+@elseif($activeTab === 'target')
+    @include('admin.master-data.partials.target-table')
 @endif
 @endsection

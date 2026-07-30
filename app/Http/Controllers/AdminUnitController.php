@@ -76,6 +76,18 @@ class AdminUnitController extends Controller
                 $data['permissions'] = Permission::with('rolePermissions')->orderBy('group')->get();
                 $data['roles'] = ['admin', 'spv', 'pegawai'];
                 break;
+
+            case 'target':
+                $query = \App\Models\DailyTarget::with('material');
+                if ($search) {
+                    $query->whereHas('material', function ($q) use ($search) {
+                        $q->where('nama', 'like', "%{$search}%")
+                          ->orWhere('kode', 'like', "%{$search}%");
+                    });
+                }
+                $data['targets'] = $query->orderBy('tanggal', 'desc')->paginate(10);
+                $data['materials'] = Material::orderBy('nama')->get();
+                break;
         }
 
         return view('admin.master-data.index', $data);

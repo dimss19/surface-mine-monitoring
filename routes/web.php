@@ -9,6 +9,7 @@ use App\Http\Controllers\AdminMaterialController;
 use App\Http\Controllers\AdminAreaController;
 use App\Http\Controllers\AdminPermissionController;
 use App\Http\Controllers\AdminLaporanController;
+use App\Http\Controllers\AdminTargetController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\PegawaiRitasiController;
 use App\Http\Controllers\PegawaiNonRitasiController;
@@ -82,6 +83,10 @@ Route::middleware('auth')->group(function () {
         Route::post('area', [AdminAreaController::class, 'store'])->name('area.store');
         Route::put('area/{area}', [AdminAreaController::class, 'update'])->name('area.update');
         Route::delete('area/{area}', [AdminAreaController::class, 'destroy'])->name('area.destroy');
+        
+        // Target Harian
+        Route::post('target', [AdminTargetController::class, 'store'])->name('target.store');
+        Route::delete('target/{target}', [AdminTargetController::class, 'destroy'])->name('target.destroy');
         
         // Hak Akses
         Route::get('hak-akses', [AdminPermissionController::class, 'index'])->name('hak-akses.index');
