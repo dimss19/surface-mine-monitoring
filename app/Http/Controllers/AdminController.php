@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PemantauanLapangan;
 use App\Models\User;
+use App\Models\Unit;
+use App\Models\Material;
 use App\Models\Area;
-use App\Models\Alat;
+use App\Models\Ritasi;
+use App\Models\NonRitasi;
+use App\Models\DailyTarget;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -13,81 +16,85 @@ class AdminController extends Controller
     public function dashboard(Request $request)
     {
         $metrics = [
-            'total_spv' => User::where('role', 'spv')->count(),
-            'total_area' => Area::count(),
-            'laporan_hari_ini' => PemantauanLapangan::whereDate('tanggal', today())->count(),
+            'total_ritasi' => Ritasi::count(),
+            'unit_aktif' => Unit::where('status', 'active')->count() . ' / ' . Unit::count(),
+            'jam_kerja' => Ritasi::sum('hm_total') . 'h',
+            'general_tasks' => NonRitasi::count() . ' Tasks',
         ];
-        
-        $query = PemantauanLapangan::with(['spv', 'area', 'alat'])->orderBy('created_at', 'desc');
-        
-        if ($request->filled('tanggal')) {
-            $query->whereDate('tanggal', $request->tanggal);
-        }
-        if ($request->filled('spv_id')) {
-            $query->where('spv_id', $request->spv_id);
-        }
-        
-        $pemantauans = $query->paginate(10);
-        $spvs = User::where('role', 'spv')->pluck('name', 'id')->toArray();
-        
-        $spvList = User::where('role', 'spv')
-            ->withCount('areas')
-            ->with(['pemantauanLapangans' => function($q) {
-                $q->latest()->limit(1);
-            }])
-            ->get();
 
-        return view('admin.dashboard', compact('metrics', 'pemantauans', 'spvs', 'spvList'));
-    }
-
-    public function index(Request $request)
-    {
-        $metrics = [
-            'total_spv' => User::where('role', 'spv')->count(),
-            'total_area' => Area::count(),
-            'laporan_hari_ini' => PemantauanLapangan::whereDate('tanggal', today())->count(),
-        ];
-        
-        $query = PemantauanLapangan::with(['spv', 'area', 'alat'])->orderBy('created_at', 'desc');
-        
-        if ($request->filled('tanggal')) {
-            $query->whereDate('tanggal', $request->tanggal);
+        // Target Bar data
+        $materials = Material::whereIn('nama', ['Ore', 'Tuff', 'Cake'])->get();
+        $targets = [];
+        foreach ($materials as $material) {
+            $actual = Ritasi::where('material_id', $material->id)
+                ->where('tanggal', today())
+                ->sum('jumlah_ritasi');
+            $target = DailyTarget::where('material_id', $material->id)
+                ->where('tanggal', today())
+                ->first();
+            $targets[] = [
+                'material' => $material->nama,
+                'actual' => $actual,
+                'target' => $target->target_ritasi ?? 0,
+                'percentage' => $target && $target->target_ritasi > 0 
+                    ? round($actual / $target->target_ritasi * 100) 
+                    : 0,
+            ];
         }
-        if ($request->filled('spv_id')) {
-            $query->where('spv_id', $request->spv_id);
-        }
-        
-        $pemantauans = $query->paginate(10);
-        $spvs = User::where('role', 'spv')->pluck('name', 'id')->toArray();
-        
-        $spvList = User::where('role', 'spv')
-            ->withCount('areas')
-            ->with(['pemantauanLapangans' => function($q) {
-                $q->latest()->limit(1);
-            }])
-            ->get();
 
-        return view('admin.dashboard', compact('metrics', 'pemantauans', 'spvs', 'spvList'));
+        // Jam Values data (Daily Breakdown)
+        $currentShift = now()->hour >= 6 && now()->hour < 18 ? 'siang' : 'malam';
+        $units = Unit::where('is_active', true)->get();
+        $unitHours = [];
+        foreach ($units as $unit) {
+            $ritasi = Ritasi::where('unit_id', $unit->id)
+                ->where('tanggal', today())
+                ->where('shift', $currentShift)
+                ->first();
+            $actual = $ritasi ? $ritasi->hm_total : 0;
+            $target = 8;
+            $unitHours[] = [
+                'unit' => $unit->kode,
+                'actual' => $actual,
+                'remaining' => max(0, $target - $actual),
+                'target' => $target,
+            ];
+        }
+
+        // Info Panel data
+        $runningUnits = Ritasi::where('tanggal', today())
+            ->distinct('unit_id')
+            ->count('unit_id');
+
+        $bdUnits = Unit::where('status', 'breakdown')->count();
+
+        $standbyUnits = Unit::where('is_active', true)
+            ->where('status', '!=', 'breakdown')
+            ->count() - $runningUnits;
+
+        $totalHours = Ritasi::where('tanggal', today())->sum('hm_total');
+        $targetHours = $runningUnits * 8;
+        $pencapaian = $targetHours > 0 ? round($totalHours / $targetHours * 100) : 0;
+
+        // Fuel Consumption data
+        $totalFuel = Ritasi::where('tanggal', today())->sum('fuel_consumption');
+        $totalFuel += NonRitasi::where('tanggal', today())->sum('fuel_consumption');
+
+        return view('admin.dashboard', compact(
+            'metrics',
+            'targets',
+            'unitHours',
+            'runningUnits',
+            'standbyUnits',
+            'bdUnits',
+            'totalHours',
+            'pencapaian',
+            'totalFuel'
+        ));
     }
 
     public function export(Request $request)
     {
-        $query = PemantauanLapangan::with(['spv', 'area', 'alat', 'media'])->orderBy('tanggal', 'asc');
-        
-        if ($request->filled('tanggal')) {
-            $query->whereDate('tanggal', $request->tanggal);
-        }
-        if ($request->filled('spv_id')) {
-            $query->where('spv_id', $request->spv_id);
-        }
-        
-        $pemantauans = $query->get();
-
-        $filename = "Laporan_Pemantauan_" . date('Y-m-d_His') . ".xls";
-        $sanitized = str_replace(['"', "\r", "\n"], '', $filename);
-        
-        return response()->view('admin.export.excel', compact('pemantauans'))
-            ->header('Content-Type', 'application/vnd.ms-excel')
-            ->header('Content-Disposition', 'attachment; filename="' . $sanitized . '"');
+        return view('admin.laporan.index');
     }
 }
