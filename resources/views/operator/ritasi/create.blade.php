@@ -1,4 +1,3 @@
-{{-- resources/views/operator/ritasi/create.blade.php --}}
 @extends('layouts.operator')
 
 @section('title', 'Form Input Unit Ritasi')
@@ -21,15 +20,15 @@
     
     <div class="card p-6">
         {{-- Data Dasar --}}
-        <h2 class="text-lg font-heading font-bold text-[var(--primary)] mb-4 flex items-center gap-2">
-            <span class="material-symbols-outlined">description</span>
+        <h2 class="section-title mb-4 flex items-center gap-2 pb-3 border-b">
+            <span class="material-symbols-outlined text-blue-500">description</span>
             Data Dasar
         </h2>
-        <div class="grid grid-cols-2 gap-4 mb-6">
+        <div class="grid grid-cols-2 gap-6 mb-8">
             <div>
                 <label class="form-label">Shift</label>
                 <select name="shift" class="form-input" required>
-                    <option value="">Pilih Shift</option>
+                    <option value="">Contoh: Siang</option>
                     <option value="siang">Siang</option>
                     <option value="malam">Malam</option>
                 </select>
@@ -45,7 +44,7 @@
             <div>
                 <label class="form-label">Nomor Unit (Dump Truck)</label>
                 <select name="unit_id" class="form-input" required>
-                    <option value="">Pilih Unit</option>
+                    <option value="">Contoh: DT-1042</option>
                     @foreach($units as $id => $kode)
                         <option value="{{ $id }}">{{ $kode }}</option>
                     @endforeach
@@ -54,11 +53,11 @@
         </div>
         
         {{-- Hour Meter --}}
-        <h2 class="text-lg font-heading font-bold text-[var(--primary)] mb-4 flex items-center gap-2">
-            <span class="material-symbols-outlined">timer</span>
+        <h2 class="section-title mb-4 flex items-center gap-2 pb-3 border-b">
+            <span class="material-symbols-outlined text-blue-500">timer</span>
             Hour Meter (HM)
         </h2>
-        <div class="grid grid-cols-3 gap-4 mb-6">
+        <div class="grid grid-cols-3 gap-6 mb-8">
             <div>
                 <label class="form-label">HM Awal</label>
                 <input type="number" name="hm_awal" class="form-input" step="0.1" min="0" value="0.0" required id="hmAwal">
@@ -69,20 +68,38 @@
             </div>
             <div class="bg-slate-100 rounded-lg p-4 flex items-center justify-between">
                 <span class="text-sm font-medium">Total Durasi HM:</span>
-                <span class="text-xl font-bold text-[var(--primary)]" id="hmTotal">0.0 Jam</span>
+                <span class="text-xl font-bold" style="color: var(--text);" id="hmTotal">0.0 Jam</span>
+            </div>
+        </div>
+        
+        {{-- Fuel Consumption --}}
+        <h2 class="section-title mb-4 flex items-center gap-2 pb-3 border-b">
+            <span class="material-symbols-outlined text-blue-500">local_gas_station</span>
+            Konsumsi Fuel
+        </h2>
+        <div class="grid grid-cols-2 gap-6 mb-8">
+            <div>
+                <label class="form-label">Konsumsi Fuel (Liter)</label>
+                <input type="number" 
+                       name="fuel_consumption" 
+                       step="0.01" 
+                       min="0"
+                       class="form-input" 
+                       placeholder="0.00"
+                       value="{{ old('fuel_consumption') }}">
             </div>
         </div>
         
         {{-- Detail Pekerjaan --}}
-        <h2 class="text-lg font-heading font-bold text-[var(--primary)] mb-4 flex items-center gap-2">
-            <span class="material-symbols-outlined">work</span>
+        <h2 class="section-title mb-4 flex items-center gap-2 pb-3 border-b">
+            <span class="material-symbols-outlined text-blue-500">work</span>
             Detail Pekerjaan
         </h2>
-        <div class="grid grid-cols-2 gap-4 mb-6">
+        <div class="grid grid-cols-2 gap-6 mb-6">
             <div>
                 <label class="form-label">Jenis Material</label>
                 <select name="material_id" class="form-input" required>
-                    <option value="">Pilih Material</option>
+                    <option value="">Overburden (OB)</option>
                     @foreach($materials as $id => $nama)
                         <option value="{{ $id }}">{{ $nama }}</option>
                     @endforeach
