@@ -1,4 +1,3 @@
-{{-- resources/views/operator/general/create.blade.php --}}
 @extends('layouts.operator')
 
 @section('title', 'Form Pekerjaan General')
@@ -21,15 +20,15 @@
     
     <div class="card p-6">
         {{-- Data Dasar --}}
-        <h2 class="text-lg font-heading font-bold text-[var(--primary)] mb-4 flex items-center gap-2">
-            <span class="material-symbols-outlined">description</span>
+        <h2 class="section-title mb-4 flex items-center gap-2 pb-3 border-b">
+            <span class="material-symbols-outlined text-blue-500">description</span>
             Data Dasar
         </h2>
-        <div class="grid grid-cols-2 gap-4 mb-6">
+        <div class="grid grid-cols-2 gap-6 mb-8">
             <div>
                 <label class="form-label">Shift</label>
                 <select name="shift" class="form-input" required>
-                    <option value="">Pilih Shift</option>
+                    <option value="">Contoh: Siang</option>
                     <option value="siang">Siang</option>
                     <option value="malam">Malam</option>
                 </select>
@@ -45,7 +44,7 @@
             <div>
                 <label class="form-label">Nomor Unit (Dump Truck)</label>
                 <select name="unit_id" class="form-input" required>
-                    <option value="">Pilih Unit</option>
+                    <option value="">Contoh: DT-1042</option>
                     @foreach($units as $id => $kode)
                         <option value="{{ $id }}">{{ $kode }}</option>
                     @endforeach
@@ -62,11 +61,11 @@
         </div>
         
         {{-- Jam Kerja --}}
-        <h2 class="text-lg font-heading font-bold text-[var(--primary)] mb-4 flex items-center gap-2">
-            <span class="material-symbols-outlined">schedule</span>
+        <h2 class="section-title mb-4 flex items-center gap-2 pb-3 border-b">
+            <span class="material-symbols-outlined text-blue-500">schedule</span>
             Jam Kerja
         </h2>
-        <div class="grid grid-cols-2 gap-4 mb-6">
+        <div class="grid grid-cols-2 gap-6 mb-8">
             <div>
                 <label class="form-label">Jam Mulai <span class="text-red-500">*</span></label>
                 <input type="time" name="jam_mulai" class="form-input" required>
@@ -79,8 +78,8 @@
                 <div class="flex items-center gap-3 p-4 bg-slate-50 rounded-lg">
                     <span class="material-symbols-outlined text-slate-600">timer</span>
                     <div class="flex-1">
-                        <p class="font-medium text-[var(--primary)]">Status Overtime</p>
-                        <p class="text-sm text-[var(--text-muted)]">Aktifkan jika pekerjaan melewati batas jam reguler</p>
+                        <p class="font-medium" style="color: var(--text);">Status Overtime</p>
+                        <p class="text-sm text-slate-500">Aktifkan jika pekerjaan melewati batas jam reguler</p>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" name="is_overtime" value="1" class="sr-only peer">
@@ -91,11 +90,11 @@
         </div>
         
         {{-- Detail Pekerjaan --}}
-        <h2 class="text-lg font-heading font-bold text-[var(--primary)] mb-4 flex items-center gap-2">
-            <span class="material-symbols-outlined">work</span>
+        <h2 class="section-title mb-4 flex items-center gap-2 pb-3 border-b">
+            <span class="material-symbols-outlined text-blue-500">work</span>
             Detail Pekerjaan
         </h2>
-        <div class="grid grid-cols-2 gap-4 mb-6">
+        <div class="grid grid-cols-2 gap-6 mb-6">
             <div>
                 <label class="form-label">Lokasi Pekerjaan (Pit / Disposal)</label>
                 <input type="text" name="lokasi_pekerjaan" class="form-input" placeholder="Contoh: Pit 1 North">

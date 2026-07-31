@@ -14,6 +14,10 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'role' => \App\Http\Middleware\RoleMiddleware::class,
+            'no-cache' => \App\Http\Middleware\PreventBackButton::class,
+        ]);
+        $middleware->web(append: [
+            \App\Http\Middleware\PreventBackButton::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

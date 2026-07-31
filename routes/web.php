@@ -64,6 +64,7 @@ Route::middleware('auth')->group(function () {
         
         // Utilization
         Route::get('utilization', [\App\Http\Controllers\SpvUtilizationController::class, 'index'])->name('utilization.index');
+        Route::put('utilization/{unit}', [\App\Http\Controllers\SpvUtilizationController::class, 'update'])->name('utilization.update');
     });
 
     // Admin
@@ -101,6 +102,7 @@ Route::middleware('auth')->group(function () {
         
         // Utilization
         Route::get('utilization', [\App\Http\Controllers\AdminUtilizationController::class, 'index'])->name('utilization.index');
+        Route::put('utilization/{unit}', [\App\Http\Controllers\AdminUtilizationController::class, 'update'])->name('utilization.update');
     });
 });
 

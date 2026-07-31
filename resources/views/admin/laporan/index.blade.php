@@ -99,7 +99,6 @@
                     <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600">HM AKHIR</th>
                     <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600">TOTAL / RIT</th>
                     <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600">LOKASI</th>
-                    <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600">STATUS</th>
                     <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600">ACTION</th>
                 </tr>
             </thead>
@@ -132,9 +131,6 @@
                             @endif
                         </td>
                         <td class="px-4 py-3 text-sm">{{ $item->area->nama ?? '-' }}</td>
-                        <td class="px-4 py-3">
-                            <span class="badge {{ $item->status_badge }}">{{ ucfirst(str_replace('_', ' ', $item->status)) }}</span>
-                        </td>
                         <td class="px-4 py-3">
                             <button class="text-blue-600 hover:text-blue-700">
                                 <span class="material-symbols-outlined text-lg">visibility</span>

@@ -40,11 +40,6 @@ class Unit extends Model
         return $this->hasMany(NonRitasi::class);
     }
 
-    public function fuelLogs()
-    {
-        return $this->hasMany(UnitFuelLog::class);
-    }
-
     public function getStatusBadgeAttribute()
     {
         return match($this->status) {

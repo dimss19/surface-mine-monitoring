@@ -25,3 +25,10 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# AI/Dev tools
+AGENTS.md
+.opencode/
+.superpowers/
+openspec/
+docs/superpowers/

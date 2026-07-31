@@ -3,7 +3,7 @@
     "short_name": "Surface Mine",
     "start_url": "/login",
     "background_color": "#ffffff",
-    "theme_color": "#e2231a",
+    "theme_color": "#0f1d36",
     "display": "standalone",
     "orientation": "portrait",
     "icons": [

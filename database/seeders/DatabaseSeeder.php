@@ -17,7 +17,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             AreaSeeder::class,
-            AlatSeeder::class,
             PegawaiSeeder::class,
             UserSeeder::class,
             MaterialSeeder::class,
@@ -26,6 +25,8 @@ class DatabaseSeeder extends Seeder
             RolePermissionSeeder::class,
             RitasiSeeder::class,
             NonRitasiSeeder::class,
+            DailyTargetSeeder::class,
+            DashboardSeeder::class,
         ]);
     }
 }

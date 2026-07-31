@@ -19,12 +19,38 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
 
-        $field = filter_var($request->login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        $attempted = false;
+        $user = null;
 
-        if (Auth::attempt([$field => $request->login, 'password' => $request->password])) {
+        if (filter_var($request->login, FILTER_VALIDATE_EMAIL)) {
+            $user = \App\Models\User::where('email', $request->login)->first();
+            if ($user && \Illuminate\Support\Facades\Hash::check($request->password, $user->password)) {
+                $attempted = true;
+            }
+        }
+
+        if (!$attempted) {
+            $user = \App\Models\User::where('username', $request->login)->first();
+            if ($user && \Illuminate\Support\Facades\Hash::check($request->password, $user->password)) {
+                $attempted = true;
+            }
+        }
+
+        if (!$attempted) {
+            $pegawai = \App\Models\Pegawai::where('nama', $request->login)->first();
+            if ($pegawai) {
+                $user = \App\Models\User::where('pegawai_id', $pegawai->id)->first();
+                if ($user && \Illuminate\Support\Facades\Hash::check($request->password, $user->password)) {
+                    $attempted = true;
+                }
+            }
+        }
+
+        if ($attempted && $user) {
+            Auth::login($user);
             $request->session()->regenerate();
 
-            return match (Auth::user()->role) {
+            return match ($user->role) {
                 'admin'   => redirect()->intended('/admin/dashboard'),
                 'spv'     => redirect()->intended('/spv/dashboard'),
                 'pegawai' => redirect()->intended('/pegawai'),
@@ -33,7 +59,7 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'login' => 'Username/Email atau password salah.',
+            'login' => 'Kredensial yang dimasukkan salah.',
         ])->onlyInput('login');
     }
 

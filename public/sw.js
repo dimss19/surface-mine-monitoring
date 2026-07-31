@@ -1,5 +1,5 @@
-const CACHE_NAME = 'surface-mine-v2';
-const APP_SHELL = ['/', '/login', '/pegawai', '/pegawai/absensi', '/offline.html', '/manifest.json'];
+const CACHE_NAME = 'surface-mine-v3';
+const APP_SHELL = ['/', '/login', '/admin/dashboard', '/spv/dashboard', '/pegawai', '/offline.html', '/manifest.json'];
 
 self.addEventListener('install', event => {
     event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL)));

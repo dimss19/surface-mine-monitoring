@@ -2,295 +2,353 @@
 
 @section('title', 'Dashboard SPV')
 
+@push('styles')
+<style>
+:root{
+  --navy:#0b1440;
+  --navy-2:#141d54;
+  --blue:#2f5bd7;
+  --blue-light:#dbe4fb;
+  --grey:#c7cdd9;
+  --grey-light:#eef0f4;
+  --red:#e5484d;
+  --green:#2fae66;
+  --white-slot:#f3f4f7;
+  --ore:#e07b1c;
+  --ink:#141a2e;
+  --sub:#6b7280;
+  --card:#ffffff;
+  --bg:#f4f5f8;
+  --radius:14px;
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:'Segoe UI',Inter,Arial,sans-serif;background:var(--bg);color:var(--ink);}
+.card{background:var(--card);border-radius:var(--radius);padding:22px 24px;margin-bottom:22px;box-shadow:0 1px 3px rgba(20,26,46,.06);}
+.card h3{margin:0 0 16px;font-size:19px;}
+.card-head{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px;margin-bottom:6px;}
+
+.stat-strip{display:flex;gap:10px;flex-wrap:wrap;}
+.stat-chip{background:var(--grey-light);border-radius:10px;padding:8px 14px;min-width:112px;text-align:center;}
+.stat-chip b{display:block;font-size:18px;color:var(--navy);}
+.stat-chip span{font-size:11px;color:var(--sub);}
+.stat-chip.hours b{color:var(--blue);}
+.stat-chip.bd b{color:var(--red);}
+.stat-chip.achv b{color:var(--green);}
+.stat-chip.standby b{color:#9aa0b0;}
+
+.breakdown-grid{display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:18px;margin-top:10px;}
+@media(max-width:1100px){.breakdown-grid{grid-template-columns:1fr;}}
+
+.target-chart{display:flex;align-items:flex-end;gap:14px;height:230px;padding-top:10px;border-bottom:1px solid #e6e8ef;position:relative;}
+.bar-col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;flex:1;height:100%;position:relative;}
+.bar-stack{width:60%;max-width:38px;display:flex;flex-direction:column;justify-content:flex-end;height:100%;position:relative;border-radius:6px 6px 0 0;overflow:visible;}
+.bar-grey{background:var(--grey);width:100%;border-radius:6px 6px 0 0;}
+.bar-fill{width:100%;border-radius:0 0 0 0;}
+.bar-fill.blue{background:var(--blue);}
+.bar-fill.ore{background:var(--ore);}
+.bar-fill.hit{border-radius:6px 6px 0 0;}
+.target-line{position:absolute;left:-6px;right:-6px;border-top:2px dashed #8a8f9e;}
+.bar-value{font-size:11.5px;font-weight:700;color:var(--ink);margin-bottom:4px;}
+.bar-target{font-size:9.5px;color:var(--sub);margin-bottom:2px;}
+.bar-label{margin-top:8px;font-size:10.5px;text-align:center;color:var(--sub);line-height:1.2;max-width:70px;}
+.bar-label.main{color:var(--ink);font-weight:700;}
+.legend-row{display:flex;gap:16px;margin-top:14px;font-size:11.5px;color:var(--sub);flex-wrap:wrap;}
+.legend-row span{display:inline-flex;align-items:center;gap:6px;}
+.sw{width:10px;height:10px;border-radius:3px;display:inline-block;}
+
+.shift-title{font-weight:700;font-size:14px;margin-bottom:10px;}
+.shift-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.shift-row .eq-name{width:104px;font-size:11.5px;flex-shrink:0;color:var(--ink);}
+.shift-track{flex:1;height:22px;border-radius:6px;overflow:hidden;display:flex;background:var(--white-slot);border:1px solid #e4e6ec;}
+.seg{height:100%;display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700;color:#fff;}
+.seg.running{background:var(--green);}
+.seg.breakdown{background:var(--red);}
+.seg.standby{background:var(--white-slot);color:#9aa0b0;}
+.axis-row{display:flex;justify-content:space-between;font-size:10px;color:var(--sub);margin:6px 0 4px 112px;}
+
+.hauling-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:20px;}
+@media(max-width:1000px){.hauling-grid{grid-template-columns:1fr;}}
+.weekly-total{background:var(--grey-light);border-radius:10px;padding:10px 16px;display:inline-block;margin-bottom:14px;}
+.weekly-total b{font-size:20px;color:var(--navy);margin-left:8px;}
+.hbar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.hbar-row .name{width:110px;font-size:12px;color:var(--ink);text-align:right;flex-shrink:0;}
+.hbar-track{flex:1;background:var(--grey-light);border-radius:6px;height:16px;position:relative;}
+.hbar-fill{background:var(--blue);height:100%;border-radius:6px;}
+.hbar-val{font-size:11.5px;font-weight:700;width:56px;color:var(--ink);}
+
+.donut-block{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.donut{display:flex;flex-direction:column;align-items:center;font-size:11.5px;color:var(--ink);}
+.donut svg{margin-bottom:4px;}
+.donut b{font-size:12.5px;}
+.donut-title{grid-column:1/-1;font-weight:700;font-size:13px;margin-bottom:4px;}
+.sub-card{background:var(--grey-light);border-radius:10px;padding:14px;margin-bottom:14px;}
+
+.period-switch{display:inline-flex;background:#e7e9f0;border-radius:10px;padding:4px;}
+.period-switch button{border:none;background:transparent;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;color:#5b6172;cursor:pointer;}
+.period-switch button.active{background:var(--navy);color:#fff;}
+.actions-right{display:flex;gap:10px;}
+.btn{padding:9px 16px;border-radius:9px;font-size:13px;font-weight:600;border:1px solid #d7dae2;background:#fff;cursor:pointer;}
+.btn.sync{background:#f2a541;border-color:#f2a541;color:#1a1330;}
+
+.header-actions{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:12px;}
+</style>
+@endpush
+
 @section('content')
-<div class="mb-6">
-    <h1 class="text-2xl font-bold" style="color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif;">Monitoring Dashboard</h1>
-    <p class="text-slate-500">Live operational telemetry and site metrics.</p>
-</div>
+<div x-data="dashboardApp()" class="space-y-4">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div>
+            <h1 class="text-2xl font-bold" style="color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif;">Dashboard Pemantauan</h1>
+            <p class="text-slate-500">CIVILS MINING SURFACE SUPPORT</p>
+        </div>
+        <div class="inline-flex rounded-xl border border-slate-200 bg-white p-1 shadow-sm w-fit">
+            <button type="button" @click="setPeriod('daily')" :class="period === 'daily' ? 'text-white' : 'text-slate-600 hover:bg-slate-50'" :style="period === 'daily' ? 'background: var(--navy);' : ''" class="px-4 py-2 rounded-lg text-sm font-semibold transition-colors">Harian</button>
+            <button type="button" @click="setPeriod('weekly')" :class="period === 'weekly' ? 'text-white' : 'text-slate-600 hover:bg-slate-50'" :style="period === 'weekly' ? 'background: var(--navy);' : ''" class="px-4 py-2 rounded-lg text-sm font-semibold transition-colors">Mingguan</button>
+            <button type="button" @click="setPeriod('monthly')" :class="period === 'monthly' ? 'text-white' : 'text-slate-600 hover:bg-slate-50'" :style="period === 'monthly' ? 'background: var(--navy);' : ''" class="px-4 py-2 rounded-lg text-sm font-semibold transition-colors">Bulanan</button>
+        </div>
+    </div>
 
-{{-- Info Panel --}}
-<div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
-    <div class="stat-card border-l-4 border-blue-500">
-        <div>
-            <p class="text-sm text-slate-500">Total Jam Running</p>
-            <p class="text-2xl font-bold">{{ $totalHours ?? 0 }} jam</p>
+    <!-- Breakdown Activity -->
+    <div class="card">
+        <div class="card-head">
+            <h3 id="breakdown-title">Daily Breakdown Activity</h3>
+            <div class="stat-strip" id="stat-strip"></div>
         </div>
-    </div>
-    <div class="stat-card border-l-4 border-green-500">
-        <div>
-            <p class="text-sm text-slate-500">Pencapaian</p>
-            <p class="text-2xl font-bold">{{ $pencapaian ?? 0 }}%</p>
-        </div>
-    </div>
-    <div class="stat-card border-l-4 border-amber-500">
-        <div>
-            <p class="text-sm text-slate-500">Unit Running</p>
-            <p class="text-2xl font-bold">{{ $runningUnits ?? 0 }} unit</p>
-        </div>
-    </div>
-    <div class="stat-card border-l-4 border-slate-400">
-        <div>
-            <p class="text-sm text-slate-500">Unit Standby</p>
-            <p class="text-2xl font-bold">{{ $standbyUnits ?? 0 }} unit</p>
-        </div>
-    </div>
-    <div class="stat-card border-l-4 border-red-500">
-        <div>
-            <p class="text-sm text-slate-500">Unit BD</p>
-            <p class="text-2xl font-bold">{{ $bdUnits ?? 0 }} unit</p>
-        </div>
-    </div>
-</div>
 
-{{-- Action buttons --}}
-<div class="flex gap-3 mb-6 justify-end">
-    <a href="{{ route('spv.laporan.index') }}" class="bg-white border border-slate-200 text-slate-700 font-semibold px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-slate-50 transition-colors">
-        <span class="material-symbols-outlined text-lg">download</span>
-        Export
-    </a>
-    <button class="bg-amber-500 hover:bg-amber-600 text-white font-semibold px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
-        <span class="material-symbols-outlined text-lg">sync</span>
-        Sync Data
-    </button>
-</div>
-
-{{-- KPI Cards --}}
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-    <div class="stat-card" style="border-left: 4px solid #3b82f6;">
-        <div class="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center">
-            <span class="material-symbols-outlined text-blue-500 text-xl">local_shipping</span>
-        </div>
-        <div>
-            <p class="text-sm text-slate-500">Total Ritasi</p>
-            <p class="text-2xl font-bold" style="color: var(--text);">{{ number_format($metrics['total_ritasi'] ?? 0) }}</p>
-        </div>
-    </div>
-    <div class="stat-card" style="border-left: 4px solid #10b981;">
-        <div class="w-12 h-12 rounded-lg bg-green-50 flex items-center justify-center">
-            <span class="material-symbols-outlined text-green-500 text-xl">precision_manufacturing</span>
-        </div>
-        <div>
-            <p class="text-sm text-slate-500">Total Unit Aktif</p>
-            <p class="text-2xl font-bold" style="color: var(--text);">{{ $metrics['unit_aktif'] ?? '0 / 0' }}</p>
-        </div>
-    </div>
-    <div class="stat-card" style="border-left: 4px solid #f59e0b;">
-        <div class="w-12 h-12 rounded-lg bg-amber-50 flex items-center justify-center">
-            <span class="material-symbols-outlined text-amber-500 text-xl">schedule</span>
-        </div>
-        <div>
-            <p class="text-sm text-slate-500">Total Jam Kerja</p>
-            <p class="text-2xl font-bold" style="color: var(--text);">{{ $metrics['jam_kerja'] ?? '0h' }}</p>
-        </div>
-    </div>
-    <div class="stat-card" style="border-left: 4px solid #8b5cf6;">
-        <div class="w-12 h-12 rounded-lg bg-purple-50 flex items-center justify-center">
-            <span class="material-symbols-outlined text-purple-500 text-xl">assignment</span>
-        </div>
-        <div>
-            <p class="text-sm text-slate-500">Pekerjaan General</p>
-            <p class="text-2xl font-bold" style="color: var(--text);">{{ $metrics['general_tasks'] ?? '0 Tasks' }}</p>
-        </div>
-    </div>
-    <div class="stat-card border-l-4 border-orange-500">
-        <span class="material-symbols-outlined text-orange-500">local_gas_station</span>
-        <div>
-            <p class="text-sm text-slate-500">Total Fuel Hari Ini</p>
-            <p class="text-2xl font-bold">{{ $totalFuel ?? 0 }} Liter</p>
-        </div>
-    </div>
-</div>
-
-{{-- Target Bar --}}
-<div class="bg-white rounded-xl border border-slate-200 p-6 mb-6">
-    <h2 class="section-title mb-4">Target Harian Material</h2>
-    <div class="space-y-4">
-        @foreach($targets ?? [] as $item)
-        <div class="flex items-center gap-4">
-            <span class="w-20 font-bold text-sm">{{ $item['material'] }}</span>
-            <div class="flex-1 bg-gray-200 rounded-full h-6 overflow-hidden">
-                <div class="h-6 rounded-full flex items-center justify-center text-xs text-white font-medium
-                    {{ $item['percentage'] >= 100 ? 'bg-green-500' : ($item['percentage'] >= 75 ? 'bg-yellow-500' : 'bg-red-500') }}"
-                    style="width: {{ min(100, $item['percentage']) }}%">
-                    {{ $item['actual'] }}/{{ $item['target'] }}
-                </div>
-            </div>
-            <span class="w-16 text-right text-sm font-bold">{{ $item['percentage'] }}%</span>
-        </div>
-        @endforeach
-    </div>
-</div>
-
-{{-- Daily Breakdown Activity --}}
-<div class="bg-white rounded-xl border border-slate-200 p-6 mb-6">
-    <h2 class="section-title mb-4">Daily Breakdown Activity</h2>
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div class="bg-slate-50 rounded-lg p-4">
-            <div class="bg-white rounded-lg px-4 py-2 mb-4 inline-block">
-                <p class="text-sm font-semibold">Daily All Hauling</p>
-                <p class="text-2xl font-bold text-amber-500">{{ number_format($metrics['daily_hauling'] ?? 0) }}</p>
-            </div>
-            <canvas id="dailyChart" height="200"></canvas>
-        </div>
-        <div>
-            <h3 class="font-bold text-center mb-4">Day Shift</h3>
-            <div class="space-y-2">
-                @php $shifts = $metrics['day_shift'] ?? []; @endphp
-                @forelse($shifts as $shift)
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs w-24 truncate">{{ $shift['unit'] ?? '-' }}</span>
-                        <div class="flex-1 h-4 bg-slate-100 rounded-full overflow-hidden">
-                            <div class="h-full bg-red-400 rounded-full" style="width: {{ $shift['percent'] ?? 0 }}%"></div>
-                        </div>
-                    </div>
-                @empty
-                    <p class="text-slate-400 text-center text-sm py-4">Belum ada data</p>
-                @endforelse
-            </div>
-        </div>
-        <div>
-            <h3 class="font-bold text-center mb-4">Night Shift</h3>
-            <div class="space-y-2">
-                @php $shifts = $metrics['night_shift'] ?? []; @endphp
-                @forelse($shifts as $shift)
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs w-24 truncate">{{ $shift['unit'] ?? '-' }}</span>
-                        <div class="flex-1 h-4 bg-slate-100 rounded-full overflow-hidden">
-                            <div class="h-full bg-green-400 rounded-full" style="width: {{ $shift['percent'] ?? 0 }}%"></div>
-                        </div>
-                    </div>
-                @empty
-                    <p class="text-slate-400 text-center text-sm py-4">Belum ada data</p>
-                @endforelse
-            </div>
-        </div>
-    </div>
-</div>
-
-{{-- Jam Values per Unit --}}
-<div class="bg-white rounded-xl border border-slate-200 p-6 mb-6">
-    <h2 class="section-title mb-4">Jam Kerja Unit ({{ $currentShift === 'siang' ? 'Day Shift' : 'Night Shift' }})</h2>
-    <div class="space-y-3">
-        @foreach($unitHours ?? [] as $item)
-        <div class="flex items-center gap-2">
-            <span class="w-24 text-sm font-medium">{{ $item['unit'] }}</span>
-            <div class="flex-1 flex h-8 rounded overflow-hidden">
-                <div class="bg-green-500 flex items-center justify-center text-xs text-white font-medium"
-                     style="width: {{ ($item['actual'] / $item['target']) * 100 }}%">
-                    {{ $item['actual'] }}h
-                </div>
-                @if($item['remaining'] > 0)
-                <div class="bg-red-500 flex items-center justify-center text-xs text-white font-medium"
-                     style="width: {{ ($item['remaining'] / $item['target']) * 100 }}%">
-                    {{ $item['remaining'] }}h
-                </div>
-                @endif
-            </div>
-            <span class="w-12 text-right text-sm font-bold">{{ $item['target'] }}h</span>
-        </div>
-        @endforeach
-    </div>
-</div>
-
-{{-- Grafik All Hauling --}}
-<div class="bg-white rounded-xl border border-slate-200 p-6 mb-6">
-    <h2 class="section-title mb-4">Grafik All Hauling (WTD)</h2>
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div class="bg-slate-50 rounded-lg p-4">
-            <div class="bg-white rounded-lg px-4 py-2 mb-4 inline-block">
-                <p class="text-sm font-semibold">Weekly All Hauling</p>
-                <p class="text-2xl font-bold text-amber-500">{{ number_format($metrics['weekly_hauling'] ?? 0) }}</p>
-            </div>
-            <div class="space-y-2">
-                @php $materials = $metrics['material_breakdown'] ?? []; @endphp
-                @forelse($materials as $mat)
-                    <div class="flex items-center gap-3">
-                        <span class="text-sm w-32">{{ $mat['name'] ?? '-' }}</span>
-                        <div class="w-4 h-4 bg-slate-700 rounded"></div>
-                        <span class="text-sm font-semibold">{{ $mat['total'] ?? 0 }}</span>
-                    </div>
-                @empty
-                    <p class="text-slate-400 text-center text-sm py-4">Belum ada data</p>
-                @endforelse
-            </div>
-        </div>
-        <div class="space-y-6">
+        <div class="breakdown-grid">
             <div>
-                <h3 class="font-bold mb-3">Availability</h3>
-                <div class="grid grid-cols-4 gap-4">
-                    @php $avail = $metrics['availability'] ?? []; @endphp
-                    @foreach(['Exc', 'Sany', 'ADT', 'Dozer'] as $type)
-                        <div class="text-center">
-                            <div class="w-16 h-16 mx-auto rounded-full border-4 border-blue-200 border-t-blue-500 flex items-center justify-center" style="transform: rotate({{ $avail[$type]['deg'] ?? 0 }}deg);"></div>
-                            <p class="text-sm font-semibold mt-2">{{ $type }}</p>
-                            <p class="text-xs text-slate-500">{{ $avail[$type]['percent'] ?? '0%' }}</p>
-                        </div>
-                    @endforeach
+                <div class="target-chart" id="target-chart"></div>
+                <div class="legend-row">
+                    <span><i class="sw" style="background:var(--ore)"></i>Ore (utama)</span>
+                    <span><i class="sw" style="background:var(--blue)"></i>Material lain</span>
+                    <span><i class="sw" style="background:var(--grey)"></i>Belum capai target</span>
+                    <span><i class="sw" style="border-top:2px dashed #8a8f9e;background:none;width:14px;height:0"></i>Garis target</span>
                 </div>
             </div>
             <div>
-                <h3 class="font-bold mb-3">UoA</h3>
-                <div class="grid grid-cols-4 gap-4">
-                    @php $uoa = $metrics['uoa'] ?? []; @endphp
-                    @foreach(['Exc', 'Sany', 'ADT', 'Dozer'] as $type)
-                        <div class="text-center">
-                            <div class="w-16 h-16 mx-auto rounded-full border-4 border-purple-200 border-t-purple-500 flex items-center justify-center" style="transform: rotate({{ $uoa[$type]['deg'] ?? 0 }}deg);"></div>
-                            <p class="text-sm font-semibold mt-2">{{ $type }}</p>
-                            <p class="text-xs text-slate-500">{{ $uoa[$type]['percent'] ?? '0%' }}</p>
-                        </div>
-                    @endforeach
+                <div class="shift-title">Day Shift (06:00–18:00)</div>
+                <div id="day-shift"></div>
+                <div class="axis-row"><span>0.0</span><span>4.0</span><span>8.0</span><span>12.0</span></div>
+            </div>
+            <div>
+                <div class="shift-title">Night Shift (18:00–06:00)</div>
+                <div id="night-shift"></div>
+                <div class="axis-row"><span>18.0</span><span>22.0</span><span>02.0</span><span>06.0</span></div>
+            </div>
+        </div>
+        <div class="legend-row" style="margin-top:14px;">
+            <span><i class="sw" style="background:var(--green)"></i>Running / digunakan</span>
+            <span><i class="sw" style="background:var(--red)"></i>Breakdown / rusak</span>
+            <span><i class="sw" style="background:var(--white-slot);border:1px solid #d7dae2"></i>Standby / tidak digunakan</span>
+        </div>
+    </div>
+
+    <!-- Hauling Chart -->
+    <div class="card">
+        <h3 id="hauling-title">Grafik All Hauling</h3>
+        <div class="hauling-grid">
+            <div>
+                <div class="weekly-total" id="hauling-total"></div>
+                <div id="hbar-list"></div>
+            </div>
+            <div>
+                <div class="sub-card">
+                    <div class="donut-title">Availability</div>
+                    <div class="donut-block" id="avail-donuts"></div>
+                </div>
+                <div class="sub-card">
+                    <div class="donut-title">UoA</div>
+                    <div class="donut-block" id="uoa-donuts"></div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-{{-- Monthly MTD Report --}}
-<div class="bg-white rounded-xl border border-slate-200 p-6">
-    <h2 class="section-title mb-4">Monthly - MTD Report</h2>
-    <div class="bg-slate-50 rounded-lg p-4">
-        <div class="bg-white rounded-lg px-4 py-2 mb-4 inline-block">
-            <p class="text-sm font-semibold">All Materials Hauling</p>
-            <p class="text-2xl font-bold text-amber-500">{{ number_format($metrics['monthly_hauling'] ?? 0) }}</p>
-        </div>
-        <canvas id="monthlyChart" height="150"></canvas>
-    </div>
-    <div class="flex items-center justify-center gap-6 mt-4">
-        <div class="flex items-center gap-2"><div class="w-4 h-4 bg-blue-600 rounded"></div><span class="text-sm">Ore</span></div>
-        <div class="flex items-center gap-2"><div class="w-4 h-4 bg-blue-200 rounded"></div><span class="text-sm">Others</span></div>
-        <div class="flex items-center gap-2"><div class="w-4 h-1 bg-blue-500 rounded"></div><span class="text-sm">Cumulative</span></div>
-    </div>
-</div>
+@endsection
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    const dailyCtx = document.getElementById('dailyChart');
-    if (dailyCtx) {
-        new Chart(dailyCtx, {
-            type: 'bar',
-            data: {
-                labels: {!! json_encode($metrics['daily_labels'] ?? ['Tuff', 'Paste', 'KCN', 'Cake', 'Ore', 'Batu', 'Mining', 'Pasir', 'Mud', 'Waste']) !!},
-                datasets: [{ data: {!! json_encode($metrics['daily_data'] ?? [1227, 700, 260, 175, 120, 90, 40, 26, 0, 0]) !!}, backgroundColor: '#1e3a5f', borderRadius: 4 }]
-            },
-            options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true }, x: { ticks: { font: { size: 10 } } } } }
-        });
-    }
-    const monthlyCtx = document.getElementById('monthlyChart');
-    if (monthlyCtx) {
-        new Chart(monthlyCtx, {
-            type: 'bar',
-            data: {
-                labels: {!! json_encode($metrics['monthly_labels'] ?? []) !!},
-                datasets: [
-                    { type: 'bar', label: 'Ore', data: {!! json_encode($metrics['monthly_ore'] ?? []) !!}, backgroundColor: '#1e3a5f', borderRadius: 4 },
-                    { type: 'bar', label: 'Others', data: {!! json_encode($metrics['monthly_others'] ?? []) !!}, backgroundColor: '#93c5fd', borderRadius: 4 },
-                    { type: 'line', label: 'Cumulative', data: {!! json_encode($metrics['monthly_cumulative'] ?? []) !!}, borderColor: '#3b82f6', borderWidth: 2, fill: false, tension: 0.3 }
-                ]
-            },
-            options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, stacked: true }, x: { stacked: true } } }
-        });
-    }
+function dashboardApp() {
+    return {
+        period: 'daily',
+        data: @json($dashboardData),
+        
+        init() {
+            this.period = this.data.period || 'daily';
+            this.render();
+        },
+        
+        setPeriod(p) {
+            this.period = p;
+            this.render();
+        },
+        
+        get currentData() {
+            return this.data[this.period];
+        },
+
+        render() {
+            if (!this.currentData) return;
+            
+            const d = this.currentData;
+            const periods = { daily: 'Today', weekly: 'WTD', monthly: 'MTD' };
+            
+            document.getElementById('breakdown-title').textContent = d.label + ' Breakdown Activity';
+            document.getElementById('hauling-title').textContent = 'Grafik All Hauling (' + (periods[this.period] || 'Today') + ')';
+            document.getElementById('hauling-total').innerHTML = d.haulingLabel + ' &nbsp; <b>' + d.haulingTotal.toLocaleString() + '</b>';
+            
+            this.renderTargetChart(d.materials);
+            this.renderShift(this.data.shift_segments.day, 'day-shift');
+            this.renderShift(this.data.shift_segments.night, 'night-shift');
+            this.renderStatStrip();
+            this.renderHbars(this.data.all_materials_hbar);
+            this.renderDonuts('avail-donuts', this.data.availability);
+            this.renderDonuts('uoa-donuts', this.data.uoa);
+        },
+
+        renderTargetChart(materials) {
+            const el = document.getElementById('target-chart');
+            el.innerHTML = '';
+            
+            const arr = Array.from(materials);
+            const scaleMax = Math.max(...arr.map(m => Math.max(m.value, m.target))) * 1.05;
+            
+            arr.forEach(m => {
+                const col = document.createElement('div');
+                col.className = 'bar-col';
+                
+                const stack = document.createElement('div');
+                stack.className = 'bar-stack';
+                stack.style.height = '190px';
+                
+                const valuePct = (m.value / scaleMax) * 100;
+                const targetPct = (m.target / scaleMax) * 100;
+                const achieved = m.value >= m.target;
+                
+                const fill = document.createElement('div');
+                fill.className = 'bar-fill ' + (m.main ? 'ore' : 'blue') + (achieved ? ' hit' : '');
+                fill.style.height = valuePct + '%';
+                stack.appendChild(fill);
+                
+                if (!achieved && m.target > m.value) {
+                    const grey = document.createElement('div');
+                    grey.className = 'bar-grey';
+                    grey.style.height = (targetPct - valuePct) + '%';
+                    stack.insertBefore(grey, fill);
+                }
+                
+                const line = document.createElement('div');
+                line.className = 'target-line';
+                line.style.bottom = targetPct + '%';
+                stack.appendChild(line);
+                
+                const val = document.createElement('div');
+                val.className = 'bar-value';
+                val.textContent = m.value.toLocaleString();
+                col.appendChild(val);
+                
+                const tval = document.createElement('div');
+                tval.className = 'bar-target';
+                tval.textContent = 'target ' + m.target.toLocaleString();
+                col.appendChild(tval);
+                
+                col.appendChild(stack);
+                
+                const name = document.createElement('div');
+                name.className = 'bar-label' + (m.main ? ' main' : '');
+                name.textContent = m.name;
+                col.appendChild(name);
+                
+                el.appendChild(col);
+            });
+        },
+
+        renderShift(rows, containerId) {
+            const el = document.getElementById(containerId);
+            el.innerHTML = '';
+            
+            const totalHours = rows.reduce((max, r) => Math.max(max, r.segs.reduce((a, s) => a + s.h, 0)), 0) || 12;
+            
+            rows.forEach(r => {
+                const row = document.createElement('div');
+                row.className = 'shift-row';
+                
+                const name = document.createElement('div');
+                name.className = 'eq-name';
+                name.textContent = r.name;
+                row.appendChild(name);
+                
+                const track = document.createElement('div');
+                track.className = 'shift-track';
+                
+                r.segs.forEach(s => {
+                    const seg = document.createElement('div');
+                    seg.className = 'seg ' + s.t;
+                    seg.style.width = (s.h / totalHours * 100) + '%';
+                    if (s.h / totalHours > 0.09) seg.textContent = s.h + 'h';
+                    track.appendChild(seg);
+                });
+                
+                row.appendChild(track);
+                el.appendChild(row);
+            });
+        },
+
+        renderStatStrip() {
+            const s = this.data.stat_strip;
+            const html = `
+                <div class="stat-chip hours"><b>${s.total_running_hours}h</b><span>Total Jam (unit running)</span></div>
+                <div class="stat-chip achv"><b>${s.achievement_pct}%</b><span>Capaian Jam Running</span></div>
+                <div class="stat-chip bd"><b>${s.total_bd_hours}h</b><span>Total BD</span></div>
+                <div class="stat-chip standby"><b>${s.total_standby_hours}h</b><span>Standby</span></div>
+            `;
+            document.getElementById('stat-strip').innerHTML = html;
+        },
+
+        renderHbars(hbars) {
+            const listEl = document.getElementById('hbar-list');
+            listEl.innerHTML = '';
+            
+            const maxH = Math.max(...hbars.map(b => b.val));
+            
+            hbars.forEach(b => {
+                const row = document.createElement('div');
+                row.className = 'hbar-row';
+                row.innerHTML = `
+                    <div class="name">${b.name}</div>
+                    <div class="hbar-track"><div class="hbar-fill" style="width:${(b.val/maxH*100)}%"></div></div>
+                    <div class="hbar-val">${b.val.toLocaleString()}</div>
+                `;
+                listEl.appendChild(row);
+            });
+        },
+
+        renderDonuts(containerId, obj) {
+            const el = document.getElementById(containerId);
+            el.innerHTML = '';
+            
+            const colorVar = containerId === 'avail-donuts' ? 'var(--blue)' : 'var(--green)';
+            const r = 26;
+            const c = 2 * Math.PI * r;
+            
+            Object.keys(obj).forEach(k => {
+                const pct = obj[k];
+                const off = c * (1 - pct / 100);
+                const wrap = document.createElement('div');
+                wrap.className = 'donut';
+                wrap.innerHTML = `
+                    <svg width="66" height="66" viewBox="0 0 66 66">
+                        <circle cx="33" cy="33" r="${r}" fill="none" stroke="var(--grey-light)" stroke-width="8"/>
+                        <circle cx="33" cy="33" r="${r}" fill="none" stroke="${colorVar}" stroke-width="8"
+                            stroke-dasharray="${c}" stroke-dashoffset="${off}" stroke-linecap="round"
+                            transform="rotate(-90 33 33)"/>
+                    </svg>
+                    <b>${k}</b><span>${pct}%</span>
+                `;
+                el.appendChild(wrap);
+            });
+        },
+    };
+}
 </script>
 @endpush
-@endsection

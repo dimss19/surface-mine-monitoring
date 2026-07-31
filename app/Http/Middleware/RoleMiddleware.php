@@ -19,7 +19,7 @@ class RoleMiddleware
         $roles = explode(',', $role);
 
         if (!Auth::check() || !in_array(Auth::user()->role, $roles, true)) {
-            abort(403, 'Unauthorized access');
+            return redirect()->route('login')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
         }
 
         return $next($request);

@@ -4,21 +4,30 @@ namespace App\Http\Controllers;
 
 use App\Models\Ritasi;
 use App\Models\Unit;
+use Illuminate\Http\Request;
 
 class AdminUtilizationController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $units = Unit::with('area')->get();
+        $perPage = 12;
+        $statusFilter = $request->get('status', 'all');
+        
+        $query = Unit::with('areas');
+        
+        if ($statusFilter !== 'all') {
+            $query->where('status', $statusFilter);
+        }
+        
+        $units = $query->orderBy('nama')->get();
 
-        $utilization = [];
-        foreach ($units as $unit) {
+        $utilization = $units->map(function ($unit) {
             $todayRitasi = Ritasi::where('unit_id', $unit->id)
                 ->where('tanggal', today())
                 ->sum('hm_total');
 
             $target = 8;
-            $utilization[] = [
+            return [
                 'unit' => $unit,
                 'status' => $unit->status,
                 'hours_today' => $todayRitasi,
@@ -28,8 +37,29 @@ class AdminUtilizationController extends Controller
                     ->latest('updated_at')
                     ->value('updated_at'),
             ];
-        }
+        });
 
-        return view('admin.utilization', compact('utilization'));
+        $paginated = $utilization->chunk($perPage);
+        $currentPage = $request->get('page', 1);
+        $currentPageItems = $paginated[$currentPage - 1] ?? collect();
+        $totalPages = $paginated->count();
+
+        return view('admin.utilization', compact('utilization', 'currentPageItems', 'currentPage', 'totalPages', 'statusFilter'));
+    }
+
+    public function update(Request $request, Unit $unit)
+    {
+        $validated = $request->validate([
+            'status' => 'required|in:active,maintenance,breakdown,standby',
+            'keterangan' => 'nullable|string|max:500',
+        ]);
+
+        $unit->update([
+            'status' => $validated['status'],
+            'keterangan' => $validated['keterangan'] ?? null,
+        ]);
+
+        return redirect()->route('admin.utilization.index')
+            ->with('success', "Status {$unit->nama} berhasil diperbarui.");
     }
 }
