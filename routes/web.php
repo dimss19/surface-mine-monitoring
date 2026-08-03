@@ -64,6 +64,8 @@ Route::middleware('auth')->group(function () {
             Route::post('export/{type}', [SpvLaporanController::class, 'export'])->name('export');
         });
 
+    });
+
     // Admin
     Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
