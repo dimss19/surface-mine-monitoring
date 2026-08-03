@@ -17,14 +17,4 @@ class Area extends Model
     {
         return $this->belongsToMany(Unit::class, 'unit_area')->withTimestamps();
     }
-
-    public function absensiPegawais()
-    {
-        return $this->hasMany(AbsensiPegawai::class);
-    }
-
-    public function pemantauanLapangans()
-    {
-        return $this->hasMany(PemantauanLapangan::class);
-    }
 }

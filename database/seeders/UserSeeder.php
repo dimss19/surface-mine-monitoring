@@ -12,7 +12,6 @@ class UserSeeder extends Seeder
         \App\Models\User::create([
             'name' => 'Super Admin',
             'username' => 'admin',
-            'email' => 'admin@surface-mine.com',
             'password' => Hash::make('password'),
             'role' => 'admin',
         ]);
@@ -20,7 +19,6 @@ class UserSeeder extends Seeder
         \App\Models\User::create([
             'name' => 'Supervisor 1',
             'username' => 'spv1',
-            'email' => 'spv1@surface-mine.com',
             'password' => Hash::make('password'),
             'role' => 'spv',
         ]);
@@ -30,7 +28,6 @@ class UserSeeder extends Seeder
             \App\Models\User::create([
                 'name' => $pegawai->nama,
                 'username' => 'pegawai.' . $i,
-                'email' => 'pegawai.' . $pegawai->id . '@mine.local',
                 'password' => Hash::make('password'),
                 'role' => 'pegawai',
                 'pegawai_id' => $pegawai->id,

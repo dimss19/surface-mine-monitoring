@@ -8,11 +8,6 @@ class Pegawai extends Model
 {
     protected $guarded = [];
 
-    public function absensiPegawais()
-    {
-        return $this->hasMany(AbsensiPegawai::class);
-    }
-
     public function ritasis()
     {
         return $this->hasMany(Ritasi::class);

@@ -106,6 +106,15 @@
                 </select>
             </div>
             <div>
+                <label class="form-label">Area</label>
+                <select name="area_id" class="form-input" required>
+                    <option value="">Pilih Area</option>
+                    @foreach($areas as $id => $nama)
+                        <option value="{{ $id }}">{{ $nama }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
                 <label class="form-label">Jumlah Ritasi (Trip)</label>
                 <input type="number" name="jumlah_ritasi" class="form-input" min="0" value="0" required>
             </div>
@@ -118,8 +127,6 @@
                 <textarea name="deskripsi_pekerjaan" class="form-input" rows="3" placeholder="Tambahkan catatan khusus bila ada kendala operasional..."></textarea>
             </div>
         </div>
-        
-        <input type="hidden" name="area_id" value="{{ $areas[array_key_first($areas)] ?? 1 }}">
         
         {{-- Buttons --}}
         <div class="flex justify-end gap-3 pt-4 border-t">

@@ -37,6 +37,18 @@ class PegawaiGeneralController extends Controller
 
         $pegawaiId = Auth::user()->pegawai_id;
 
+        $exists = NonRitasi::where('pegawai_id', $pegawaiId)
+            ->where('tanggal', $validated['tanggal'])
+            ->where('shift', $validated['shift'])
+            ->exists();
+
+        if ($exists) {
+            if ($request->header('X-Offline-Replay') === '1') {
+                return response()->json(['success' => true, 'replayed' => true], 200);
+            }
+            return back()->with('error', 'Anda sudah melakukan input pekerjaan pada shift dan tanggal tersebut.');
+        }
+
         $validated['pegawai_id'] = $pegawaiId;
         $validated['status'] = 'pending';
 

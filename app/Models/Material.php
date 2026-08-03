@@ -23,11 +23,6 @@ class Material extends Model
         return $this->belongsToMany(Unit::class, 'material_unit')->withPivot('consumption_rate');
     }
 
-    public function movements()
-    {
-        return $this->hasMany(MaterialMovement::class);
-    }
-
     public function ritasis()
     {
         return $this->hasMany(Ritasi::class);

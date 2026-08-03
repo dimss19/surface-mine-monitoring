@@ -314,6 +314,8 @@
 function dashboardApp() {
     return {
         period: 'daily',
+        breakdownTitle: 'Daily Breakdown Activity',
+        haulingTitle: 'Grafik All Hauling (Today)',
         data: @json($dashboardData),
         
         init() {
@@ -336,8 +338,8 @@ function dashboardApp() {
             const d = this.currentData;
             const periods = { daily: 'Today', weekly: 'WTD', monthly: 'MTD' };
             
-            document.getElementById('breakdown-title').textContent = d.label + ' Breakdown Activity';
-            document.getElementById('hauling-title').textContent = 'Grafik All Hauling (' + (periods[this.period] || 'Today') + ')';
+            this.breakdownTitle = d.label + ' Breakdown Activity';
+            this.haulingTitle = 'Grafik All Hauling (' + (periods[this.period] || 'Today') + ')';
             document.getElementById('hauling-total').innerHTML = d.haulingLabel + ' &nbsp; <b>' + d.haulingTotal.toLocaleString() + '</b>';
             
             this.renderTargetChart(d.materials);

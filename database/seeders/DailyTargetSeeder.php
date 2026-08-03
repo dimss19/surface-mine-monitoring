@@ -22,8 +22,8 @@ class DailyTargetSeeder extends Seeder
 
             foreach ($materials as $material) {
                 $target = match ($material->nama) {
-                    'Ore' => rand(80, 120),
-                    'Tuff' => rand(30, 60),
+                    'Bauxite Ore (Raw)' => rand(80, 120),
+                    'Mining Tuff' => rand(30, 60),
                     'Cake' => rand(20, 40),
                     default => rand(20, 50),
                 };

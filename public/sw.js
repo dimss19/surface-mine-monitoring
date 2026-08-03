@@ -32,7 +32,9 @@ self.addEventListener('fetch', event => {
 });
 
 self.addEventListener('sync', event => {
-    if (event.tag === 'absensi-sync' || event.tag === 'pemantauan-sync') {
-        event.waitUntil(Promise.resolve());
+    if (event.tag === 'absensi-sync' || event.tag === 'pemantauan-sync' || event.tag === 'ritasi-sync') {
+        event.waitUntil(self.clients.matchAll().then(clients => {
+            clients.forEach(client => client.postMessage({ type: 'SYNC_OUTBOX' }));
+        }));
     }
 });

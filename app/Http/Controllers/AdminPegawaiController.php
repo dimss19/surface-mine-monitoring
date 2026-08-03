@@ -45,10 +45,6 @@ class AdminPegawaiController extends Controller
 
     public function destroy(Pegawai $pegawai)
     {
-        if ($pegawai->absensiPegawais()->count() > 0) {
-            return back()->with('error', 'Gagal menghapus! Pegawai ini sudah memiliki riwayat absensi.');
-        }
-
         $pegawai->delete();
         return redirect()->route('admin.pegawai.index')->with('success', 'Data pegawai berhasil dihapus.');
     }

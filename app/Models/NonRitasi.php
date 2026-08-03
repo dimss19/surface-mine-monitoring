@@ -32,8 +32,8 @@ class NonRitasi extends Model
         'hm_awal' => 'decimal:2',
         'hm_akhir' => 'decimal:2',
         'hm_total' => 'decimal:2',
-        'jam_mulai' => 'datetime',
-        'jam_selesai' => 'datetime',
+        'jam_mulai' => 'string',
+        'jam_selesai' => 'string',
         'is_overtime' => 'boolean',
         'validated_at' => 'datetime',
     ];

@@ -141,9 +141,4 @@ class AdminUnitController extends Controller
         return redirect()->route('admin.master-data.index', ['tab' => 'unit'])
             ->with('success', 'Unit berhasil dihapus');
     }
-
-    public function export()
-    {
-        return response()->download('units.xlsx');
-    }
 }

@@ -108,9 +108,16 @@ async function replayOutbox() {
             if (response.ok) {
                 await withStore('readwrite', store => store.delete(item.id));
                 showToast('Data offline berhasil tersinkronisasi', 'online');
+            } else if (response.status === 422 || response.status === 409) {
+                // Validation/duplicate error - remove from outbox
+                await withStore('readwrite', store => store.delete(item.id));
+                showToast('Data tidak dapat disinkronisasi (duplikat/validasi)', 'offline');
+            } else {
+                // Server error - will retry on next sync
+                break;
             }
         } catch {
-            return;
+            break;
         }
     }
 
@@ -158,9 +165,13 @@ async function handleFormSubmit(event) {
 
     if (navigator.onLine) {
         try {
+            const token = await freshCsrf();
+            const formData = new FormData(form);
+            formData.append('_token', token);
+            
             const response = await fetch(form.action, {
                 method: form.method || 'POST',
-                body: new FormData(form),
+                body: formData,
                 headers: { 'X-Requested-With': 'XMLHttpRequest', Accept: 'application/json' },
             });
 

@@ -26,7 +26,7 @@ class AdminSpvController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'username' => 'required|string|max:50|unique:users',
             'password' => 'required|string|min:6',
             'areas' => 'required|array',
             'areas.*' => 'exists:areas,id'
@@ -34,7 +34,7 @@ class AdminSpvController extends Controller
 
         $spv = User::create([
             'name' => $validated['name'],
-            'email' => $validated['email'],
+            'username' => $validated['username'],
             'password' => Hash::make($validated['password']),
             'role' => 'spv'
         ]);
@@ -55,14 +55,14 @@ class AdminSpvController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($spv->id)],
+            'username' => ['required', 'string', 'max:50', Rule::unique('users')->ignore($spv->id)],
             'password' => 'nullable|string|min:6',
             'areas' => 'required|array',
             'areas.*' => 'exists:areas,id'
         ]);
 
         $spv->name = $validated['name'];
-        $spv->email = $validated['email'];
+        $spv->username = $validated['username'];
         if (!empty($validated['password'])) {
             $spv->password = Hash::make($validated['password']);
         }
@@ -75,9 +75,6 @@ class AdminSpvController extends Controller
 
     public function destroy(User $spv)
     {
-        if ($spv->pemantauanLapangans()->count() > 0) {
-            return back()->with('error', 'Gagal menghapus! SPV ini sudah memiliki laporan pemantauan.');
-        }
         if ($spv->areas()->count() > 0) {
             $spv->areas()->detach();
         }

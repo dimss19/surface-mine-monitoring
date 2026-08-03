@@ -92,10 +92,15 @@ class SpvLaporanController extends Controller
 
     public function export(Request $request, string $type)
     {
+        $user = auth()->user();
+        $areaIds = $user->areas->pluck('id')->toArray();
+        
         $query = Ritasi::with(['pegawai', 'unit', 'area', 'material'])
+            ->whereIn('area_id', $areaIds)
             ->orderBy('tanggal', 'asc');
         
         $nonRitasiQuery = NonRitasi::with(['pegawai', 'unit', 'area'])
+            ->whereIn('area_id', $areaIds)
             ->orderBy('tanggal', 'asc');
         
         if ($request->filled('tanggal')) {

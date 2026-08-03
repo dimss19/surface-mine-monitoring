@@ -10,6 +10,8 @@ use App\Http\Controllers\AdminAreaController;
 use App\Http\Controllers\AdminPermissionController;
 use App\Http\Controllers\AdminLaporanController;
 use App\Http\Controllers\AdminTargetController;
+use App\Http\Controllers\AdminSpvController;
+use App\Http\Controllers\AdminPegawaiController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\PegawaiRitasiController;
 use App\Http\Controllers\PegawaiNonRitasiController;
@@ -61,11 +63,6 @@ Route::middleware('auth')->group(function () {
             Route::get('bulanan', [SpvLaporanController::class, 'bulanan'])->name('bulanan');
             Route::post('export/{type}', [SpvLaporanController::class, 'export'])->name('export');
         });
-        
-        // Utilization
-        Route::get('utilization', [\App\Http\Controllers\SpvUtilizationController::class, 'index'])->name('utilization.index');
-        Route::put('utilization/{unit}', [\App\Http\Controllers\SpvUtilizationController::class, 'update'])->name('utilization.update');
-    });
 
     // Admin
     Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
@@ -97,12 +94,21 @@ Route::middleware('auth')->group(function () {
         Route::get('laporan', [AdminLaporanController::class, 'index'])->name('laporan.index');
         Route::post('laporan/export', [AdminLaporanController::class, 'export'])->name('laporan.export');
         
-        // Export
-        Route::get('export', [AdminController::class, 'export'])->name('export');
+        // SPV Management
+        Route::get('spv', [AdminSpvController::class, 'index'])->name('spv.index');
+        Route::get('spv/create', [AdminSpvController::class, 'create'])->name('spv.create');
+        Route::post('spv', [AdminSpvController::class, 'store'])->name('spv.store');
+        Route::get('spv/{spv}/edit', [AdminSpvController::class, 'edit'])->name('spv.edit');
+        Route::put('spv/{spv}', [AdminSpvController::class, 'update'])->name('spv.update');
+        Route::delete('spv/{spv}', [AdminSpvController::class, 'destroy'])->name('spv.destroy');
         
-        // Utilization
-        Route::get('utilization', [\App\Http\Controllers\AdminUtilizationController::class, 'index'])->name('utilization.index');
-        Route::put('utilization/{unit}', [\App\Http\Controllers\AdminUtilizationController::class, 'update'])->name('utilization.update');
+        // Pegawai Management
+        Route::get('pegawai', [AdminPegawaiController::class, 'index'])->name('pegawai.index');
+        Route::get('pegawai/create', [AdminPegawaiController::class, 'create'])->name('pegawai.create');
+        Route::post('pegawai', [AdminPegawaiController::class, 'store'])->name('pegawai.store');
+        Route::get('pegawai/{pegawai}/edit', [AdminPegawaiController::class, 'edit'])->name('pegawai.edit');
+        Route::put('pegawai/{pegawai}', [AdminPegawaiController::class, 'update'])->name('pegawai.update');
+        Route::delete('pegawai/{pegawai}', [AdminPegawaiController::class, 'destroy'])->name('pegawai.destroy');
     });
 });
 

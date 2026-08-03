@@ -33,13 +33,8 @@
                class="sidebar-nav-item {{ request()->routeIs('admin.master-data.*') ? 'active' : '' }}">
                 <span class="material-symbols-outlined">storage</span>
                 Master Data
-            </a>
-            <a href="{{ route('admin.utilization.index') }}"
-               class="sidebar-nav-item {{ request()->routeIs('admin.utilization.*') ? 'active' : '' }}">
-                <span class="material-symbols-outlined">precision_manufacturing</span>
-                Utilization
-            </a>
-        @elseif($role === 'spv')
+</a>
+         @elseif($role === 'spv')
             <a href="{{ route('spv.dashboard') }}"
                class="sidebar-nav-item {{ request()->routeIs('spv.dashboard') ? 'active' : '' }}">
                 <span class="material-symbols-outlined">dashboard</span>
@@ -49,13 +44,8 @@
                class="sidebar-nav-item {{ request()->routeIs('spv.laporan.*') ? 'active' : '' }}">
                 <span class="material-symbols-outlined">monitoring</span>
                 Laporan Pemantauan
-            </a>
-            <a href="{{ route('spv.utilization.index') }}"
-               class="sidebar-nav-item {{ request()->routeIs('spv.utilization.*') ? 'active' : '' }}">
-                <span class="material-symbols-outlined">precision_manufacturing</span>
-                Utilization
-            </a>
-        @elseif($role === 'pegawai')
+</a>
+         @elseif($role === 'pegawai')
             <a href="{{ route('pegawai.ritasi.create') }}"
                class="sidebar-nav-item {{ request()->routeIs('pegawai.ritasi.*') ? 'active' : '' }}">
                 <span class="material-symbols-outlined">local_shipping</span>

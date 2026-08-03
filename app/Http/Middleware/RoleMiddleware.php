@@ -18,7 +18,7 @@ class RoleMiddleware
     {
         $roles = explode(',', $role);
 
-        if (!Auth::check() || !in_array(Auth::user()->role, $roles, true)) {
+        if (!Auth::check() || !in_array(Auth::user()->role, $roles)) {
             return redirect()->route('login')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
         }
 

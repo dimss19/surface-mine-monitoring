@@ -143,8 +143,8 @@ class DashboardSeeder extends Seeder
         }
 
         // ===== RITASI DATA =====
-        // Clear existing ritasi for this month
-        Ritasi::whereMonth('tanggal', now()->month)->whereYear('tanggal', now()->year)->delete();
+        // Clear ALL existing ritasi
+        Ritasi::query()->delete();
 
         $usedKeys = [];
         $createRitasi = function ($unitKode, $shift, $hours, $materialId, $ritasiCount, $pegawaiId, $areaId, $date = null) use ($today, $unitIds, &$usedKeys) {
@@ -169,7 +169,7 @@ class DashboardSeeder extends Seeder
                 'jumlah_ritasi' => (int) round($ritasiCount),
                 'lokasi_pekerjaan' => 'Pit A',
                 'deskripsi_pekerjaan' => 'Loading & Hauling',
-                'status' => 'completed',
+                'status' => 'validated',
                 'fuel_consumption' => round($hours * 12, 1),
             ]);
         };

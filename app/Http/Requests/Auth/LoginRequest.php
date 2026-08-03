@@ -34,16 +34,6 @@ class LoginRequest extends FormRequest
         $password = $this->input('password');
         $remember = $this->boolean('remember');
 
-        // Try email first
-        if (filter_var($login, FILTER_VALIDATE_EMAIL)) {
-            $user = \App\Models\User::where('email', $login)->first();
-            if ($user && Hash::check($password, $user->password)) {
-                Auth::login($user, $remember);
-                RateLimiter::clear($this->throttleKey());
-                return;
-            }
-        }
-
         // Try username
         $user = \App\Models\User::where('username', $login)->first();
         if ($user && Hash::check($password, $user->password)) {
@@ -72,7 +62,7 @@ class LoginRequest extends FormRequest
 
     public function ensureIsNotRateLimited(): void
     {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 50)) {
             return;
         }
 
