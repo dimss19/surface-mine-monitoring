@@ -1,12 +1,9 @@
 <?php
 
 use App\Http\Controllers\LandingController;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\SpvController;
 use App\Http\Controllers\AdminUnitController;
 use App\Http\Controllers\AdminMaterialController;
 use App\Http\Controllers\AdminAreaController;
-use App\Http\Controllers\AdminLaporanController;
 use App\Http\Controllers\AdminTargetController;
 use App\Http\Controllers\AdminSpvController;
 use App\Http\Controllers\AdminPegawaiController;
@@ -14,8 +11,8 @@ use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\PegawaiRitasiController;
 use App\Http\Controllers\PegawaiNonRitasiController;
 use App\Http\Controllers\PegawaiGeneralController;
-use App\Http\Controllers\SpvLaporanController;
 use App\Http\Controllers\UtilizationController;
+use App\Http\Controllers\RekapanController;
 use Illuminate\Support\Facades\Route;
 
 // Public
@@ -54,25 +51,16 @@ Route::middleware('auth')->group(function () {
 
     // SPV
     Route::middleware('role:spv')->prefix('spv')->name('spv.')->group(function () {
-        Route::get('/dashboard', [SpvController::class, 'dashboard'])->name('dashboard');
-        
-        // Laporan
-        Route::prefix('laporan')->name('laporan.')->group(function () {
-            Route::get('/', [SpvLaporanController::class, 'index'])->name('index');
-            Route::get('harian', [SpvLaporanController::class, 'harian'])->name('harian');
-            Route::get('mingguan', [SpvLaporanController::class, 'mingguan'])->name('mingguan');
-            Route::get('bulanan', [SpvLaporanController::class, 'bulanan'])->name('bulanan');
-            Route::post('export/{type}', [SpvLaporanController::class, 'export'])->name('export');
-        });
-
         // Utilization
         Route::get('utilization', [UtilizationController::class, 'index'])->name('utilization.index');
+
+        // Rekapan
+        Route::get('rekapan', [RekapanController::class, 'index'])->name('rekapan.index');
+        Route::post('rekapan/export', [RekapanController::class, 'export'])->name('rekapan.export');
     });
 
     // Admin
     Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
-        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-        
         // Master Data
         Route::get('master-data', [AdminUnitController::class, 'index'])->name('master-data.index');
         Route::post('unit', [AdminUnitController::class, 'store'])->name('unit.store');
@@ -93,13 +81,13 @@ Route::middleware('auth')->group(function () {
         // Target Harian
         Route::post('target', [AdminTargetController::class, 'store'])->name('target.store');
         Route::delete('target/{target}', [AdminTargetController::class, 'destroy'])->name('target.destroy');
-        
-        // Laporan
-        Route::get('laporan', [AdminLaporanController::class, 'index'])->name('laporan.index');
-        Route::post('laporan/export', [AdminLaporanController::class, 'export'])->name('laporan.export');
 
         // Utilization
         Route::get('utilization', [UtilizationController::class, 'index'])->name('utilization.index');
+
+        // Rekapan
+        Route::get('rekapan', [RekapanController::class, 'index'])->name('rekapan.index');
+        Route::post('rekapan/export', [RekapanController::class, 'export'])->name('rekapan.export');
         
         // SPV Management
         Route::get('spv', [AdminSpvController::class, 'index'])->name('spv.index');
