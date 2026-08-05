@@ -61,6 +61,11 @@
                 <span class="material-symbols-outlined">engineering</span>
                 Pekerjaan General
             </a>
+            <a href="{{ route('pegawai.utilization.create') }}"
+               class="sidebar-nav-item {{ request()->routeIs('pegawai.utilization.*') ? 'active' : '' }}">
+                <span class="material-symbols-outlined">build</span>
+                Utilization
+            </a>
         @endif
 
         <div class="border-t border-white/10 my-4 mx-4"></div>
