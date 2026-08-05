@@ -1,5 +1,5 @@
-const CACHE_NAME = 'surface-mine-v3';
-const APP_SHELL = ['/', '/login', '/admin/dashboard', '/spv/dashboard', '/pegawai', '/offline.html', '/manifest.json'];
+const CACHE_NAME = 'surface-mine-v4';
+const APP_SHELL = ['/', '/login', '/admin/rekapan', '/spv/rekapan', '/pegawai/utilization/create', '/pegawai', '/offline.html', '/manifest.json'];
 
 self.addEventListener('install', event => {
     event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL)));
@@ -32,7 +32,7 @@ self.addEventListener('fetch', event => {
 });
 
 self.addEventListener('sync', event => {
-    if (event.tag === 'absensi-sync' || event.tag === 'pemantauan-sync' || event.tag === 'ritasi-sync') {
+    if (event.tag === 'absensi-sync' || event.tag === 'pemantauan-sync' || event.tag === 'ritasi-sync' || event.tag === 'utilization-sync') {
         event.waitUntil(self.clients.matchAll().then(clients => {
             clients.forEach(client => client.postMessage({ type: 'SYNC_OUTBOX' }));
         }));

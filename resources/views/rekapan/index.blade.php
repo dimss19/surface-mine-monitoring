@@ -15,6 +15,7 @@
         <input type="hidden" name="tanggal_start" value="{{ request('tanggal_start') }}">
         <input type="hidden" name="tanggal_end" value="{{ request('tanggal_end') }}">
         <input type="hidden" name="shift" value="{{ request('shift') }}">
+        <input type="hidden" name="search" value="{{ request('search') }}">
         <button type="submit" class="bg-amber-500 hover:bg-amber-600 text-white font-semibold px-4 py-2 rounded-lg flex items-center gap-2">
             <span class="material-symbols-outlined text-lg">download</span>
             Export to Excel

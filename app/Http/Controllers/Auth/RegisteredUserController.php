@@ -46,6 +46,10 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('admin.rekapan.index', absolute: false));
+        return redirect(match ($user->role) {
+            'admin'   => route('admin.rekapan.index', absolute: false),
+            'spv'     => route('spv.rekapan.index', absolute: false),
+            default   => route('pegawai.dashboard', absolute: false),
+        });
     }
 }

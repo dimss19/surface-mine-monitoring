@@ -51,7 +51,7 @@ class UtilizationController extends Controller
         $exists = UnitUtilization::where('unit_id', $request->unit_id)
             ->where('tanggal', $request->tanggal)
             ->where('tipe', $request->tipe)
-            ->where('deskripsi', $request->deskripsi)
+            ->when(empty($request->deskripsi), fn ($q) => $q->whereNull('deskripsi'), fn ($q) => $q->where('deskripsi', $request->deskripsi))
             ->exists();
 
         if ($exists) {

@@ -11,15 +11,6 @@ use Illuminate\Pagination\Paginator;
 
 class RekapanController extends Controller
 {
-    private function filters(Request $request): array
-    {
-        return [
-            'tanggal_start' => $request->tanggal_start,
-            'tanggal_end' => $request->tanggal_end,
-            'shift' => $request->shift,
-        ];
-    }
-
     private function applyFilters($query, Request $request)
     {
         return $query
@@ -72,9 +63,7 @@ class RekapanController extends Controller
             ['path' => $request->url(), 'query' => $request->query()]
         );
 
-        $totalHm = $rows->getCollection()->sum(fn ($r) => $r['ritasi_hm'] + $r['non_ritasi_hm']);
-
-        return view('rekapan.index', compact('rows', 'totalHm'));
+        return view('rekapan.index', compact('rows'));
     }
 
     public function export(Request $request)
@@ -91,6 +80,11 @@ class RekapanController extends Controller
                 'general' => (int) ($generalAgg->get($p->id)->total ?? 0),
             ];
         });
+
+        if ($request->filled('search')) {
+            $search = strtolower($request->search);
+            $rows = $rows->filter(fn ($r) => str_contains(strtolower($r['pegawai']->nama ?? ''), $search))->values();
+        }
 
         $filename = "Rekapan_Pegawai_" . date('Y-m-d_His') . ".xls";
         $sanitized = str_replace(['"', "\r", "\n"], '', $filename);

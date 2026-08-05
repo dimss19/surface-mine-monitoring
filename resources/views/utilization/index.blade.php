@@ -21,7 +21,7 @@
             <span class="material-symbols-outlined text-lg">filter_alt</span>
             Filter
         </button>
-        @if(request()->has('tanggal_start'))
+        @if(request()->filled('tanggal_start'))
             <a href="{{ route("$role.utilization.index") }}" class="btn-secondary">Reset</a>
         @endif
     </form>
