@@ -36,7 +36,7 @@ class AdminController extends Controller
 
         $unitStatuses = Ritasi::whereBetween('tanggal', [$dateFrom, $dateTo])
             ->join('units', 'ritasis.unit_id', '=', 'units.id')
-            ->select('units.area_id', 'units.status')
+            ->select('ritasis.area_id', 'units.status')
             ->get()
             ->groupBy('area_id')
             ->map(fn ($items) => $items->pluck('status')->first());
