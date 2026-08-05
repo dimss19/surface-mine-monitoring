@@ -29,10 +29,11 @@
 
 @php
     $breakdownCount = $latestStatus->filter(fn ($t) => $t === 'breakdown')->count();
-    $servisCount = $latestStatus->count() - $breakdownCount;
+    $servisCount = $latestStatus->filter(fn ($t) => $t === 'servis')->count();
+    $readyCount = $latestStatus->filter(fn ($t) => $t === 'ready')->count();
 @endphp
 
-<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="grid grid-cols-3 gap-4 mb-6">
     <div class="card p-4 flex items-center gap-3">
         <span class="badge-breakdown material-symbols-outlined rounded-full p-2">report</span>
         <div>
@@ -41,10 +42,17 @@
         </div>
     </div>
     <div class="card p-4 flex items-center gap-3">
-        <span class="badge-active material-symbols-outlined rounded-full p-2">check_circle</span>
+        <span class="badge-maintenance material-symbols-outlined rounded-full p-2">build</span>
         <div>
             <p class="text-2xl font-bold">{{ $servisCount }}</p>
             <p class="text-sm text-slate-500">Unit Servis</p>
+        </div>
+    </div>
+    <div class="card p-4 flex items-center gap-3">
+        <span class="badge-active material-symbols-outlined rounded-full p-2">check_circle</span>
+        <div>
+            <p class="text-2xl font-bold">{{ $readyCount }}</p>
+            <p class="text-sm text-slate-500">Unit Ready</p>
         </div>
     </div>
 </div>
@@ -56,7 +64,7 @@
                 <tr>
                     <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600">TANGGAL</th>
                     <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600">UNIT</th>
-                    <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600">TIPE</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600">STATUS</th>
                     <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600">DESKRIPSI</th>
                     <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600">PENGISI</th>
                 </tr>
@@ -64,13 +72,15 @@
             <tbody class="divide-y">
                 @forelse($utilizations as $u)
                     <tr class="hover:bg-slate-50">
-                        <td class="px-4 py-3 text-sm">{{ $u->tanggal->format('d M Y') }}</td>
+                        <td class="px-4 py-3 text-sm">{{ $u->started_at->format('d M Y') }}</td>
                         <td class="px-4 py-3 text-sm font-mono">{{ $u->unit->kode ?? '-' }}</td>
                         <td class="px-4 py-3">
-                            @if($u->tipe === 'breakdown')
+                            @if($u->status === 'breakdown')
                                 <span class="badge-breakdown px-3 py-1 rounded-full text-sm">Breakdown</span>
-                            @else
+                            @elseif($u->status === 'servis')
                                 <span class="badge-maintenance px-3 py-1 rounded-full text-sm">Servis</span>
+                            @else
+                                <span class="badge-active px-3 py-1 rounded-full text-sm">Ready</span>
                             @endif
                         </td>
                         <td class="px-4 py-3 text-sm">{{ $u->deskripsi ?? '-' }}</td>
