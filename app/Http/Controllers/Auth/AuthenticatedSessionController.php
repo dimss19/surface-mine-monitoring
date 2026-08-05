@@ -25,9 +25,9 @@ class AuthenticatedSessionController extends Controller
         $user = Auth::user();
 
         return match ($user->role) {
-            'admin'   => redirect('/admin/dashboard'),
-            'spv'     => redirect('/spv/dashboard'),
-            'pegawai' => redirect('/pegawai'),
+            'admin'   => redirect()->route('admin.rekapan.index'),
+            'spv'     => redirect()->route('spv.rekapan.index'),
+            'pegawai' => redirect()->route('pegawai.dashboard'),
             default   => redirect('/'),
         };
     }
