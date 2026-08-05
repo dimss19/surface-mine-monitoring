@@ -1,4 +1,4 @@
-@extends('layouts.operator')
+﻿@extends('layouts.app')
 
 @section('title', 'Form Pekerjaan General')
 @section('page-title', 'Form Pekerjaan General')

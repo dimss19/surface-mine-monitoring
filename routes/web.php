@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SpvController;
@@ -28,11 +27,6 @@ Route::get('/rekapan', fn () => redirect()->route('pegawai.ritasi.create'));
 Route::middleware('auth')->group(function () {
     // CSRF token refresh for offline sync (see resources/js/offline-sync.js)
     Route::get('/csrf-token', fn () => response()->json(['token' => csrf_token()]))->name('csrf-token');
-
-    // Profile
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Pegawai (Operator)
     Route::middleware('role:pegawai')->prefix('pegawai')->name('pegawai.')->group(function () {

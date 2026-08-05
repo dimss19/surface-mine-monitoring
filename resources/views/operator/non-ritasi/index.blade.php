@@ -1,4 +1,4 @@
-@extends('layouts.operator')
+﻿@extends('layouts.app')
 
 @section('title', 'Riwayat Non-Ritasi')
 

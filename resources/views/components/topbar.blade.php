@@ -13,12 +13,12 @@
 
     <div class="flex items-center gap-3">
         {{-- User Badge --}}
-        <a href="{{ route('profile.edit') }}" class="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors">
+        <div class="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-lg border border-slate-200">
             <div class="w-7 h-7 rounded-full bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center">
                 <span class="material-symbols-outlined text-white text-sm">person</span>
             </div>
             <span class="text-sm font-medium text-slate-700 hidden sm:inline">{{ Auth::user()->name ?? ucfirst($role) }}</span>
-        </a>
+        </div>
     </div>
 </header>
 

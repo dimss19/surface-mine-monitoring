@@ -1,4 +1,4 @@
-@extends('layouts.operator')
+﻿@extends('layouts.app')
 
 @section('title', 'Form Input Unit Non Ritasi')
 @section('page-title', 'Form Input Unit Non Ritasi')
