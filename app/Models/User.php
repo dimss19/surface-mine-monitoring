@@ -55,16 +55,6 @@ class User extends Authenticatable
         return $this->belongsToMany(Area::class, 'area_spv', 'spv_id', 'area_id');
     }
 
-    public function hasPermission(string $permission): bool
-    {
-        if ($this->role === 'admin') return true;
-
-        return Permission::where('name', $permission)
-            ->where('rolePermissions.role', $this->role)
-            ->where('rolePermissions.allowed', true)
-            ->exists();
-    }
-
     public function isPegawai(): bool
     {
         return $this->role === 'pegawai';

@@ -7,7 +7,6 @@ use App\Http\Controllers\SpvController;
 use App\Http\Controllers\AdminUnitController;
 use App\Http\Controllers\AdminMaterialController;
 use App\Http\Controllers\AdminAreaController;
-use App\Http\Controllers\AdminPermissionController;
 use App\Http\Controllers\AdminLaporanController;
 use App\Http\Controllers\AdminTargetController;
 use App\Http\Controllers\AdminSpvController;
@@ -93,10 +92,6 @@ Route::middleware('auth')->group(function () {
         // Target Harian
         Route::post('target', [AdminTargetController::class, 'store'])->name('target.store');
         Route::delete('target/{target}', [AdminTargetController::class, 'destroy'])->name('target.destroy');
-        
-        // Hak Akses
-        Route::get('hak-akses', [AdminPermissionController::class, 'index'])->name('hak-akses.index');
-        Route::put('hak-akses/{role}', [AdminPermissionController::class, 'update'])->name('hak-akses.update');
         
         // Laporan
         Route::get('laporan', [AdminLaporanController::class, 'index'])->name('laporan.index');

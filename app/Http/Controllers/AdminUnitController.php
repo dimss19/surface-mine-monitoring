@@ -6,7 +6,6 @@ use App\Models\Unit;
 use App\Models\Area;
 use App\Models\Material;
 use App\Models\User;
-use App\Models\Permission;
 use Illuminate\Http\Request;
 
 class AdminUnitController extends Controller
@@ -70,11 +69,6 @@ class AdminUnitController extends Controller
                     $query->where('role', $request->role);
                 }
                 $data['users'] = $query->orderBy('name')->paginate(10);
-                break;
-
-            case 'hak-akses':
-                $data['permissions'] = Permission::with('rolePermissions')->orderBy('group')->get();
-                $data['roles'] = ['admin', 'spv', 'pegawai'];
                 break;
 
             case 'target':

@@ -14,11 +14,7 @@ return new class extends Migration
 
         $driver = DB::getDriverName();
 
-        if ($driver === 'sqlite') {
-            DB::statement('DROP INDEX IF EXISTS users_email_unique');
-            DB::statement('ALTER TABLE users DROP COLUMN email');
-            DB::statement('ALTER TABLE users DROP COLUMN email_verified_at');
-        } elseif ($driver === 'pgsql') {
+        if ($driver === 'pgsql') {
             DB::statement('ALTER TABLE users DROP CONSTRAINT users_email_unique');
             DB::statement('ALTER TABLE users DROP COLUMN email');
             DB::statement('ALTER TABLE users DROP COLUMN email_verified_at');

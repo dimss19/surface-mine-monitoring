@@ -21,12 +21,9 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             MaterialSeeder::class,
             UnitSeeder::class,
-            PermissionSeeder::class,
-            RolePermissionSeeder::class,
             RitasiSeeder::class,
             NonRitasiSeeder::class,
             DailyTargetSeeder::class,
-            DashboardSeeder::class,
         ]);
     }
 }

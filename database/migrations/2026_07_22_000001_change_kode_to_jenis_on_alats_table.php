@@ -13,9 +13,7 @@ return new class extends Migration
             $table->string('jenis')->nullable()->after('nama');
         });
 
-        if (DB::getDriverName() !== 'sqlite') {
-            DB::statement("UPDATE alats SET jenis = 'lainnya' WHERE jenis IS NULL");
-        }
+        DB::statement("UPDATE alats SET jenis = 'lainnya' WHERE jenis IS NULL");
 
         Schema::table('alats', function (Blueprint $table) {
             $table->dropColumn('kode');
@@ -28,9 +26,7 @@ return new class extends Migration
             $table->string('kode')->nullable()->after('id');
         });
 
-        if (DB::getDriverName() !== 'sqlite') {
-            DB::statement("UPDATE alats SET kode = 'NA' WHERE kode IS NULL");
-        }
+        DB::statement("UPDATE alats SET kode = 'NA' WHERE kode IS NULL");
 
         Schema::table('alats', function (Blueprint $table) {
             $table->dropColumn('jenis');

@@ -28,7 +28,12 @@ Thumbs.db
 
 # AI/Dev tools
 AGENTS.md
+memory.md
 .opencode/
 .superpowers/
 openspec/
 docs/superpowers/
+
+# Test artifacts
+/test-results/
+/screenshots/

@@ -9,10 +9,6 @@ return new class extends Migration
     {
         $driver = DB::getDriverName();
 
-        if ($driver === 'sqlite') {
-            return;
-        }
-
         if ($driver === 'mysql') {
             DB::statement("ALTER TABLE users MODIFY role ENUM('admin','spv','pegawai') NOT NULL DEFAULT 'spv'");
 
@@ -26,10 +22,6 @@ return new class extends Migration
     public function down(): void
     {
         $driver = DB::getDriverName();
-
-        if ($driver === 'sqlite') {
-            return;
-        }
 
         if ($driver === 'mysql') {
             DB::statement("ALTER TABLE users MODIFY role ENUM('admin','spv') NOT NULL DEFAULT 'spv'");

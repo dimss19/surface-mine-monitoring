@@ -16,7 +16,6 @@
                 'area' => 'Area',
                 'unit' => 'Unit',
                 'material' => 'Material',
-                'hak-akses' => 'Hak Akses',
                 'target' => 'Target Harian',
             ];
         @endphp
@@ -39,8 +38,6 @@
     @include('admin.master-data.partials.unit-table')
 @elseif($activeTab === 'material')
     @include('admin.master-data.partials.material-table')
-@elseif($activeTab === 'hak-akses')
-    @include('admin.master-data.partials.hak-akses')
 @elseif($activeTab === 'target')
     @include('admin.master-data.partials.target-table')
 @endif
