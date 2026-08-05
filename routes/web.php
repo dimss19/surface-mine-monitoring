@@ -15,6 +15,7 @@ use App\Http\Controllers\PegawaiRitasiController;
 use App\Http\Controllers\PegawaiNonRitasiController;
 use App\Http\Controllers\PegawaiGeneralController;
 use App\Http\Controllers\SpvLaporanController;
+use App\Http\Controllers\UtilizationController;
 use Illuminate\Support\Facades\Route;
 
 // Public
@@ -45,6 +46,10 @@ Route::middleware('auth')->group(function () {
         // General
         Route::get('general/create', [PegawaiGeneralController::class, 'create'])->name('general.create');
         Route::post('general', [PegawaiGeneralController::class, 'store'])->name('general.store');
+
+        // Utilization
+        Route::get('utilization/create', [UtilizationController::class, 'create'])->name('utilization.create');
+        Route::post('utilization', [UtilizationController::class, 'store'])->name('utilization.store');
     });
 
     // SPV
@@ -60,6 +65,8 @@ Route::middleware('auth')->group(function () {
             Route::post('export/{type}', [SpvLaporanController::class, 'export'])->name('export');
         });
 
+        // Utilization
+        Route::get('utilization', [UtilizationController::class, 'index'])->name('utilization.index');
     });
 
     // Admin
@@ -90,6 +97,9 @@ Route::middleware('auth')->group(function () {
         // Laporan
         Route::get('laporan', [AdminLaporanController::class, 'index'])->name('laporan.index');
         Route::post('laporan/export', [AdminLaporanController::class, 'export'])->name('laporan.export');
+
+        // Utilization
+        Route::get('utilization', [UtilizationController::class, 'index'])->name('utilization.index');
         
         // SPV Management
         Route::get('spv', [AdminSpvController::class, 'index'])->name('spv.index');
