@@ -23,8 +23,8 @@ class AppServiceProvider extends ServiceProvider
     {
         RedirectIfAuthenticated::redirectUsing(function (Request $request) {
             return match ($request->user()->role) {
-                'admin' => '/admin/dashboard',
-                'spv' => '/spv/dashboard',
+                'admin' => '/admin/rekapan',
+                'spv' => '/spv/rekapan',
                 default => '/pegawai',
             };
         });

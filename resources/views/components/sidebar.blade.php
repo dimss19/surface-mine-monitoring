@@ -3,7 +3,7 @@
 <aside class="sidebar">
     {{-- Logo --}}
     <div class="p-5 border-b border-white/10">
-        <a href="{{ route("$role.dashboard") }}" class="flex items-center gap-3 group">
+        <a href="{{ route($role === 'pegawai' ? 'pegawai.dashboard' : "$role.rekapan.index") }}" class="flex items-center gap-3 group">
             <img src="{{ asset('images/company-logo.png') }}" alt="Logo" class="h-10 w-auto object-contain">
             <div class="flex flex-col">
                 <span class="text-lg font-bold text-white leading-tight">Surface Mine</span>
@@ -19,32 +19,32 @@
         </div>
 
         @if($role === 'admin')
-            <a href="{{ route('admin.dashboard') }}"
-               class="sidebar-nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                <span class="material-symbols-outlined">dashboard</span>
-                Dashboard Pemantauan
+            <a href="{{ route('admin.rekapan.index') }}"
+               class="sidebar-nav-item {{ request()->routeIs('admin.rekapan.*') ? 'active' : '' }}">
+                <span class="material-symbols-outlined">receipt_long</span>
+                Rekapan Pegawai
             </a>
-            <a href="{{ route('admin.laporan.index') }}"
-               class="sidebar-nav-item {{ request()->routeIs('admin.laporan.*') ? 'active' : '' }}">
-                <span class="material-symbols-outlined">monitoring</span>
-                Laporan Pemantauan
+            <a href="{{ route('admin.utilization.index') }}"
+               class="sidebar-nav-item {{ request()->routeIs('admin.utilization.*') ? 'active' : '' }}">
+                <span class="material-symbols-outlined">build</span>
+                Utilization
             </a>
             <a href="{{ route('admin.master-data.index') }}"
                class="sidebar-nav-item {{ request()->routeIs('admin.master-data.*') ? 'active' : '' }}">
                 <span class="material-symbols-outlined">storage</span>
                 Master Data
-</a>
-         @elseif($role === 'spv')
-            <a href="{{ route('spv.dashboard') }}"
-               class="sidebar-nav-item {{ request()->routeIs('spv.dashboard') ? 'active' : '' }}">
-                <span class="material-symbols-outlined">dashboard</span>
-                Dashboard Pemantauan
             </a>
-            <a href="{{ route('spv.laporan.index') }}"
-               class="sidebar-nav-item {{ request()->routeIs('spv.laporan.*') ? 'active' : '' }}">
-                <span class="material-symbols-outlined">monitoring</span>
-                Laporan Pemantauan
-</a>
+         @elseif($role === 'spv')
+            <a href="{{ route('spv.rekapan.index') }}"
+               class="sidebar-nav-item {{ request()->routeIs('spv.rekapan.*') ? 'active' : '' }}">
+                <span class="material-symbols-outlined">receipt_long</span>
+                Rekapan Pegawai
+            </a>
+            <a href="{{ route('spv.utilization.index') }}"
+               class="sidebar-nav-item {{ request()->routeIs('spv.utilization.*') ? 'active' : '' }}">
+                <span class="material-symbols-outlined">build</span>
+                Utilization
+            </a>
          @elseif($role === 'pegawai')
             <a href="{{ route('pegawai.ritasi.create') }}"
                class="sidebar-nav-item {{ request()->routeIs('pegawai.ritasi.*') ? 'active' : '' }}">

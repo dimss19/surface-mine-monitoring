@@ -7,7 +7,7 @@
         </button>
         <div class="hidden sm:block">
             <h1 class="text-lg font-bold" style="color: var(--text);">Mining Operationals Civil Department</h1>
-            <p class="text-xs text-slate-500">Dashboard Pemantauan</p>
+            <p class="text-xs text-slate-500">Rekapan & Utilization</p>
         </div>
     </div>
 
