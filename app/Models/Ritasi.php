@@ -24,6 +24,8 @@ class Ritasi extends Model
         'deskripsi_pekerjaan',
         'status',
         'fuel_consumption',
+        'quantity',
+        'quantity_unit',
     ];
 
     protected $casts = [
@@ -73,5 +75,12 @@ class Ritasi extends Model
     public function getShiftLabelAttribute()
     {
         return $this->shift === 'siang' ? 'Day' : 'Night';
+    }
+
+    public function getQuantityTonnesAttribute(): float
+    {
+        if ($this->quantity === null) return 0.0;
+        if ($this->quantity_unit === 'ton') return (float) $this->quantity;
+        return (float) ($this->quantity * ($this->material?->to_ton_factor ?? 1));
     }
 }
