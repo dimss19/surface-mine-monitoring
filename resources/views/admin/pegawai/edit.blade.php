@@ -1,39 +1,39 @@
-<x-app-layout>
-    <div class="py-6">
-        <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between mb-6">
-                <h1 class="text-2xl font-bold text-[var(--text)]">Edit Pegawai</h1>
-                <a href="{{ route('admin.pegawai.index') }}" class="btn-secondary">
-                    <span class="material-symbols-outlined text-lg">arrow_back</span>
-                    Kembali
-                </a>
-            </div>
+@extends('layouts.admin')
 
-            <div class="card">
-                <form method="POST" action="{{ route('admin.pegawai.update', $pegawai) }}">
-                    @csrf
-                    @method('PUT')
-                    <div class="p-6 space-y-4">
-                        <div>
-                            <label for="nama" class="block text-sm font-medium text-[var(--text)] mb-1">Nama Pegawai</label>
-                            <input type="text" 
-                                   id="nama" 
-                                   name="nama" 
-                                   value="{{ old('nama', $pegawai->nama) }}"
-                                   class="w-full px-4 py-2 border border-[var(--border)] rounded-lg focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent"
-                                   required>
-                            @error('nama')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
+@section('title', 'Edit Pegawai')
 
-                    <div class="p-6 border-t border-[var(--border)] flex justify-end gap-3">
-                        <a href="{{ route('admin.pegawai.index') }}" class="btn-secondary">Batal</a>
-                        <button type="submit" class="btn-primary">Simpan</button>
-                    </div>
-                </form>
+@section('content')
+<div class="mb-6 flex items-center justify-between">
+    <h1 class="text-2xl font-heading font-bold text-[var(--primary)]">Edit Pegawai</h1>
+    <a href="{{ route('admin.pegawai.index') }}" class="btn-secondary">
+        <span class="material-symbols-outlined text-lg">arrow_back</span>
+        Kembali
+    </a>
+</div>
+
+<div class="card">
+    <form method="POST" action="{{ route('admin.pegawai.update', $pegawai) }}">
+        @csrf
+        @method('PUT')
+        <div class="p-6 space-y-4">
+            <div>
+                <label for="nama" class="block text-sm font-medium text-[var(--text)] mb-1">Nama Pegawai</label>
+                <input type="text"
+                       id="nama"
+                       name="nama"
+                       value="{{ old('nama', $pegawai->nama) }}"
+                       class="w-full px-4 py-2 border border-[var(--border)] rounded-lg focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent"
+                       required>
+                @error('nama')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
         </div>
-    </div>
-</x-app-layout>
+
+        <div class="p-6 border-t border-[var(--border)] flex justify-end gap-3">
+            <a href="{{ route('admin.pegawai.index') }}" class="btn-secondary">Batal</a>
+            <button type="submit" class="btn-primary">Simpan</button>
+        </div>
+    </form>
+</div>
+@endsection

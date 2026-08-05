@@ -34,6 +34,7 @@ class PegawaiRitasiController extends Controller
             'hm_awal' => 'required|numeric|min:0',
             'hm_akhir' => 'required|numeric|min:0|gte:hm_awal',
             'jumlah_ritasi' => 'required|integer|min:0',
+            'fuel_consumption' => 'nullable|numeric|min:0',
             'lokasi_pekerjaan' => 'nullable|string',
             'deskripsi_pekerjaan' => 'nullable|string',
             'kendala' => 'nullable|string',

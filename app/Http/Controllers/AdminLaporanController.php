@@ -21,6 +21,14 @@ class AdminLaporanController extends Controller
             $nonRitasiQuery->whereDate('tanggal', $request->tanggal);
         }
         
+        if ($request->filled('tanggal_start') && $request->filled('tanggal_end')) {
+            $query->whereBetween('tanggal', [$request->tanggal_start, $request->tanggal_end]);
+            $nonRitasiQuery->whereBetween('tanggal', [$request->tanggal_start, $request->tanggal_end]);
+        } elseif ($request->filled('tanggal_start')) {
+            $query->whereDate('tanggal', $request->tanggal_start);
+            $nonRitasiQuery->whereDate('tanggal', $request->tanggal_start);
+        }
+        
         if ($request->filled('shift')) {
             $query->where('shift', $request->shift);
             $nonRitasiQuery->where('shift', $request->shift);

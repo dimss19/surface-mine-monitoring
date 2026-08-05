@@ -50,6 +50,11 @@ class AdminMaterialController extends Controller
             ->with('success', 'Material berhasil ditambahkan');
     }
 
+    public function edit(Material $material)
+    {
+        return response()->json($material);
+    }
+
     public function update(Request $request, Material $material)
     {
         $validated = $request->validate([

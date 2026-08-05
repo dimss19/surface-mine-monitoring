@@ -21,7 +21,7 @@
                     <label class="block text-sm font-medium text-slate-300 mb-2">Username</label>
                     <div class="relative">
                         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
-                            <x-heroicon-s-user class="w-5 h-5" />
+                            <span class="material-symbols-outlined">person</span>
                         </span>
                         <input type="text" 
                                name="login" 
@@ -39,7 +39,7 @@
                     <label class="block text-sm font-medium text-slate-300 mb-2">ID Pekerja</label>
                     <div class="relative">
                         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
-                            <x-heroicon-s-identification class="w-5 h-5" />
+                            <span class="material-symbols-outlined">badge</span>
                         </span>
                         <input type="password" 
                                name="password" 

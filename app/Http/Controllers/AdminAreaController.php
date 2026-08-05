@@ -40,6 +40,11 @@ class AdminAreaController extends Controller
             ->with('success', 'Area berhasil ditambahkan');
     }
 
+    public function edit(Area $area)
+    {
+        return response()->json($area);
+    }
+
     public function update(Request $request, Area $area)
     {
         $validated = $request->validate([

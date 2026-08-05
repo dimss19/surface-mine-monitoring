@@ -27,6 +27,9 @@ Route::get('/absensi', fn () => redirect()->route('pegawai.ritasi.create'));
 Route::get('/rekapan', fn () => redirect()->route('pegawai.ritasi.create'));
 
 Route::middleware('auth')->group(function () {
+    // CSRF token refresh for offline sync (see resources/js/offline-sync.js)
+    Route::get('/csrf-token', fn () => response()->json(['token' => csrf_token()]))->name('csrf-token');
+
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -75,14 +78,17 @@ Route::middleware('auth')->group(function () {
         Route::post('unit', [AdminUnitController::class, 'store'])->name('unit.store');
         Route::put('unit/{unit}', [AdminUnitController::class, 'update'])->name('unit.update');
         Route::delete('unit/{unit}', [AdminUnitController::class, 'destroy'])->name('unit.destroy');
+        Route::get('unit/{unit}/edit', [AdminUnitController::class, 'edit'])->name('unit.edit');
         
         Route::post('material', [AdminMaterialController::class, 'store'])->name('material.store');
         Route::put('material/{material}', [AdminMaterialController::class, 'update'])->name('material.update');
         Route::delete('material/{material}', [AdminMaterialController::class, 'destroy'])->name('material.destroy');
+        Route::get('material/{material}/edit', [AdminMaterialController::class, 'edit'])->name('material.edit');
         
         Route::post('area', [AdminAreaController::class, 'store'])->name('area.store');
         Route::put('area/{area}', [AdminAreaController::class, 'update'])->name('area.update');
         Route::delete('area/{area}', [AdminAreaController::class, 'destroy'])->name('area.destroy');
+        Route::get('area/{area}/edit', [AdminAreaController::class, 'edit'])->name('area.edit');
         
         // Target Harian
         Route::post('target', [AdminTargetController::class, 'store'])->name('target.store');

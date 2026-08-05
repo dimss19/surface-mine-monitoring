@@ -114,6 +114,11 @@ class AdminUnitController extends Controller
             ->with('success', 'Unit berhasil ditambahkan');
     }
 
+    public function edit(Unit $unit)
+    {
+        return response()->json($unit);
+    }
+
     public function update(Request $request, Unit $unit)
     {
         $validated = $request->validate([
