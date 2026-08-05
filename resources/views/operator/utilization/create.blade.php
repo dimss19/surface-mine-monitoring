@@ -16,7 +16,6 @@
 
 <form action="{{ route('pegawai.utilization.store') }}" method="POST" data-offline-form data-sync-tag="utilization-sync">
     @csrf
-
     <div class="card p-6">
         <h2 class="section-title mb-4 flex items-center gap-2 pb-3 border-b">
             <span class="material-symbols-outlined text-blue-500">build</span>
@@ -31,24 +30,35 @@
                         <option value="{{ $unit->id }}" data-status="{{ $latestStatus->get($unit->id, '') }}">{{ $unit->kode }}</option>
                     @endforeach
                 </select>
-                <p id="statusHint" class="mt-2 text-sm text-slate-500"></p>
+                <p id="statusHint" class="mt-2 text sm text-slate-500"></p>
             </div>
             <div>
-                <label class="form-label">Tanggal</label>
-                <input type="date" name="tanggal" class="form-input" value="{{ date('Y-m-d') }}" required>
-            </div>
-            <div>
-                <label class="form-label">Tipe</label>
+                <label class="form-label">Status</label>
                 <div class="flex gap-4 mt-2">
                     <label class="flex items-center gap-2">
-                        <input type="radio" name="tipe" value="breakdown" required>
-                        <span class="badge-breakdown px-3 py-1 rounded-full text-sm">Breakdown</span>
+                        <input type="radio" name="status" value="breakdown" required>
+                        <span class="text-red-600 font-medium">Breakdown</span>
                     </label>
                     <label class="flex items-center gap-2">
-                        <input type="radio" name="tipe" value="servis" required>
-                        <span class="badge-maintenance px-3 py-1 rounded-full text-sm">Servis</span>
+                        <input type="radio" name="status" value="servis" required>
+                        <span class="text-amber-600 font-medium">Servis</span>
+                    </label>
+                    <label class="flex items-center gap-2">
+                        <input type="radio" name="status" value="ready" required>
+                        <span class="text-green-600 font-medium">Ready</span>
                     </label>
                 </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-6 mb-8">
+            <div>
+                <label class="form-label">Tanggal / Jam Mulai</label>
+                <input type="datetime-local" name="started_at" class="form-input" id="startedAt">
+            </div>
+            <div>
+                <label class="form-label">Tanggal / Jam Selesai</label>
+                <input type="datetime-local" name="ended_at" class="form-input" id="endedAt">
             </div>
         </div>
 
@@ -72,7 +82,6 @@
         </div>
     </div>
 </form>
-
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -80,12 +89,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const hint = document.getElementById('statusHint');
     const statuses = {
         'breakdown': 'Status saat ini: Breakdown (rusak)',
-        'servis': 'Status saat ini: Servis (aktif)',
+        'servis': 'Status saat ini: Servis (perbaikan)',
+        'ready': 'Status saat ini: Ready (operasional)',
     };
     select.addEventListener('change', function() {
         const s = this.options[this.selectedIndex]?.dataset.status || '';
         hint.textContent = statuses[s] || '';
     });
+    document.getElementById('startedAt').value = new Date().toISOString().slice(0,16);
 });
 </script>
 @endpush

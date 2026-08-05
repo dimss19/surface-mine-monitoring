@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\NonRitasi;
 use App\Models\Unit;
+use App\Models\UnitUtilization;
 use App\Models\Area;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -37,6 +38,13 @@ class PegawaiNonRitasiController extends Controller
             'deskripsi_pekerjaan' => 'nullable|string',
             'kendala' => 'nullable|string',
         ]);
+
+        if (UnitUtilization::active()->where('unit_id', $validated['unit_id'])->exists()) {
+            if ($request->header('X-Offline-Replay') === '1') {
+                return response()->json(['success' => true, 'replayed' => true], 200);
+            }
+            return back()->with('error', 'Unit sedang dalam maintenance; tidak dapat input ritasi.');
+        }
 
         $pegawaiId = Auth::user()->pegawai_id;
 
