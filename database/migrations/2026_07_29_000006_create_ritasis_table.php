@@ -18,6 +18,8 @@ return new class extends Migration {
             $table->decimal('hm_akhir', 10, 2);
             $table->decimal('hm_total', 10, 2);
             $table->integer('jumlah_ritasi')->default(0);
+            $table->decimal('quantity', 12, 2)->nullable();
+            $table->string('quantity_unit')->default('ton');
             $table->string('lokasi_pekerjaan')->nullable();
             $table->text('deskripsi_pekerjaan')->nullable();
             $table->text('kendala')->nullable();

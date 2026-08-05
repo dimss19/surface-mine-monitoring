@@ -18,6 +18,8 @@ return new class extends Migration {
             $table->enum('status', ['active', 'low_stock', 'inactive', 'restricted'])->default('active');
             $table->text('keterangan')->nullable();
             $table->boolean('is_active')->default(true);
+            $table->string('unit_default')->default('ton');
+            $table->decimal('to_ton_factor', 8, 4)->default(1);
             $table->timestamps();
         });
     }

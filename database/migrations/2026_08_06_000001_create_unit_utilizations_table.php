@@ -9,8 +9,9 @@ return new class extends Migration {
         Schema::create('unit_utilizations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('unit_id')->constrained()->cascadeOnDelete();
-            $table->enum('tipe', ['breakdown', 'servis']);
-            $table->date('tanggal');
+            $table->enum('status', ['breakdown', 'servis', 'ready'])->default('breakdown');
+            $table->timestamp('started_at')->nullable();
+            $table->timestamp('ended_at')->nullable();
             $table->text('deskripsi')->nullable();
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->timestamps();
