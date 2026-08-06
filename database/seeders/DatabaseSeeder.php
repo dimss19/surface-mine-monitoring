@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             MaterialSeeder::class,
             UnitSeeder::class,
+            UnitUtilizationSeeder::class,
             RitasiSeeder::class,
             NonRitasiSeeder::class,
             DailyTargetSeeder::class,
