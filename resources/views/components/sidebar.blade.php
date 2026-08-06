@@ -19,6 +19,11 @@
         </div>
 
         @if($role === 'admin')
+            <a href="{{ route("$role.dashboard.index") }}"
+               class="sidebar-nav-item {{ request()->routeIs("$role.dashboard.*") ? 'active' : '' }}">
+                <span class="material-symbols-outlined">dashboard</span>
+                Dashboard
+            </a>
             <a href="{{ route('admin.rekapan.index') }}"
                class="sidebar-nav-item {{ request()->routeIs('admin.rekapan.*') ? 'active' : '' }}">
                 <span class="material-symbols-outlined">receipt_long</span>
@@ -35,6 +40,11 @@
                 Master Data
             </a>
          @elseif($role === 'spv')
+            <a href="{{ route("$role.dashboard.index") }}"
+               class="sidebar-nav-item {{ request()->routeIs("$role.dashboard.*") ? 'active' : '' }}">
+                <span class="material-symbols-outlined">dashboard</span>
+                Dashboard
+            </a>
             <a href="{{ route('spv.rekapan.index') }}"
                class="sidebar-nav-item {{ request()->routeIs('spv.rekapan.*') ? 'active' : '' }}">
                 <span class="material-symbols-outlined">receipt_long</span>

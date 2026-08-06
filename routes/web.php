@@ -13,6 +13,7 @@ use App\Http\Controllers\PegawaiNonRitasiController;
 use App\Http\Controllers\PegawaiGeneralController;
 use App\Http\Controllers\UtilizationController;
 use App\Http\Controllers\RekapanController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 // Public
@@ -51,6 +52,9 @@ Route::middleware('auth')->group(function () {
 
     // SPV
     Route::middleware('role:spv')->prefix('spv')->name('spv.')->group(function () {
+        Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+        Route::get('dashboard/export', [DashboardController::class, 'export'])->name('dashboard.export');
+
         // Utilization
         Route::get('utilization', [UtilizationController::class, 'index'])->name('utilization.index');
 
@@ -61,6 +65,9 @@ Route::middleware('auth')->group(function () {
 
     // Admin
     Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
+        Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+        Route::get('dashboard/export', [DashboardController::class, 'export'])->name('dashboard.export');
+
         // Master Data
         Route::get('master-data', [AdminUnitController::class, 'index'])->name('master-data.index');
         Route::post('unit', [AdminUnitController::class, 'store'])->name('unit.store');
