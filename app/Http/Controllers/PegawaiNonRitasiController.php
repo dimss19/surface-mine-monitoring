@@ -16,10 +16,11 @@ class PegawaiNonRitasiController extends Controller
         $user = Auth::user();
         $pegawai = $user->pegawai;
         
-        $units = Unit::where('is_active', true)->orderBy('kode')->pluck('kode', 'id')->toArray();
+                $units = Unit::where('is_active', true)->orderBy('kode')->pluck('kode', 'id')->toArray();
+        $latestStatus = UnitUtilization::latestPerUnit()->pluck('status', 'unit_id')->toArray();
         $areas = Area::orderBy('nama')->pluck('nama', 'id')->toArray();
 
-        return view('operator.non-ritasi.create', compact('pegawai', 'units', 'areas'));
+        return view('operator.non-ritasi.create', compact('pegawai', 'units', 'latestStatus', 'areas'));
     }
 
     public function store(Request $request)

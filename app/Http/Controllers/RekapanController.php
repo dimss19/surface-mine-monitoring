@@ -6,8 +6,6 @@ use App\Models\NonRitasi;
 use App\Models\Pegawai;
 use App\Models\Ritasi;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\Paginator;
 
 class RekapanController extends Controller
 {
@@ -33,7 +31,7 @@ class RekapanController extends Controller
         return [$ritasiAgg, $nonRitasiAgg, $generalAgg];
     }
 
-    public function index(Request $request)
+        public function index(Request $request)
     {
         [$ritasiAgg, $nonRitasiAgg, $generalAgg] = $this->aggregate($request);
 
@@ -53,16 +51,7 @@ class RekapanController extends Controller
             $rows = $rows->filter(fn ($r) => str_contains(strtolower($r['pegawai']->nama ?? ''), $search))->values();
         }
 
-        $page = Paginator::resolveCurrentPage();
-        $perPage = 15;
-        $rows = new LengthAwarePaginator(
-            $rows->forPage($page, $perPage)->values(),
-            $rows->count(),
-            $perPage,
-            $page,
-            ['path' => $request->url(), 'query' => $request->query()]
-        );
-
+        // No pagination — show all operators so there are no duplicate-name splits across pages
         return view('rekapan.index', compact('rows'));
     }
 
@@ -86,11 +75,43 @@ class RekapanController extends Controller
             $rows = $rows->filter(fn ($r) => str_contains(strtolower($r['pegawai']->nama ?? ''), $search))->values();
         }
 
-        $filename = "Rekapan_Pegawai_" . date('Y-m-d_His') . ".xls";
+        $filename = "Rekapan_Operator_" . date('Y-m-d_His') . ".xls";
         $sanitized = str_replace(['"', "\r", "\n"], '', $filename);
 
         return response()->view('rekapan.export.excel', compact('rows'))
             ->header('Content-Type', 'application/vnd.ms-excel')
             ->header('Content-Disposition', 'attachment; filename="' . $sanitized . '"');
+    }
+
+    public function show(Request $request, $id)
+    {
+        $pegawai = Pegawai::findOrFail($id);
+        
+        $ritasiQuery = Ritasi::with(['unit', 'area', 'material'])
+            ->where('pegawai_id', $id)
+            ->orderBy('tanggal', 'desc')
+            ->orderBy('created_at', 'desc');
+            
+        $nonRitasiQuery = NonRitasi::with(['unit', 'area'])
+            ->where('pegawai_id', $id)
+            ->whereNull('jam_mulai')
+            ->orderBy('tanggal', 'desc')
+            ->orderBy('created_at', 'desc');
+            
+        $generalQuery = NonRitasi::with(['unit', 'area'])
+            ->where('pegawai_id', $id)
+            ->whereNotNull('jam_mulai')
+            ->orderBy('tanggal', 'desc')
+            ->orderBy('created_at', 'desc');
+
+        $ritasiQuery = $this->applyFilters($ritasiQuery, $request);
+        $nonRitasiQuery = $this->applyFilters($nonRitasiQuery, $request);
+        $generalQuery = $this->applyFilters($generalQuery, $request);
+
+        $ritasis = $ritasiQuery->get();
+        $nonRitasis = $nonRitasiQuery->get();
+        $generals = $generalQuery->get();
+
+        return view('rekapan.show', compact('pegawai', 'ritasis', 'nonRitasis', 'generals'));
     }
 }

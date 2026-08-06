@@ -116,7 +116,7 @@
 <div id="editTargetModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
     <div class="bg-white rounded-xl w-full max-w-lg mx-4">
         <div class="p-4 border-b border-[var(--border)] flex items-center justify-between">
-            <h3 class="font-heading font-bold text-[var(--primary)]">Edit Target Harian</h3>
+            <h3 class="font-heading font-bold text-[var(--primary)]">Edit Target</h3>
             <button onclick="closeModal('editTargetModal')" class="text-slate-400 hover:text-slate-600">
                 <span class="material-symbols-outlined">close</span>
             </button>

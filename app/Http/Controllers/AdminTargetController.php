@@ -41,8 +41,8 @@ class AdminTargetController extends Controller
             ['target_ritasi' => $request->target_ritasi]
         );
 
-        return redirect()->route('admin.master-data.index', ['tab' => 'target'])
-            ->with('success', 'Target harian berhasil disimpan');
+                return redirect()->route('admin.master-data.index', ['tab' => 'target'])
+            ->with('success', 'Target berhasil disimpan');
     }
 
     public function edit(DailyTarget $target)
@@ -59,13 +59,13 @@ class AdminTargetController extends Controller
         $target->update($validated);
 
         return redirect()->route('admin.master-data.index', ['tab' => 'target'])
-            ->with('success', 'Target harian berhasil diupdate');
+                        ->with('success', 'Target berhasil diupdate');
     }
 
     public function destroy(DailyTarget $target)
     {
         $target->delete();
         return redirect()->route('admin.master-data.index', ['tab' => 'target'])
-            ->with('success', 'Target harian berhasil dihapus');
+                        ->with('success', 'Target berhasil dihapus');
     }
 }

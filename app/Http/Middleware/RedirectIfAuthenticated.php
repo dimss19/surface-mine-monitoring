@@ -12,9 +12,9 @@ class RedirectIfAuthenticated
     public function handle(Request $request, Closure $next): Response
     {
         if (Auth::guard('web')->check()) {
-            return redirect()->to(match (Auth::user()->role) {
-                'admin' => '/admin/rekapan',
-                'spv' => '/spv/rekapan',
+                        return redirect()->to(match (Auth::user()->role) {
+                'admin' => '/admin/dashboard',
+                'spv' => '/spv/dashboard',
                 'pegawai' => '/pegawai',
                 default => '/',
             });

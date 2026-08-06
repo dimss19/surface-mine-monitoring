@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\NonRitasi;
 use App\Models\Area;
 use App\Models\Unit;
+use App\Models\UnitUtilization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,10 +16,11 @@ class PegawaiGeneralController extends Controller
         $user = Auth::user();
         $pegawai = $user->pegawai;
         
-        $units = Unit::orderBy('nama')->pluck('nama', 'id')->toArray();
+                $units = Unit::orderBy('nama')->pluck('nama', 'id')->toArray();
+        $latestStatus = UnitUtilization::latestPerUnit()->pluck('status', 'unit_id')->toArray();
         $areas = Area::orderBy('nama')->pluck('nama', 'id')->toArray();
 
-        return view('operator.general.create', compact('pegawai', 'units', 'areas'));
+        return view('operator.general.create', compact('pegawai', 'units', 'latestStatus', 'areas'));
     }
 
     public function store(Request $request)
@@ -35,7 +37,14 @@ class PegawaiGeneralController extends Controller
             'is_overtime' => 'nullable|boolean',
         ]);
 
-        $pegawaiId = Auth::user()->pegawai_id;
+                $pegawaiId = Auth::user()->pegawai_id;
+
+        if (UnitUtilization::active()->where('unit_id', $validated['unit_id'])->exists()) {
+            if ($request->header('X-Offline-Replay') === '1') {
+                return response()->json(['success' => true, 'replayed' => true], 200);
+            }
+            return back()->with('error', 'Unit sedang dalam maintenance; tidak dapat input pekerjaan.');
+        }
 
         $exists = NonRitasi::where('pegawai_id', $pegawaiId)
             ->where('tanggal', $validated['tanggal'])

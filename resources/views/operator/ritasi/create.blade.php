@@ -48,18 +48,15 @@
                 <label class="form-label">Tanggal</label>
                 <input type="date" name="tanggal" class="form-input" value="{{ date('Y-m-d') }}" required>
             </div>
-            <div>
-                <label class="form-label">Nama Operator</label>
-                <input type="text" class="form-input bg-slate-50" value="{{ $pegawai->nama ?? Auth::user()->name }}" readonly>
-            </div>
-            <div>
+                        <div>
                 <label class="form-label">Nomor Unit (Dump Truck)</label>
-                <select name="unit_id" class="form-input" required>
+                <select name="unit_id" id="unitSelect" class="form-input" required>
                     <option value="">Contoh: DT-1042</option>
                     @foreach($units as $id => $kode)
-                        <option value="{{ $id }}">{{ $kode }}</option>
+                        <option value="{{ $id }}" data-status="{{ $latestStatus[$id] ?? '' }}">{{ $kode }}</option>
                     @endforeach
                 </select>
+                <p id="unitStatusHint" class="mt-1 text-xs text-slate-500"></p>
             </div>
         </div>
         
@@ -186,6 +183,28 @@ document.addEventListener('DOMContentLoaded', function() {
     
     hmAwal.addEventListener('input', updateTotal);
     hmAkhir.addEventListener('input', updateTotal);
+
+    // Color units in maintenance (breakdown/servis) red in dropdown
+    const unitSelect = document.getElementById('unitSelect');
+    const statusHint = document.getElementById('unitStatusHint');
+    if (unitSelect) {
+        const statusLabels = {
+            'breakdown': 'Breakdown (rusak)',
+            'servis': 'Servis (perbaikan)',
+            'ready': 'Ready (operasional)',
+        };
+        Array.from(unitSelect.options).forEach(function(opt) {
+            const status = opt.dataset.status;
+            if (status === 'breakdown' || status === 'servis') {
+                opt.style.color = '#dc2626';
+                opt.style.fontWeight = 'bold';
+            }
+        });
+        unitSelect.addEventListener('change', function() {
+            const status = this.options[this.selectedIndex]?.dataset.status || '';
+            statusHint.textContent = status ? 'Status: ' + (statusLabels[status] || status) : '';
+        });
+    }
 });
 </script>
 @endpush

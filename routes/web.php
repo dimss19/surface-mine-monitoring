@@ -72,6 +72,7 @@ Route::middleware('auth')->group(function () {
         // Rekapan
         Route::get('rekapan', [RekapanController::class, 'index'])->name('rekapan.index');
         Route::post('rekapan/export', [RekapanController::class, 'export'])->name('rekapan.export');
+        Route::get('rekapan/{pegawai}', [RekapanController::class, 'show'])->name('rekapan.show');
     });
 
     // Admin
@@ -103,7 +104,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('area/{area}', [AdminAreaController::class, 'destroy'])->name('area.destroy');
         Route::get('area/{area}/edit', [AdminAreaController::class, 'edit'])->name('area.edit');
         
-        // Target Harian
+        // Target
         Route::get('target', [AdminTargetController::class, 'index'])->name('target.index');
         Route::post('target', [AdminTargetController::class, 'store'])->name('target.store');
         Route::get('target/{target}/edit', [AdminTargetController::class, 'edit'])->name('target.edit');
@@ -123,6 +124,7 @@ Route::middleware('auth')->group(function () {
         // Rekapan
         Route::get('rekapan', [RekapanController::class, 'index'])->name('rekapan.index');
         Route::post('rekapan/export', [RekapanController::class, 'export'])->name('rekapan.export');
+        Route::get('rekapan/{pegawai}', [RekapanController::class, 'show'])->name('rekapan.show');
         
         // SPV Management
         Route::get('spv', [AdminSpvController::class, 'index'])->name('spv.index');

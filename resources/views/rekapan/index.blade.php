@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Rekapan Pegawai')
+@section('title', 'Rekapan Operator')
 
-@section('content')
+        @section('content')
 @php $role = Auth::user()->role; @endphp
 
 <div class="mb-6">
-    <h1 class="text-2xl font-heading font-bold text-[var(--primary)]">Rekapan Pegawai</h1>
+    <h1 class="text-2xl font-heading font-bold text-[var(--primary)]">Rekapan Operator</h1>
 </div>
 
 <div class="mb-4 flex gap-3">
@@ -42,12 +42,12 @@
             </select>
         </div>
         <div>
-            <label class="form-label">Cari Pegawai</label>
+            <label class="form-label">Cari Operator</label>
             <div class="relative">
                 <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
                     <span class="material-symbols-outlined text-lg">search</span>
                 </span>
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama pegawai..." class="form-input pl-10">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama operator..." class="form-input pl-10">
             </div>
         </div>
         <div class="flex items-center gap-2 sm:col-span-2 xl:col-span-4">
@@ -64,13 +64,13 @@
 
 <div class="card overflow-hidden">
     <div class="p-4 border-b">
-        <h2 class="section-title">Rekap HM Pegawai</h2>
+        <h2 class="section-title">Rekap HM Operator</h2>
     </div>
     <div class="overflow-x-auto">
         <table class="w-full">
             <thead class="bg-slate-50">
                 <tr>
-                    <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600">NAMA PEGAWAI</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600">NAMA OPERATOR</th>
                     <th class="px-4 py-3 text-center text-xs font-semibold text-slate-600">RITASI</th>
                     <th class="px-4 py-3 text-center text-xs font-semibold text-slate-600">NON-RITASI</th>
                     <th class="px-4 py-3 text-center text-xs font-semibold text-slate-600">GENERAL</th>
@@ -80,7 +80,11 @@
             <tbody class="divide-y">
                 @forelse($rows as $r)
                     <tr class="hover:bg-slate-50">
-                        <td class="px-4 py-3 text-sm font-medium">{{ $r['pegawai']->nama }}</td>
+                        <td class="px-4 py-3 text-sm font-medium">
+                            <a href="{{ route("$role.rekapan.show", ['pegawai' => $r['pegawai']->id, 'tanggal_start' => request('tanggal_start'), 'tanggal_end' => request('tanggal_end'), 'shift' => request('shift')]) }}" class="text-[var(--primary)] hover:underline">
+                                {{ $r['pegawai']->nama }}
+                            </a>
+                        </td>
                         <td class="px-4 py-3 text-sm text-center">{{ $r['ritasi'] }}</td>
                         <td class="px-4 py-3 text-sm text-center">{{ $r['non_ritasi'] }}</td>
                         <td class="px-4 py-3 text-sm text-center">{{ $r['general'] }}</td>
@@ -93,9 +97,6 @@
                 @endforelse
             </tbody>
         </table>
-    </div>
-    <div class="p-4 border-t">
-        {{ $rows->links() }}
-    </div>
+        </div>
 </div>
 @endsection

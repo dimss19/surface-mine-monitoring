@@ -12,16 +12,17 @@ use Illuminate\Support\Facades\Auth;
 
 class PegawaiRitasiController extends Controller
 {
-    public function create()
+        public function create()
     {
         $user = Auth::user();
         $pegawai = $user->pegawai;
         
         $units = Unit::where('is_active', true)->orderBy('kode')->pluck('kode', 'id')->toArray();
+        $latestStatus = UnitUtilization::latestPerUnit()->pluck('status', 'unit_id')->toArray();
         $areas = Area::orderBy('nama')->pluck('nama', 'id')->toArray();
         $materials = Material::where('is_active', true)->where('status', 'active')->orderBy('nama')->pluck('nama', 'id')->toArray();
 
-        return view('operator.ritasi.create', compact('pegawai', 'units', 'areas', 'materials'));
+        return view('operator.ritasi.create', compact('pegawai', 'units', 'latestStatus', 'areas', 'materials'));
     }
 
     public function store(Request $request)
