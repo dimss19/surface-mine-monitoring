@@ -295,14 +295,17 @@ function renderDonut(canvasId, data) {
 document.addEventListener('DOMContentLoaded', function() {
     const materialCtx = document.getElementById('materialChart');
     if (materialCtx) {
+        const materialPalette = ['#1e3a5f', '#d97706', '#059669', '#dc2626', '#7c3aed', '#0284c7', '#ca8a04', '#db2777', '#475569', '#0d9488'];
+        const materialLabels = {!! json_encode(array_keys($haulingByMaterial)) !!};
+        const materialColors = materialLabels.map((_, i) => materialPalette[i % materialPalette.length]);
         new Chart(materialCtx, {
             type: 'bar',
             data: {
-                labels: {!! json_encode(array_keys($haulingByMaterial)) !!},
+                labels: materialLabels,
                 datasets: [{
                     label: 'Tonnage',
                     data: {!! json_encode(array_values($haulingByMaterial)) !!},
-                    backgroundColor: '#1e3a5f',
+                    backgroundColor: materialColors,
                     borderRadius: 4
                 }]
             },
