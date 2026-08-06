@@ -71,7 +71,27 @@
                 <span class="text-xl font-bold" style="color: var(--text);" id="hmTotal">0.0 Jam</span>
             </div>
         </div>
-        
+
+        {{-- Produksi --}}
+        <h2 class="section-title mb-4 flex items-center gap-2 pb-3 border-b">
+            <span class="material-symbols-outlined text-blue-500">scale</span>
+            Produksi
+        </h2>
+        <div class="grid grid-cols-2 gap-6 mb-8">
+            <div>
+                <label class="form-label">Quantity</label>
+                <input type="number" name="quantity" step="0.01" min="0" class="form-input" value="0.00" placeholder="0.00">
+            </div>
+            <div>
+                <label class="form-label">Satuan</label>
+                <select name="quantity_unit" class="form-input">
+                    <option value="ton">Ton (default)</option>
+                    <option value="cbm">CBM</option>
+                    <option value="m3">M3</option>
+                </select>
+            </div>
+        </div>
+
         {{-- Fuel Consumption --}}
         <h2 class="section-title mb-4 flex items-center gap-2 pb-3 border-b">
             <span class="material-symbols-outlined text-blue-500">local_gas_station</span>

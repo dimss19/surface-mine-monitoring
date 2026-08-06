@@ -25,6 +25,10 @@ class DashboardController extends Controller
         $period = $request->query('period', 'daily');
         $data = $reports->exportData($request, $period);
 
+        if ($request->query('format') === 'pdf') {
+            return response()->view('dashboard.export.pdf', $data);
+        }
+
         $filename = 'PA-UA_' . $period . '_' . now()->format('Ymd_His') . '.xls';
 
         return response()->view('dashboard.export.excel', $data)

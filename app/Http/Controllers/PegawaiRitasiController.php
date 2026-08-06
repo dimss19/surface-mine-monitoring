@@ -36,6 +36,8 @@ class PegawaiRitasiController extends Controller
             'hm_akhir' => 'required|numeric|min:0|gte:hm_awal',
             'jumlah_ritasi' => 'required|integer|min:0',
             'fuel_consumption' => 'nullable|numeric|min:0',
+            'quantity' => 'nullable|numeric|min:0',
+            'quantity_unit' => 'nullable|string|max:20',
             'lokasi_pekerjaan' => 'nullable|string',
             'deskripsi_pekerjaan' => 'nullable|string',
             'kendala' => 'nullable|string',
@@ -47,6 +49,9 @@ class PegawaiRitasiController extends Controller
             }
             return back()->with('error', 'Unit sedang dalam maintenance; tidak dapat input ritasi.');
         }
+
+        $materialUnitDefault = \App\Models\Material::find($validated['material_id'])->unit_default ?? 'ton';
+        $validated['quantity_unit'] = $validated['quantity_unit'] ?? $materialUnitDefault;
 
         $pegawaiId = Auth::user()->pegawai_id;
 
