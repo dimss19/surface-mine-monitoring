@@ -16,24 +16,21 @@ class DailyTargetSeeder extends Seeder
             return;
         }
 
-        for ($i = 0; $i < 30; $i++) {
-            $tanggal = now()->subDays($i)->toDateString();
+        foreach ($materials as $material) {
+            $target = match ($material->nama) {
+                'Bauxite Ore (Raw)' => rand(80, 150),
+                'Mining Tuff' => rand(30, 70),
+                'Cake' => rand(20, 50),
+                'Pasir Hitam' => rand(40, 80),
+                'Tuff Off' => rand(25, 60),
+                default => rand(20, 60),
+            };
 
-            foreach ($materials as $material) {
-                $target = match ($material->nama) {
-                    'Bauxite Ore (Raw)' => rand(80, 150),
-                    'Mining Tuff' => rand(30, 70),
-                    'Cake' => rand(20, 50),
-                    'Pasir Hitam' => rand(40, 80),
-                    'Tuff Off' => rand(25, 60),
-                    default => rand(20, 60),
-                };
-
-                DailyTarget::updateOrCreate(
-                    ['material_id' => $material->id, 'tanggal' => $tanggal],
-                    ['target_ritasi' => $target]
-                );
-            }
+            // Target is set once per material (not per date).
+            DailyTarget::updateOrCreate(
+                ['material_id' => $material->id],
+                ['target_ritasi' => $target]
+            );
         }
     }
 }

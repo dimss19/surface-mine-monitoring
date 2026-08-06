@@ -23,7 +23,6 @@
                 <tr>
                     <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">NO</th>
                     <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">MATERIAL</th>
-                    <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">TANGGAL</th>
                     <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">TARGET RITASI</th>
                     <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">AKSI</th>
                 </tr>
@@ -33,7 +32,6 @@
                     <tr class="hover:bg-slate-50">
                         <td class="px-4 py-3 text-sm text-[var(--text)]">{{ $targets->firstItem() + $index }}</td>
                         <td class="px-4 py-3 text-sm font-medium text-[var(--text)]">{{ $target->material->nama }}</td>
-                        <td class="px-4 py-3 text-sm text-[var(--text-muted)]">{{ \Carbon\Carbon::parse($target->tanggal)->format('d M Y') }}</td>
                         <td class="px-4 py-3 text-sm text-[var(--text)]">{{ $target->target_ritasi }}</td>
                         <td class="px-4 py-3">
                             <div class="flex items-center gap-2">
@@ -51,7 +49,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="px-4 py-8 text-center text-[var(--text-muted)]">Tidak ada data target harian</td>
+                        <td colspan="4" class="px-4 py-8 text-center text-[var(--text-muted)]">Tidak ada data target harian</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -87,10 +85,6 @@
                 </select>
             </div>
             <div>
-                <label class="form-label">Tanggal</label>
-                <input type="date" name="tanggal" class="form-input" value="{{ date('Y-m-d') }}" required>
-            </div>
-            <div>
                 <label class="form-label">Target Ritasi</label>
                 <input type="number" name="target_ritasi" class="form-input" min="0" required placeholder="Masukkan jumlah target ritasi">
             </div>
@@ -118,10 +112,6 @@
                 <input type="text" id="edit_target_material" class="form-input" readonly disabled>
             </div>
             <div>
-                <label class="form-label">Tanggal</label>
-                <input type="text" id="edit_target_tanggal" class="form-input" readonly disabled>
-            </div>
-            <div>
                 <label class="form-label">Target Ritasi</label>
                 <input type="number" name="target_ritasi" id="edit_target_ritasi" class="form-input" min="0" required>
             </div>
@@ -146,7 +136,6 @@ function editTarget(id) {
         .then(data => {
             document.getElementById('editTargetForm').action = `/admin/target/${id}`;
             document.getElementById('edit_target_material').value = data.material?.nama || '-';
-            document.getElementById('edit_target_tanggal').value = new Date(data.tanggal).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
             document.getElementById('edit_target_ritasi').value = data.target_ritasi;
             openModal('editTargetModal');
         })

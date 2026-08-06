@@ -18,7 +18,7 @@ class AdminTargetController extends Controller
             });
         }
 
-        $targets = $query->orderBy('tanggal', 'desc')->paginate(10);
+        $targets = $query->orderBy('id', 'desc')->paginate(10);
 
         return view('admin.master-data.index', [
             'activeTab' => 'target',
@@ -31,12 +31,11 @@ class AdminTargetController extends Controller
     {
         $request->validate([
             'material_id' => 'required|exists:materials,id',
-            'tanggal' => 'required|date',
             'target_ritasi' => 'required|integer|min:0',
         ]);
 
         DailyTarget::updateOrCreate(
-            ['material_id' => $request->material_id, 'tanggal' => $request->tanggal],
+            ['material_id' => $request->material_id],
             ['target_ritasi' => $request->target_ritasi]
         );
 
