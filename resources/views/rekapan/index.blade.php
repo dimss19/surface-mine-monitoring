@@ -16,7 +16,7 @@
         <input type="hidden" name="tanggal_end" value="{{ request('tanggal_end') }}">
         <input type="hidden" name="shift" value="{{ request('shift') }}">
         <input type="hidden" name="search" value="{{ request('search') }}">
-        <button type="submit" class="bg-amber-500 hover:bg-amber-600 text-white font-semibold px-4 py-2 rounded-lg flex items-center gap-2">
+        <button type="submit" class="btn-primary flex items-center gap-2">
             <span class="material-symbols-outlined text-lg">download</span>
             Export to Excel
         </button>
@@ -24,35 +24,48 @@
 </div>
 
 <div class="card p-4 mb-6">
-    <form method="GET" action="{{ route("$role.rekapan.index") }}" class="flex items-center gap-4 flex-wrap">
-        <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-slate-400">calendar_today</span>
-            <input type="date" name="tanggal_start" value="{{ request('tanggal_start') }}" class="form-input w-40">
-            <span class="text-slate-400">-</span>
-            <input type="date" name="tanggal_end" value="{{ request('tanggal_end') }}" class="form-input w-40">
+    <form method="GET" action="{{ route("$role.rekapan.index") }}" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 items-end">
+        <div>
+            <label class="form-label">Tanggal Mulai</label>
+            <input type="date" name="tanggal_start" value="{{ request('tanggal_start') }}" class="form-input">
         </div>
-        <select name="shift" class="form-input w-40">
-            <option value="">All Shifts</option>
-            <option value="siang" {{ request('shift') === 'siang' ? 'selected' : '' }}>Day</option>
-            <option value="malam" {{ request('shift') === 'malam' ? 'selected' : '' }}>Night</option>
-        </select>
-        <div class="relative flex-1 min-w-48">
-            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
-                <span class="material-symbols-outlined text-lg">search</span>
-            </span>
-            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama pegawai..." class="pl-10 pr-4 py-2 border rounded-lg w-full text-sm">
+        <div>
+            <label class="form-label">Tanggal Akhir</label>
+            <input type="date" name="tanggal_end" value="{{ request('tanggal_end') }}" class="form-input">
         </div>
-        <button type="submit" class="btn-primary flex items-center gap-2">
-            <span class="material-symbols-outlined text-lg">filter_alt</span>
-            Filter
-        </button>
-        @if(request()->has('tanggal_start') || request()->has('shift') || request()->has('search'))
-            <a href="{{ route("$role.rekapan.index") }}" class="btn-secondary">Reset</a>
-        @endif
+        <div>
+            <label class="form-label">Shift</label>
+            <select name="shift" class="form-input">
+                <option value="">All Shifts</option>
+                <option value="siang" {{ request('shift') === 'siang' ? 'selected' : '' }}>Day</option>
+                <option value="malam" {{ request('shift') === 'malam' ? 'selected' : '' }}>Night</option>
+            </select>
+        </div>
+        <div>
+            <label class="form-label">Cari Pegawai</label>
+            <div class="relative">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                    <span class="material-symbols-outlined text-lg">search</span>
+                </span>
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama pegawai..." class="form-input pl-10">
+            </div>
+        </div>
+        <div class="flex items-center gap-2 sm:col-span-2 xl:col-span-4">
+            <button type="submit" class="btn-primary flex items-center gap-2">
+                <span class="material-symbols-outlined text-lg">filter_alt</span>
+                Filter
+            </button>
+            @if(request()->has('tanggal_start') || request()->has('shift') || request()->has('search'))
+                <a href="{{ route("$role.rekapan.index") }}" class="btn-secondary">Reset</a>
+            @endif
+        </div>
     </form>
 </div>
 
 <div class="card overflow-hidden">
+    <div class="p-4 border-b">
+        <h2 class="section-title">Rekap HM Pegawai</h2>
+    </div>
     <div class="overflow-x-auto">
         <table class="w-full">
             <thead class="bg-slate-50">

@@ -33,24 +33,24 @@
     $readyCount = $latestStatus->filter(fn ($t) => $t === 'ready')->count();
 @endphp
 
-<div class="grid grid-cols-3 gap-4 mb-6">
-    <div class="card p-4 flex items-center gap-3">
-        <span class="badge-breakdown material-symbols-outlined rounded-full p-2">report</span>
-        <div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+    <div class="stat-card border-l-4 border-red-500">
+        <span class="material-symbols-outlined text-red-600">report</span>
+        <div class="min-w-0">
             <p class="text-2xl font-bold">{{ $breakdownCount }}</p>
             <p class="text-sm text-slate-500">Unit Breakdown</p>
         </div>
     </div>
-    <div class="card p-4 flex items-center gap-3">
-        <span class="badge-maintenance material-symbols-outlined rounded-full p-2">build</span>
-        <div>
+    <div class="stat-card border-l-4 border-amber-500">
+        <span class="material-symbols-outlined text-amber-600">build</span>
+        <div class="min-w-0">
             <p class="text-2xl font-bold">{{ $servisCount }}</p>
             <p class="text-sm text-slate-500">Unit Servis</p>
         </div>
     </div>
-    <div class="card p-4 flex items-center gap-3">
-        <span class="badge-active material-symbols-outlined rounded-full p-2">check_circle</span>
-        <div>
+    <div class="stat-card border-l-4 border-green-500">
+        <span class="material-symbols-outlined text-green-600">check_circle</span>
+        <div class="min-w-0">
             <p class="text-2xl font-bold">{{ $readyCount }}</p>
             <p class="text-sm text-slate-500">Unit Ready</p>
         </div>
@@ -76,11 +76,11 @@
                         <td class="px-4 py-3 text-sm font-mono">{{ $u->unit->kode ?? '-' }}</td>
                         <td class="px-4 py-3">
                             @if($u->status === 'breakdown')
-                                <span class="badge-breakdown px-3 py-1 rounded-full text-sm">Breakdown</span>
+                                <span class="badge badge-breakdown">Breakdown</span>
                             @elseif($u->status === 'servis')
-                                <span class="badge-maintenance px-3 py-1 rounded-full text-sm">Servis</span>
+                                <span class="badge badge-servis">Servis</span>
                             @else
-                                <span class="badge-active px-3 py-1 rounded-full text-sm">Ready</span>
+                                <span class="badge badge-active">Ready</span>
                             @endif
                         </td>
                         <td class="px-4 py-3 text-sm">{{ $u->deskripsi ?? '-' }}</td>
