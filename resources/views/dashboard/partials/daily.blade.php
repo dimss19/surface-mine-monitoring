@@ -66,7 +66,7 @@
 </div>
 
 <div class="card p-4 mb-6">
-    <h2 class="font-semibold mb-3">Daily Timeline</h2>
+    <h2 class="font-semibold mb-3">Timeline</h2>
     <div class="space-y-3">
         @forelse ($timeline as $t)
             @php
