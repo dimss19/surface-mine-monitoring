@@ -1,9 +1,20 @@
 @extends('layouts.app')
 
 @section('title', 'Form Input Utilization')
-@section('page-title', 'Form Input Utilization')
 
 @section('content')
+<h1 class="text-2xl font-heading font-bold text-[var(--primary)] mb-4">Form Input Utilization</h1>
+
+@if ($errors->any())
+<div class="bg-red-50 border border-red-200 text-red-700 rounded-lg p-3 text-sm mb-6">
+    <ul class="list-disc list-inside space-y-1">
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
+
 <div class="bg-[var(--primary)] text-white rounded-lg p-4 mb-6">
     <div class="flex items-center gap-3">
         <span class="material-symbols-outlined">info</span>
@@ -21,7 +32,7 @@
             <span class="material-symbols-outlined text-blue-500">build</span>
             Data Utilization
         </h2>
-        <div class="grid grid-cols-2 gap-6 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <div>
                 <label class="form-label">Nomor Unit</label>
                 <select name="unit_id" id="unit_id" class="form-input" required>
@@ -51,7 +62,7 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-6 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <div>
                 <label class="form-label">Tanggal / Jam Mulai</label>
                 <input type="datetime-local" name="started_at" class="form-input" id="startedAt">

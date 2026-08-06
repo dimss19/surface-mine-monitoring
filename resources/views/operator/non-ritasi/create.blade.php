@@ -1,9 +1,20 @@
 ﻿@extends('layouts.app')
 
 @section('title', 'Form Input Unit Non Ritasi')
-@section('page-title', 'Form Input Unit Non Ritasi')
 
 @section('content')
+<h1 class="text-2xl font-heading font-bold text-[var(--primary)] mb-4">Form Input Unit Non Ritasi</h1>
+
+@if ($errors->any())
+<div class="bg-red-50 border border-red-200 text-red-700 rounded-lg p-3 text-sm mb-6">
+    <ul class="list-disc list-inside space-y-1">
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
+
 {{-- Session Info --}}
 <div class="bg-[var(--primary)] text-white rounded-lg p-4 mb-6">
     <div class="flex items-center gap-3">
@@ -24,7 +35,7 @@
             <span class="material-symbols-outlined text-blue-500">description</span>
             Data Dasar
         </h2>
-        <div class="grid grid-cols-2 gap-6 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <div>
                 <label class="form-label">Shift</label>
                 <select name="shift" class="form-input" required>
@@ -57,7 +68,7 @@
             <span class="material-symbols-outlined text-blue-500">timer</span>
             Hour Meter (HM)
         </h2>
-        <div class="grid grid-cols-3 gap-6 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div>
                 <label class="form-label">HM Awal</label>
                 <input type="number" name="hm_awal" class="form-input" step="0.1" min="0" value="0.0" required id="hmAwal">
@@ -77,7 +88,7 @@
             <span class="material-symbols-outlined text-blue-500">local_gas_station</span>
             Konsumsi Fuel
         </h2>
-        <div class="grid grid-cols-2 gap-6 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <div>
                 <label class="form-label">Konsumsi Fuel (Liter)</label>
                 <input type="number" 
@@ -95,7 +106,7 @@
             <span class="material-symbols-outlined text-blue-500">work</span>
             Detail Pekerjaan
         </h2>
-        <div class="grid grid-cols-2 gap-6 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
                 <label class="form-label">Lokasi Pekerjaan (Pit / Disposal)</label>
                 <input type="text" name="lokasi_pekerjaan" class="form-input" placeholder="Contoh: Pit 1 North">
