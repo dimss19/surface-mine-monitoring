@@ -92,6 +92,7 @@ class UtilizationController extends Controller
         } else { // ready
             $data['started_at'] = $current->started_at;
             $data['ended_at'] = $request->ended_at ?? now();
+            $current->update(['ended_at' => $data['ended_at']]);
         }
 
         UnitUtilization::create($data);
