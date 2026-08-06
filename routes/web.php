@@ -23,7 +23,16 @@ Route::get('/', [LandingController::class, 'index'])->name('landing');
 
 // Legacy redirects
 Route::get('/absensi', fn () => redirect()->route('pegawai.ritasi.create'));
-Route::get('/rekapan', fn () => redirect()->route('pegawai.ritasi.create'));
+Route::get('/rekapan', function () {
+    $role = auth()->user()?->role;
+    if ($role === 'admin') {
+        return redirect()->route('admin.rekapan.index');
+    }
+    if ($role === 'spv') {
+        return redirect()->route('spv.rekapan.index');
+    }
+    return redirect()->route('pegawai.ritasi.create');
+})->name('rekapan');
 
 Route::middleware('auth')->group(function () {
     // CSRF token refresh for offline sync (see resources/js/offline-sync.js)
