@@ -13,51 +13,54 @@ class RitasiSeeder extends Seeder
 {
     public function run(): void
     {
-        $pegawai = Pegawai::take(10)->get();
-        $units = Unit::where('tipe', 'dump_truck')->take(5)->get();
-        $areas = Area::take(5)->get();
-        $materials = Material::whereIn('kategori', ['ore', 'waste'])->take(5)->get();
+        $pegawai = Pegawai::all();
+        $dtUnits = Unit::where('tipe', 'dump_truck')->get();
+        $areas = Area::take(15)->get();
+        $materials = Material::whereIn('kategori', ['ore', 'waste'])->get();
 
-        if ($pegawai->isEmpty() || $units->isEmpty() || $areas->isEmpty() || $materials->isEmpty()) {
+        if ($pegawai->isEmpty() || $dtUnits->isEmpty() || $areas->isEmpty() || $materials->isEmpty()) {
             return;
         }
 
-        $lokasiList = ['Pit 1 North', 'Pit 2 South', 'East Dump', 'Haul Road A', 'South Pit'];
-        $deskripsiList = ['Hauling ore', 'Hauling waste', 'Hauling overburden'];
+        $lokasiList = ['Pit 1 North', 'Pit 2 South', 'East Dump', 'Haul Road A', 'South Pit', 'North Pit', 'West Pit', 'Stockpile 1', 'Stockpile 2', 'Crusher Area'];
+        $deskripsiList = ['Hauling ore', 'Hauling waste', 'Hauling overburden', 'Hauling topsoil'];
         $shifts = ['siang', 'malam'];
-        $statuses = ['pending', 'validated', 'in_progress'];
 
-        $usedKeys = [];
+        for ($day = 0; $day < 30; $day++) {
+            $tanggal = now()->subDays($day)->format('Y-m-d');
 
-        for ($i = 0; $i < 50; $i++) {
-            $pegawaiId = $pegawai->random()->id;
-            $shift = $shifts[array_rand($shifts)];
-            $tanggal = now()->subDays(rand(0, 30))->format('Y-m-d');
+            foreach ($shifts as $shift) {
+                $unitsPerShift = $dtUnits->random(min(4, $dtUnits->count()));
+                foreach ($unitsPerShift as $unit) {
+                    $peg = $pegawai->random();
+                    $hmAwal = rand(8000, 16000) + (rand(0, 99) / 100);
+                    $hmTotal = rand(6, 11) + (rand(0, 99) / 100);
+                    $jumlahRitasi = rand(8, 25);
+                    $material = $materials->random();
+                    $tonPerRit = match ($material->kategori) {
+                        'ore' => rand(30, 80),
+                        default => rand(40, 100),
+                    };
 
-            $key = $pegawaiId . '-' . $tanggal . '-' . $shift;
-            if (in_array($key, $usedKeys)) {
-                continue;
+                    Ritasi::create([
+                        'pegawai_id' => $peg->id,
+                        'unit_id' => $unit->id,
+                        'area_id' => $areas->random()->id,
+                        'material_id' => $material->id,
+                        'tanggal' => $tanggal,
+                        'shift' => $shift,
+                        'hm_awal' => $hmAwal,
+                        'hm_akhir' => $hmAwal + $hmTotal,
+                        'hm_total' => $hmTotal,
+                        'jumlah_ritasi' => $jumlahRitasi,
+                        'quantity_tonnes' => $jumlahRitasi * $tonPerRit,
+                        'fuel_consumption' => $hmTotal * rand(25, 45),
+                        'lokasi_pekerjaan' => $lokasiList[array_rand($lokasiList)],
+                        'deskripsi_pekerjaan' => $deskripsiList[array_rand($deskripsiList)],
+                        'status' => $day > 2 ? 'validated' : 'pending',
+                    ]);
+                }
             }
-            $usedKeys[] = $key;
-
-            $hmAwal = rand(10000, 15000) + (rand(0, 99) / 100);
-            $hmTotal = rand(6, 11) + (rand(0, 99) / 100);
-
-            Ritasi::create([
-                'pegawai_id' => $pegawaiId,
-                'unit_id' => $units->random()->id,
-                'area_id' => $areas->random()->id,
-                'material_id' => $materials->random()->id,
-                'tanggal' => $tanggal,
-                'shift' => $shift,
-                'hm_awal' => $hmAwal,
-                'hm_akhir' => $hmAwal + $hmTotal,
-                'hm_total' => $hmTotal,
-                'jumlah_ritasi' => rand(8, 20),
-                'lokasi_pekerjaan' => $lokasiList[array_rand($lokasiList)],
-                'deskripsi_pekerjaan' => $deskripsiList[array_rand($deskripsiList)],
-                'status' => $statuses[array_rand($statuses)],
-            ]);
         }
     }
 }

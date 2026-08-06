@@ -3,70 +3,85 @@
     $haulingByMaterial = $haulingByMaterial ?? [];
     $availability = $availability ?? [];
     $uoa = $uoa ?? [];
-    $typeLabels = ['excavator' => 'Exc', 'dump_truck' => 'DT', 'bulldozer' => 'Dozer', 'loader' => 'LV', 'motor_grader' => 'MG'];
+    $typeLabels = ['excavator' => 'Excavator', 'dump_truck' => 'Dump Truck', 'bulldozer' => 'Bulldozer', 'loader' => 'Loader', 'motor_grader' => 'Motor Grader'];
+    $typeShort = ['excavator' => 'Exc', 'dump_truck' => 'DT', 'bulldozer' => 'Dozer', 'loader' => 'LV', 'motor_grader' => 'MG'];
 @endphp
 
-<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-    <div>
-        <h1 class="text-2xl font-heading font-bold text-[var(--primary)]">Grafik All Hauling (WTD)</h1>
-        <p class="text-sm text-slate-500 mt-1">{{ $periodLabel ?? '' }}</p>
-    </div>
-    <a href="{{ route(auth()->user()->role . '.dashboard.export', array_merge(['tab' => 'weekly'], request()->except('tab'))) }}" class="btn-secondary inline-flex items-center gap-2 self-start">
-        <span class="material-symbols-outlined text-lg">download</span>
-        Export
-    </a>
-</div>
-
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-    {{-- Left: Bar chart --}}
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-2">
     <div class="card p-4">
         <div class="flex items-center gap-3 mb-4">
+            <span class="material-symbols-outlined text-[var(--primary)] text-xl">bar_chart</span>
             <span class="text-sm text-slate-500">Weekly All Hauling</span>
             <span class="text-2xl font-bold text-[var(--primary)]">{{ number_format((float)($kpi['tonnage'] ?? 0), 0) }}</span>
         </div>
-        <div class="relative" style="height: {{ max(200, count($haulingByMaterial) * 40 + 40) }}px;">
-            <canvas id="weeklyMaterialChart"></canvas>
-        </div>
+        @if (count($haulingByMaterial) > 0)
+            <div class="relative" style="height: {{ count($haulingByMaterial) * 36 + 40 }}px;">
+                <canvas id="weeklyMaterialChart"></canvas>
+            </div>
+        @else
+            <div class="flex items-center justify-center h-32 text-sm text-slate-400">Belum ada data hauling minggu ini</div>
+        @endif
     </div>
 
-    {{-- Right: Availability + UoA gauges --}}
     <div class="space-y-6">
-        {{-- Availability --}}
-        <div class="card p-4">
-            <h3 class="section-title mb-4">Availability</h3>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div class="card p-5">
+            <div class="flex items-center gap-2 mb-2">
+                <span class="material-symbols-outlined text-[var(--primary)] text-xl">speed</span>
+                <h3 class="font-heading font-bold text-[var(--primary)]">Availability</h3>
+            </div>
+            <p class="text-xs text-slate-500 mb-4">Persentase waktu unit siap digunakan dari total waktu operasional</p>
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
                 @foreach ($availability as $a)
-                    @php $label = $typeLabels[$a['type']] ?? $a['type']; @endphp
-                    <div class="text-center">
-                        <canvas id="avail_{{ $a['type'] }}" width="100" height="60"></canvas>
-                        <p class="text-xs font-bold text-[var(--primary)] mt-1">{{ $label }}</p>
-                        <p class="text-xs text-slate-500">{{ $a['pct'] }}%</p>
+                    @php
+                        $label = $typeShort[$a['type']] ?? $a['type'];
+                        $pct = (float) $a['pct'];
+                        $color = $pct >= 80 ? '#22c55e' : ($pct >= 50 ? '#f59e0b' : '#ef4444');
+                    @endphp
+                    <div class="flex flex-col items-center">
+                        <canvas id="avail_{{ $a['type'] }}" width="90" height="55"></canvas>
+                        <p class="text-xs font-bold text-[var(--primary)]">{{ $label }}</p>
+                        <p class="text-xs font-semibold" style="color:{{ $color }}">{{ $a['pct'] }}%</p>
                     </div>
                 @endforeach
             </div>
         </div>
 
-        {{-- UoA --}}
-        <div class="card p-4">
-            <h3 class="section-title mb-4">UoA</h3>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div class="card p-5">
+            <div class="flex items-center gap-2 mb-2">
+                <span class="material-symbols-outlined text-[var(--primary)] text-xl">trending_up</span>
+                <h3 class="font-heading font-bold text-[var(--primary)]">UoA</h3>
+            </div>
+            <p class="text-xs text-slate-500 mb-4">Unit Operating Availability — waktu unit benar-benar bekerja dari waktu tersedia</p>
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
                 @foreach ($uoa as $u)
-                    @php $label = $typeLabels[$u['type']] ?? $u['type']; @endphp
-                    <div class="text-center">
-                        <canvas id="uoa_{{ $u['type'] }}" width="100" height="60"></canvas>
-                        <p class="text-xs font-bold text-[var(--primary)] mt-1">{{ $label }}</p>
-                        <p class="text-xs text-slate-500">{{ $u['pct'] }}%</p>
+                    @php
+                        $label = $typeShort[$u['type']] ?? $u['type'];
+                        $pct = (float) $u['pct'];
+                        $color = $pct >= 80 ? '#22c55e' : ($pct >= 50 ? '#f59e0b' : '#ef4444');
+                    @endphp
+                    <div class="flex flex-col items-center">
+                        <canvas id="uoa_{{ $u['type'] }}" width="90" height="55"></canvas>
+                        <p class="text-xs font-bold text-[var(--primary)]">{{ $label }}</p>
+                        <p class="text-xs font-semibold" style="color:{{ $color }}">{{ $u['pct'] }}%</p>
                     </div>
                 @endforeach
             </div>
         </div>
+    </div>
+</div>
+<p class="text-xs text-slate-400 mb-6 px-1">Grafik batang = total tonase mingguan per material. Gauge = persentase Availability (ketersediaan unit) dan UoA (unit benar-benar bekerja) per tipe unit. Warna hijau ≥80% (baik), kuning 50–79% (kurang), merah &lt;50% (rendah).</p>
+
+<div class="card p-4 mb-6">
+    <div class="flex flex-wrap items-center justify-center gap-6 text-xs text-slate-500">
+        <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-green-500"></span> Baik (≥80%)</span>
+        <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-amber-500"></span> Kurang (50–79%)</span>
+        <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-red-500"></span> Rendah (&lt;50%)</span>
     </div>
 </div>
 
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Bar chart
     const matCtx = document.getElementById('weeklyMaterialChart');
     if (matCtx) {
         new Chart(matCtx, {
@@ -93,42 +108,64 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Semicircular gauge helper
-    function drawGauge(canvasId, pct, color) {
-        const canvas = document.getElementById(canvasId);
+    function renderGauge(id, pct, color) {
+        const canvas = document.getElementById(id);
         if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        const w = canvas.width, h = canvas.height;
-        const cx = w / 2, cy = h - 5;
-        const r = Math.min(cx, cy) - 8;
-
-        ctx.clearRect(0, 0, w, h);
-
-        // Background arc
-        ctx.beginPath();
-        ctx.arc(cx, cy, r, Math.PI, 2 * Math.PI);
-        ctx.lineWidth = 12;
-        ctx.strokeStyle = '#e2e8f0';
-        ctx.stroke();
-
-        // Value arc
-        const angle = Math.PI + (pct / 100) * Math.PI;
-        ctx.beginPath();
-        ctx.arc(cx, cy, r, Math.PI, angle);
-        ctx.lineWidth = 12;
-        ctx.strokeStyle = color;
-        ctx.lineCap = 'round';
-        ctx.stroke();
+        new Chart(canvas, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [pct, 100 - pct],
+                    backgroundColor: [color, '#e2e8f0'],
+                    borderWidth: 0,
+                    borderRadius: pct > 0 ? 6 : 0
+                }]
+            },
+            options: {
+                responsive: false,
+                rotation: -90,
+                circumference: 180,
+                cutout: '78%',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: false }
+                },
+                animation: {
+                    animateRotate: true,
+                    duration: 1200,
+                    easing: 'easeOutQuart'
+                }
+            },
+            plugins: [{
+                id: 'centerText',
+                afterDraw: function(chart) {
+                    const { ctx: c, width, height } = chart;
+                    c.save();
+                    c.font = 'bold 13px Inter, sans-serif';
+                    c.fillStyle = color;
+                    c.textAlign = 'center';
+                    c.textBaseline = 'middle';
+                    c.fillText(pct + '%', width / 2, height - 14);
+                    c.restore();
+                }
+            }]
+        });
     }
 
-    // Draw availability gauges
     @foreach ($availability as $a)
-        drawGauge('avail_{{ $a['type'] }}', {{ $a['pct'] }}, '#1e3a5f');
+        @php
+            $pct = (float) $a['pct'];
+            $color = $pct >= 80 ? '#22c55e' : ($pct >= 50 ? '#f59e0b' : '#ef4444');
+        @endphp
+        renderGauge('avail_{{ $a['type'] }}', {{ $pct }}, '{{ $color }}');
     @endforeach
 
-    // Draw UoA gauges
     @foreach ($uoa as $u)
-        drawGauge('uoa_{{ $u['type'] }}', {{ $u['pct'] }}, '#3b82f6');
+        @php
+            $pct = (float) $u['pct'];
+            $color = $pct >= 80 ? '#22c55e' : ($pct >= 50 ? '#f59e0b' : '#ef4444');
+        @endphp
+        renderGauge('uoa_{{ $u['type'] }}', {{ $pct }}, '{{ $color }}');
     @endforeach
 });
 </script>

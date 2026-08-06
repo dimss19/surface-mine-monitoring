@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content')
-<div class="mb-6 flex items-center justify-between">
+<div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
     <div>
         <h1 class="text-2xl font-heading font-bold text-[var(--primary)]">Dashboard</h1>
         <p class="text-sm text-slate-500 mt-1">{{ $periodLabel ?? '' }}</p>
@@ -22,10 +22,14 @@
         'weekly'  => ['label' => 'Mingguan',  'icon' => 'calendar_view_week'],
         'monthly' => ['label' => 'Bulanan',  'icon' => 'calendar_month'],
     ];
-    $q = request()->collect()->except('tab')->all();
+    $q = request()->collect()->except(['tab', 'date', 'week', 'month', 'shift'])->all();
+    $currentDate = request('date', now()->format('Y-m-d'));
+    $currentWeek = request('week', now()->format('Y-\WW'));
+    $currentMonth = request('month', now()->format('Y-m'));
+    $currentShift = request('shift', '');
 @endphp
 
-<div class="mb-6 border-b border-slate-200">
+<div class="mb-4 border-b border-slate-200">
     <nav class="-mb-px flex gap-6 overflow-x-auto">
         @foreach ($tabs as $key => $t)
             @php $active = ($tab === $key); @endphp
@@ -39,7 +43,56 @@
     </nav>
 </div>
 
+<div class="flex flex-wrap items-center gap-4 mb-6 py-3 px-4 bg-slate-50 rounded-lg">
+    @if ($tab === 'daily')
+        <div class="flex items-center gap-2">
+            <label class="text-xs font-medium text-slate-500 whitespace-nowrap">Tanggal</label>
+            <input type="date" id="filterDate" value="{{ $currentDate }}"
+                   class="text-sm border border-slate-300 rounded-lg px-3 py-1.5 focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none"
+                   onchange="applyFilter({date: this.value})">
+        </div>
+    @elseif ($tab === 'weekly')
+        <div class="flex items-center gap-2">
+            <label class="text-xs font-medium text-slate-500 whitespace-nowrap">Minggu</label>
+            <input type="week" id="filterWeek" value="{{ $currentWeek }}"
+                   class="text-sm border border-slate-300 rounded-lg px-3 py-1.5 focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none"
+                   onchange="applyFilter({week: this.value})">
+        </div>
+    @elseif ($tab === 'monthly')
+        <div class="flex items-center gap-2">
+            <label class="text-xs font-medium text-slate-500 whitespace-nowrap">Bulan</label>
+            <input type="month" id="filterMonth" value="{{ $currentMonth }}"
+                   class="text-sm border border-slate-300 rounded-lg px-3 py-1.5 focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none"
+                   onchange="applyFilter({month: this.value})">
+        </div>
+    @endif
+
+    <div class="flex items-center gap-2">
+        <label class="text-xs font-medium text-slate-500 whitespace-nowrap">Shift</label>
+        <select id="filterShift"
+                class="text-sm border border-slate-300 rounded-lg px-3 py-1.5 focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none"
+                onchange="applyFilter({shift: this.value})">
+            <option value="" {{ $currentShift === '' ? 'selected' : '' }}>Semua</option>
+            <option value="siang" {{ $currentShift === 'siang' ? 'selected' : '' }}>Siang</option>
+            <option value="malam" {{ $currentShift === 'malam' ? 'selected' : '' }}>Malam</option>
+        </select>
+    </div>
+</div>
+
 <div>
     @include('dashboard.partials.' . ($tab ?? 'daily'))
 </div>
+
+@push('scripts')
+<script>
+function applyFilter(overrides) {
+    const params = new URLSearchParams(window.location.search);
+    params.set('tab', '{{ $tab }}');
+    Object.entries(overrides).forEach(([k, v]) => {
+        if (v) params.set(k, v); else params.delete(k);
+    });
+    window.location.search = params.toString();
+}
+</script>
+@endpush
 @endsection

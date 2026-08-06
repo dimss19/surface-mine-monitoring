@@ -3,19 +3,9 @@
     $dailyOreOthers = $dailyOreOthers ?? [];
 @endphp
 
-<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-    <div>
-        <h1 class="text-2xl font-heading font-bold text-[var(--primary)]">Monthly – MTD Report</h1>
-        <p class="text-sm text-slate-500 mt-1">{{ $periodLabel ?? '' }}</p>
-    </div>
-    <a href="{{ route(auth()->user()->role . '.dashboard.export', array_merge(['tab' => 'monthly'], request()->except('tab'))) }}" class="btn-secondary inline-flex items-center gap-2 self-start">
-        <span class="material-symbols-outlined text-lg">download</span>
-        Export
-    </a>
-</div>
-
-<div class="card p-6 mb-6">
+<div class="card p-6 mb-2">
     <div class="flex items-center gap-3 mb-6">
+        <span class="material-symbols-outlined text-[var(--primary)] text-xl">bar_chart</span>
         <span class="text-sm text-slate-500">All Material Hauling</span>
         <span class="text-3xl font-bold text-[var(--primary)]">{{ number_format((float)($kpi['tonnage'] ?? 0), 0) }}</span>
     </div>
@@ -23,6 +13,7 @@
         <canvas id="monthlyChart"></canvas>
     </div>
 </div>
+<p class="text-xs text-slate-400 mb-6 px-1">Grafik kombinasi batang + garis. Batang gelap = tonase ore harian, batang terang = tonase lainnya. Garis = total kumulatif dari awal bulan. Kiri = tonase harian, kanan = tonase kumulatif.</p>
 
 @push('scripts')
 <script>

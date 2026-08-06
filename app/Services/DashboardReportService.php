@@ -102,19 +102,48 @@ class DashboardReportService
         ];
         $pies['combined'] = $pies['day'] + $pies['night'];
 
-        $timeline = [];
+        $timelineSiang = [];
+        $timelineMalam = [];
         foreach ($units as $u) {
             $red = $this->unitMaintenanceHours($u->id, $start, $end);
-            $green = (float) $baseQ()->where('unit_id', $u->id)
+            $greenS = (float) $baseQ()->where('unit_id', $u->id)->where('shift', 'siang')
                 ->sum(DB::raw('LEAST(hm_total, 12)'));
-            $white = max(12 - $red - $green, 0.0);
-            $timeline[] = [
-                'unit_id' => $u->id,
-                'kode'    => $u->kode,
-                'red'     => round($red, 2),
-                'green'   => round($green, 2),
-                'white'   => round($white, 2),
-                'status'  => $u->status,
+            $greenM = (float) $baseQ()->where('unit_id', $u->id)->where('shift', 'malam')
+                ->sum(DB::raw('LEAST(hm_total, 12)'));
+            $whiteS = max(12 - $red - $greenS, 0.0);
+            $whiteM = max(12 - $red - $greenM, 0.0);
+            $timelineSiang[] = [
+                'unit_id' => $u->id, 'kode' => $u->kode,
+                'red' => round($red, 2), 'green' => round($greenS, 2), 'white' => round($whiteS, 2), 'status' => $u->status,
+            ];
+            $timelineMalam[] = [
+                'unit_id' => $u->id, 'kode' => $u->kode,
+                'red' => round($red, 2), 'green' => round($greenM, 2), 'white' => round($whiteM, 2), 'status' => $u->status,
+            ];
+        }
+        $n = max($unitCount, 1);
+        $avgS = ['red' => round(array_sum(array_column($timelineSiang, 'red')) / $n, 2), 'green' => round(array_sum(array_column($timelineSiang, 'green')) / $n, 2), 'white' => round(array_sum(array_column($timelineSiang, 'white')) / $n, 2)];
+        $avgM = ['red' => round(array_sum(array_column($timelineMalam, 'red')) / $n, 2), 'green' => round(array_sum(array_column($timelineMalam, 'green')) / $n, 2), 'white' => round(array_sum(array_column($timelineMalam, 'white')) / $n, 2)];
+        $avgC = ['red' => round(($avgS['red'] + $avgM['red']) / 2, 2), 'green' => round(($avgS['green'] + $avgM['green']) / 2, 2), 'white' => round(($avgS['white'] + $avgM['white']) / 2, 2)];
+        $timelineAvg = ['siang' => $avgS, 'malam' => $avgM, 'combined' => $avgC];
+
+        $byTipe = $units->groupBy('tipe');
+        $timelineGrouped = [];
+        foreach ($byTipe as $tipe => $tipeUnits) {
+            $items = $tipeUnits->map(function ($u) use ($timelineSiang, $timelineMalam) {
+                $s = collect($timelineSiang)->firstWhere('unit_id', $u->id) ?? ['red' => 0, 'green' => 0, 'white' => 0];
+                $m = collect($timelineMalam)->firstWhere('unit_id', $u->id) ?? ['red' => 0, 'green' => 0, 'white' => 0];
+                return ['unit_id' => $u->id, 'kode' => $u->kode, 'status' => $u->status, 'siang' => $s, 'malam' => $m];
+            });
+            $cnt = max($tipeUnits->count(), 1);
+            $timelineGrouped[strtoupper($tipe)] = [
+                'count' => $tipeUnits->count(),
+                'avg' => [
+                    'red'   => round($items->sum(fn ($i) => $i['siang']['red'] + $i['malam']['red']) / $cnt, 2),
+                    'green' => round($items->sum(fn ($i) => $i['siang']['green'] + $i['malam']['green']) / $cnt, 2),
+                    'white' => round($items->sum(fn ($i) => $i['siang']['white'] + $i['malam']['white']) / $cnt, 2),
+                ],
+                'items' => $items->values()->all(),
             ];
         }
 
@@ -145,7 +174,11 @@ class DashboardReportService
             ],
             'pies'              => $pies,
             'hauling'           => $hauling,
-            'timeline'          => $timeline,
+            'timeline'          => $timelineSiang,
+            'timelineSiang'     => $timelineSiang,
+            'timelineMalam'     => $timelineMalam,
+            'timelineAvg'       => $timelineAvg,
+            'timelineGrouped'   => $timelineGrouped,
             'units'             => $units,
             'periodLabel'       => $this->periodLabel($period, $start, $end),
             'haulingByMaterial' => $haulingByMaterial,
