@@ -112,7 +112,7 @@
             <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-4 flex items-center justify-between">
                 <div class="flex items-center gap-2">
                     <span class="material-symbols-outlined text-lg">check_circle</span>
-                    {{ session('success') }}
+                    <span class="text-sm">{{ session('success') }}</span>
                 </div>
                 <button onclick="this.parentElement.remove()" class="text-green-500 hover:text-green-700">
                     <span class="material-symbols-outlined text-lg">close</span>
@@ -124,7 +124,7 @@
             <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4 flex items-center justify-between">
                 <div class="flex items-center gap-2">
                     <span class="material-symbols-outlined text-lg">error</span>
-                    {{ session('error') }}
+                    <span class="text-sm">{{ session('error') }}</span>
                 </div>
                 <button onclick="this.parentElement.remove()" class="text-red-500 hover:text-red-700">
                     <span class="material-symbols-outlined text-lg">close</span>

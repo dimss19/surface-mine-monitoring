@@ -6,7 +6,7 @@
             <span class="material-symbols-outlined text-slate-600">menu</span>
         </button>
         <div class="hidden sm:block">
-            <h1 class="text-lg font-bold" style="color: var(--text);">Mining Operationals Civil Department</h1>
+            <h1 class="text-lg font-bold font-heading" style="color: var(--text);">Mining Operationals Civil Department</h1>
             <p class="text-xs text-slate-500">Rekapan & Utilization</p>
         </div>
     </div>
@@ -14,7 +14,7 @@
     <div class="flex items-center gap-3">
         {{-- User Badge --}}
         <div class="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-lg border border-slate-200">
-            <div class="w-7 h-7 rounded-full bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center">
+            <div class="w-7 h-7 rounded-full bg-gradient-to-br from-[#2d5a8a] to-[#15294a] flex items-center justify-center">
                 <span class="material-symbols-outlined text-white text-sm">person</span>
             </div>
             <span class="text-sm font-medium text-slate-700 hidden sm:inline">{{ Auth::user()->name ?? ucfirst($role) }}</span>
