@@ -155,8 +155,14 @@ class DashboardReportService
             ->map(fn ($items) => round((float) $items->sum(fn ($r) => $r->quantity_tonnes), 2))
             ->sortDesc()->all();
 
-        // Daily target per material (ritasi) for the hauling-by-material chart overlay.
-        $targetsByName = DailyTarget::with('material')->get()
+        // Daily target per material (period-aware: harian/mingguan/bulanan)
+        // so weekly & monthly charts use their own target, not the daily one.
+        $periodKey = match ($period) {
+            'weekly' => 'mingguan',
+            'monthly' => 'bulanan',
+            default => 'harian',
+        };
+        $targetsByName = DailyTarget::with('material')->where('periode', $periodKey)->get()
             ->mapWithKeys(fn ($t) => [$t->material->nama => (int) $t->target_ritasi]);
 
         $ritasiByName = $ritasis->groupBy(fn ($r) => $r->material->nama ?? 'Lainnya')

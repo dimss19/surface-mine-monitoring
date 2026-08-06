@@ -24,6 +24,7 @@ class AdminTargetController extends Controller
             'activeTab' => 'target',
             'targets' => $targets,
             'materials' => Material::orderBy('nama')->get(),
+            'periods' => ['harian' => 'Harian', 'mingguan' => 'Mingguan', 'bulanan' => 'Bulanan'],
         ]);
     }
 
@@ -31,11 +32,12 @@ class AdminTargetController extends Controller
     {
         $request->validate([
             'material_id' => 'required|exists:materials,id',
+            'periode' => 'required|in:harian,mingguan,bulanan',
             'target_ritasi' => 'required|integer|min:0',
         ]);
 
         DailyTarget::updateOrCreate(
-            ['material_id' => $request->material_id],
+            ['material_id' => $request->material_id, 'periode' => $request->periode],
             ['target_ritasi' => $request->target_ritasi]
         );
 

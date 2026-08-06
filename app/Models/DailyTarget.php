@@ -9,7 +9,7 @@ class DailyTarget extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['material_id', 'target_ritasi'];
+    protected $fillable = ['material_id', 'periode', 'target_ritasi'];
 
     public function material()
     {

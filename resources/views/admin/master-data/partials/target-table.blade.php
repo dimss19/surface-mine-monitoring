@@ -23,6 +23,7 @@
                 <tr>
                     <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">NO</th>
                     <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">MATERIAL</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">PERIODE</th>
                     <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">TARGET RITASI</th>
                     <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">AKSI</th>
                 </tr>
@@ -32,6 +33,12 @@
                     <tr class="hover:bg-slate-50">
                         <td class="px-4 py-3 text-sm text-[var(--text)]">{{ $targets->firstItem() + $index }}</td>
                         <td class="px-4 py-3 text-sm font-medium text-[var(--text)]">{{ $target->material->nama }}</td>
+                        <td class="px-4 py-3 text-sm">
+                            @php $periodBadge = match($target->periode) { 'harian' => 'badge-validated', 'mingguan' => 'bg-blue-50 text-blue-700', 'bulanan' => 'bg-amber-50 text-amber-700', default => 'bg-slate-50 text-slate-500' }; @endphp
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium {{ $periodBadge }}">
+                                {{ ucfirst($target->periode) }}
+                            </span>
+                        </td>
                         <td class="px-4 py-3 text-sm text-[var(--text)]">{{ $target->target_ritasi }}</td>
                         <td class="px-4 py-3">
                             <div class="flex items-center gap-2">
@@ -49,7 +56,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="4" class="px-4 py-8 text-center text-[var(--text-muted)]">Tidak ada data target harian</td>
+                        <td colspan="5" class="px-4 py-8 text-center text-[var(--text-muted)]">Tidak ada data target harian</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -68,7 +75,7 @@
 <div id="targetModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
     <div class="bg-white rounded-xl w-full max-w-lg mx-4">
         <div class="p-4 border-b border-[var(--border)] flex items-center justify-between">
-            <h3 class="font-heading font-bold text-[var(--primary)]">Tambah Target Harian</h3>
+            <h3 class="font-heading font-bold text-[var(--primary)]">Tambah Target</h3>
             <button onclick="closeModal('targetModal')" class="text-slate-400 hover:text-slate-600">
                 <span class="material-symbols-outlined">close</span>
             </button>
@@ -81,6 +88,15 @@
                     <option value="">Pilih Material</option>
                     @foreach($materials as $material)
                         <option value="{{ $material->id }}">{{ $material->nama }} ({{ $material->kode }})</option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <label class="form-label">Periode</label>
+                <select name="periode" class="form-input" required>
+                    <option value="">Pilih Periode</option>
+                    @foreach(($periods ?? ['harian' => 'Harian', 'mingguan' => 'Mingguan', 'bulanan' => 'Bulanan']) as $key => $label)
+                        <option value="{{ $key }}">{{ $label }}</option>
                     @endforeach
                 </select>
             </div>
