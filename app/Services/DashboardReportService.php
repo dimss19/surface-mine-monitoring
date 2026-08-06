@@ -152,7 +152,7 @@ class DashboardReportService
 
         $haulingByMaterial = $ritasis->groupBy(fn ($r) => $r->material->nama ?? 'Lainnya')
             ->map(fn ($items) => round((float) $items->sum(fn ($r) => $r->quantity_tonnes), 2))
-            ->sortDesc()->values()->all();
+            ->sortDesc()->all();
 
         $oreNames = ['Bauxite Ore (Raw)', 'Processed Alumina', 'Pasir Hitam', 'Mining Tuff', 'Batu Pica (5/15)', 'Tuff Off', 'KCN', 'Cake', 'DSTuff'];
         $dailyOreOthers = $this->dailyOreOthers($start, $end, $ritasis, $oreNames);
