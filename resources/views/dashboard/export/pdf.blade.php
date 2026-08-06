@@ -6,9 +6,11 @@
 <style>
 @page { size: A4; margin: 1cm; }
 table { border-collapse: collapse; width: 100%; }
-th, td { border: 1px solid #999; padding: 4px 6px; }
+th, td { border: 1px solid #cbd5e1; padding: 4px 6px; }
 .num { text-align: right; }
-.h { background: #f0f0f0; }
+.h { background: #f1f5f9; }
+.h th { color: #1e3a5f; }
+h1 { color: #1e3a5f; }
 @media print { .no-print { display: none !important; } }
 </style>
 @endpush

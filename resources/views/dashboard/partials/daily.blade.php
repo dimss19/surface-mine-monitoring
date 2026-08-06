@@ -3,35 +3,35 @@
 @endphp
 
 <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
-    <div class="card p-4">
-        <div class="flex items-center gap-2 mb-1">
-            <span class="material-symbols-outlined text-red-600">local_flame</span>
-            <span class="text-xs text-slate-500">Fuel Consumption</span>
+    <div class="stat-card border-l-4 border-amber-500">
+        <span class="material-symbols-outlined text-amber-600">local_flame</span>
+        <div class="min-w-0">
+            <p class="text-sm text-slate-500">Fuel Consumption</p>
+            <p class="text-2xl font-bold">{{ number_format((float)($kpi['fuel'] ?? 0), 2) }}</p>
+            <p class="text-xs text-slate-400">Liter</p>
         </div>
-        <p class="text-2xl font-bold">{{ number_format((float)($kpi['fuel'] ?? 0), 2) }}</p>
-        <p class="text-xs text-slate-400">Liter</p>
     </div>
-    <div class="card p-4">
-        <div class="flex items-center gap-2 mb-1">
-            <span class="material-symbols-outlined text-blue-600">scale</span>
-            <span class="text-xs text-slate-500">Tonnage</span>
+    <div class="stat-card border-l-4 border-[var(--primary)]">
+        <span class="material-symbols-outlined text-[var(--primary)]">scale</span>
+        <div class="min-w-0">
+            <p class="text-sm text-slate-500">Tonnage</p>
+            <p class="text-2xl font-bold">{{ number_format((float)($kpi['tonnage'] ?? 0), 2) }}</p>
+            <p class="text-xs text-slate-400">ton</p>
         </div>
-        <p class="text-2xl font-bold">{{ number_format((float)($kpi['tonnage'] ?? 0), 2) }}</p>
-        <p class="text-xs text-slate-400">ton</p>
     </div>
-    <div class="card p-4">
-        <div class="flex items-center gap-2 mb-1">
-            <span class="material-symbols-outlined text-green-600">check_circle</span>
-            <span class="text-xs text-slate-500">Active Units</span>
+    <div class="stat-card border-l-4 border-green-500">
+        <span class="material-symbols-outlined text-green-600">check_circle</span>
+        <div class="min-w-0">
+            <p class="text-sm text-slate-500">Active Units</p>
+            <p class="text-2xl font-bold">{{ (int)($kpi['active_units'] ?? 0) }}</p>
         </div>
-        <p class="text-2xl font-bold">{{ (int)($kpi['active_units'] ?? 0) }}</p>
     </div>
-    <div class="card p-4">
-        <div class="flex items-center gap-2 mb-1">
-            <span class="material-symbols-outlined text-amber-600">build</span>
-            <span class="text-xs text-slate-500">Maintenance Units</span>
+    <div class="stat-card border-l-4 border-red-500">
+        <span class="material-symbols-outlined text-red-600">build</span>
+        <div class="min-w-0">
+            <p class="text-sm text-slate-500">Maintenance Units</p>
+            <p class="text-2xl font-bold">{{ (int)($kpi['maintenance_units'] ?? 0) }}</p>
         </div>
-        <p class="text-2xl font-bold">{{ (int)($kpi['maintenance_units'] ?? 0) }}</p>
     </div>
 </div>
 
@@ -66,7 +66,7 @@
 </div>
 
 <div class="card p-4 mb-6">
-    <h2 class="font-semibold mb-3">Timeline</h2>
+    <h2 class="section-title mb-3">Timeline</h2>
     <div class="space-y-3">
         @forelse ($timeline as $t)
             @php
@@ -99,7 +99,7 @@
 
 <div class="card overflow-hidden mb-6">
     <div class="p-4 border-b flex items-center justify-between">
-        <h2 class="font-semibold">Hauling Records</h2>
+        <h2 class="section-title">Hauling Records</h2>
         <span class="text-xs text-slate-500">{{ $hauling->total() }} record{{ $hauling->total() != 1 ? 's' : '' }}</span>
     </div>
     <div class="overflow-x-auto">

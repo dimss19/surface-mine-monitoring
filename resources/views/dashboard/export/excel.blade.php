@@ -8,7 +8,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
 <title>Export PA/UA {{ ucfirst($meta['period'] ?? 'daily') }}</title>
-<style>body{font-family:sans-serif} table{border-collapse:collapse} th,td{border:1px solid #999;padding:4px 6px} .num{text-align:right} .h{background:#f0f0f0}</style>
+<style>body{font-family:sans-serif} table{border-collapse:collapse} th,td{border:1px solid #cbd5e1;padding:4px 6px} .num{text-align:right} .h{background:#f1f5f9} .h th{color:#1e3a5f} h1{color:#1e3a5f}</style>
 </head><body>
 <div class="p-4">
     <h1 class="text-xl font-bold mb-1">Laporan PA/UA - {{ ucfirst($meta['period'] ?? 'daily') }}</h1>
