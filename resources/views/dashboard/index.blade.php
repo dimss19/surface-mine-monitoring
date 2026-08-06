@@ -70,7 +70,7 @@
     <div class="flex items-center gap-2">
         <label class="text-xs font-medium text-slate-500 whitespace-nowrap">Shift</label>
         <select id="filterShift"
-                class="text-sm border border-slate-300 rounded-lg px-3 py-1.5 focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none"
+                class="text-sm border border-slate-300 rounded-lg px-3 py-1.5 w-32 focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none"
                 onchange="applyFilter({shift: this.value})">
             <option value="" {{ $currentShift === '' ? 'selected' : '' }}>Semua</option>
             <option value="siang" {{ $currentShift === 'siang' ? 'selected' : '' }}>Siang</option>
