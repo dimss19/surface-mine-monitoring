@@ -121,6 +121,16 @@ class DashboardReportService
         $hauling = $baseQ()->with(['unit', 'material', 'pegawai'])
             ->orderBy('tanggal', 'desc')->orderBy('shift')->paginate(15);
 
+        $haulingByMaterial = $ritasis->groupBy(fn ($r) => $r->material->nama ?? 'Lainnya')
+            ->map(fn ($items) => round((float) $items->sum(fn ($r) => $r->quantity_tonnes), 2))
+            ->sortDesc()->values()->all();
+
+        $oreNames = ['Bauxite Ore (Raw)', 'Processed Alumina', 'Pasir Hitam', 'Mining Tuff', 'Batu Pica (5/15)', 'Tuff Off', 'KCN', 'Cake', 'DSTuff'];
+        $dailyOreOthers = $this->dailyOreOthers($start, $end, $ritasis, $oreNames);
+
+        $availability = $this->availabilityByType($start, $end, $units, $bd);
+        $uoa = $this->uoaByType($start, $end, $units, $baseQ);
+
         return [
             'kpi' => [
                 'fuel'             => round($fuel, 2),
@@ -133,11 +143,15 @@ class DashboardReportService
                 'wh'               => round($wh, 2),
                 'bd'               => round($bd, 2),
             ],
-            'pies'        => $pies,
-            'hauling'     => $hauling,
-            'timeline'    => $timeline,
-            'units'       => $units,
-            'periodLabel' => $this->periodLabel($period, $start, $end),
+            'pies'              => $pies,
+            'hauling'           => $hauling,
+            'timeline'          => $timeline,
+            'units'             => $units,
+            'periodLabel'       => $this->periodLabel($period, $start, $end),
+            'haulingByMaterial' => $haulingByMaterial,
+            'dailyOreOthers'    => $dailyOreOthers,
+            'availability'      => $availability,
+            'uoa'               => $uoa,
         ];
     }
 
@@ -197,5 +211,64 @@ class DashboardReportService
             'monthly' => $start->format('F Y'),
             default   => $start->format('d M Y'),
         };
+    }
+
+    private function dailyOreOthers(Carbon $start, Carbon $end, $ritasis, array $oreNames): array
+    {
+        $days = [];
+        $cumulative = 0;
+        $current = $start->copy();
+        while ($current->lte($end)) {
+            $dayStr = $current->toDateString();
+            $dayRitasis = $ritasis->filter(fn ($r) => $r->tanggal?->toDateString() === $dayStr);
+            $ore = (float) $dayRitasis->filter(fn ($r) => in_array($r->material->nama ?? '', $oreNames))->sum(fn ($r) => $r->quantity_tonnes);
+            $others = (float) $dayRitasis->sum(fn ($r) => $r->quantity_tonnes) - $ore;
+            $cumulative += $ore + $others;
+            $days[] = [
+                'date'       => $current->format('d M'),
+                'ore'        => round($ore, 2),
+                'others'     => round(max($others, 0), 2),
+                'cumulative' => round($cumulative, 2),
+            ];
+            $current->addDay();
+        }
+        return $days;
+    }
+
+    private function availabilityByType(Carbon $start, Carbon $end, $units, float $bdHours): array
+    {
+        $days = (int) $start->diffInDays($end) + 1;
+        $byType = $units->groupBy('tipe')->map(function ($typeUnits, $type) use ($start, $end, $days) {
+            $count = $typeUnits->count();
+            $sh = $count * 12 * $days;
+            $bd = 0.0;
+            foreach ($typeUnits as $u) {
+                $bd += $this->unitMaintenanceHours($u->id, $start, $end);
+            }
+            $available = $sh - $bd;
+            $pct = $sh > 0 ? round(($available / $sh) * 100, 1) : 0;
+            return ['type' => $type, 'pct' => $pct];
+        })->values()->all();
+        return $byType;
+    }
+
+    private function uoaByType(Carbon $start, Carbon $end, $units, $baseQ): array
+    {
+        $days = (int) $start->diffInDays($end) + 1;
+        $byType = $units->groupBy('tipe')->map(function ($typeUnits, $type) use ($start, $end, $days, $baseQ) {
+            $count = $typeUnits->count();
+            $sh = $count * 12 * $days;
+            $bd = 0.0;
+            foreach ($typeUnits as $u) {
+                $bd += $this->unitMaintenanceHours($u->id, $start, $end);
+            }
+            $available = $sh - $bd;
+            $unitIds = $typeUnits->pluck('id');
+            $wh = (float) $baseQ()->whereIn('unit_id', $unitIds)
+                ->sum(DB::raw('LEAST(hm_total, 12)'));
+            $pct = $available > 0 ? round(($wh / $available) * 100, 1) : 0;
+            return ['type' => $type, 'pct' => $pct];
+        })->values()->all();
+        return $byType;
     }
 }

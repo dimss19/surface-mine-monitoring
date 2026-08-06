@@ -1,73 +1,56 @@
 @php
     $kpi = $kpi ?? [];
+    $pies = $pies ?? [];
+    $haulingByMaterial = $haulingByMaterial ?? [];
+    $timeline = $timeline ?? [];
 @endphp
 
-<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
-    <div class="stat-card border-l-4 border-amber-500">
-        <span class="material-symbols-outlined text-amber-600">local_flame</span>
-        <div class="min-w-0">
-            <p class="text-sm text-slate-500">Fuel Consumption</p>
-            <p class="text-2xl font-bold">{{ number_format((float)($kpi['fuel'] ?? 0), 2) }}</p>
-            <p class="text-xs text-slate-400">Liter</p>
-        </div>
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+    <div>
+        <h1 class="text-2xl font-heading font-bold text-[var(--primary)]">Dashboard Harian</h1>
+        <p class="text-sm text-slate-500 mt-1">{{ $periodLabel ?? '' }}</p>
     </div>
-    <div class="stat-card border-l-4 border-[var(--primary)]">
-        <span class="material-symbols-outlined text-[var(--primary)]">scale</span>
-        <div class="min-w-0">
-            <p class="text-sm text-slate-500">Tonnage</p>
-            <p class="text-2xl font-bold">{{ number_format((float)($kpi['tonnage'] ?? 0), 2) }}</p>
-            <p class="text-xs text-slate-400">ton</p>
-        </div>
+    <a href="{{ route(auth()->user()->role . '.dashboard.export', ['date' => request('date')]) }}" class="btn-secondary inline-flex items-center gap-2 self-start">
+        <span class="material-symbols-outlined text-lg">download</span>
+        Export
+    </a>
+</div>
+
+<div class="card p-6 mb-6">
+    <div class="text-center">
+        <p class="text-sm text-slate-500 uppercase tracking-wide">Total Tonnage</p>
+        <p class="text-5xl font-bold text-[var(--primary)] mt-2">{{ number_format((float)($kpi['tonnage'] ?? 0), 0) }}<span class="text-2xl font-normal ml-2">ton</span></p>
     </div>
-    <div class="stat-card border-l-4 border-green-500">
-        <span class="material-symbols-outlined text-green-600">check_circle</span>
-        <div class="min-w-0">
-            <p class="text-sm text-slate-500">Active Units</p>
-            <p class="text-2xl font-bold">{{ (int)($kpi['active_units'] ?? 0) }}</p>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6 pt-6 border-t border-slate-100">
+        <div class="text-center">
+            <p class="text-sm text-slate-500">Fuel</p>
+            <p class="text-xl font-bold text-slate-700">{{ number_format((float)($kpi['fuel'] ?? 0), 1) }} L</p>
         </div>
-    </div>
-    <div class="stat-card border-l-4 border-red-500">
-        <span class="material-symbols-outlined text-red-600">build</span>
-        <div class="min-w-0">
-            <p class="text-sm text-slate-500">Maintenance Units</p>
-            <p class="text-2xl font-bold">{{ (int)($kpi['maintenance_units'] ?? 0) }}</p>
+        <div class="text-center">
+            <p class="text-sm text-slate-500">Active</p>
+            <p class="text-xl font-bold text-green-600">{{ (int)($kpi['active_units'] ?? 0) }}</p>
+        </div>
+        <div class="text-center">
+            <p class="text-sm text-slate-500">Maintenance</p>
+            <p class="text-xl font-bold text-red-600">{{ (int)($kpi['maintenance_units'] ?? 0) }}</p>
+        </div>
+        <div class="text-center">
+            <p class="text-sm text-slate-500">PA / UA</p>
+            <p class="text-xl font-bold text-[var(--primary)]">{{ number_format((float)($kpi['pa'] ?? 0), 1) }}%</p>
         </div>
     </div>
 </div>
 
-<div class="grid grid-cols-3 gap-4 mb-6">
-    <div class="card p-4 text-center">
-        <p class="text-2xl font-bold text-[var(--primary)]">{{ number_format((float)($kpi['pa'] ?? 0), 2) }}%</p>
-        <p class="text-xs text-slate-500">PA</p>
-    </div>
-    <div class="card p-4 text-center">
-        <p class="text-2xl font-bold text-[var(--primary)]">{{ number_format((float)($kpi['ua'] ?? 0), 2) }}%</p>
-        <p class="text-xs text-slate-500">UA</p>
-    </div>
-    <div class="card p-4 text-center">
-        <p class="text-2xl font-bold text-slate-500">SH {{ (int)($kpi['sh'] ?? 0) }} · WH {{ number_format((float)($kpi['wh'] ?? 0), 2) }} · BD {{ number_format((float)($kpi['bd'] ?? 0), 2) }}</p>
-        <p class="text-xs text-slate-500">Hours</p>
-    </div>
-</div>
-
-<div class="grid grid-cols-3 gap-4 mb-6">
-    <div class="card p-4 text-center">
-        <p class="text-2xl font-bold text-green-600">{{ number_format((float)($pies['day'] ?? 0), 2) }}</p>
-        <p class="text-xs text-slate-500">Day Tonnage</p>
-    </div>
-    <div class="card p-4 text-center">
-        <p class="text-2xl font-bold text-blue-600">{{ number_format((float)($pies['night'] ?? 0), 2) }}</p>
-        <p class="text-xs text-slate-500">Night Tonnage</p>
-    </div>
-    <div class="card p-4 text-center">
-        <p class="text-2xl font-bold text-[var(--primary)]">{{ number_format((float)($pies['combined'] ?? 0), 2) }}</p>
-        <p class="text-xs text-slate-500">Combined Tonnage</p>
+<div class="card p-4 mb-6">
+    <h2 class="section-title mb-3">Hauling by Material</h2>
+    <div class="relative" style="height: {{ max(200, count($haulingByMaterial) * 40 + 40) }}px;">
+        <canvas id="materialChart"></canvas>
     </div>
 </div>
 
 <div class="card p-4 mb-6">
     <h2 class="section-title mb-3">Timeline</h2>
-    <div class="space-y-3">
+    <div class="space-y-2">
         @forelse ($timeline as $t)
             @php
                 $t   = is_array($t) ? $t : $t->toArray();
@@ -85,9 +68,9 @@
                         {{ number_format($red, 1) }}h maint · {{ number_format($green, 1) }}h work · {{ number_format($white, 1) }}h standby
                     </span>
                 </div>
-                <div class="h-4 bg-slate-100 rounded-full overflow-hidden">
-                    <div class="h-4 rounded-full flex"
-                         style="background:linear-gradient(to right, #ef4438 0%, #ef4438 {{ $pRed }}%, #38bdf8 {{ $pRed }}%, #38bdf8 {{ $pAct }}%, #e2e8f0 {{ $pAct }}%, #e2e8f0 100%)">
+                <div class="h-3 bg-slate-100 rounded-full overflow-hidden">
+                    <div class="h-3 rounded-full flex"
+                         style="background:linear-gradient(to right, #ef4438 0%, #ef4438 {{ $pRed }}%, #1e3a5f {{ $pRed }}%, #1e3a5f {{ $pAct }}%, #e2e8f0 {{ $pAct }}%, #e2e8f0 100%)">
                     </div>
                 </div>
             </div>
@@ -134,3 +117,35 @@
     </div>
     <div class="p-4 border-t">{{ $hauling->links() }}</div>
 </div>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const materialCtx = document.getElementById('materialChart');
+    if (materialCtx) {
+        new Chart(materialCtx, {
+            type: 'bar',
+            data: {
+                labels: {!! json_encode(array_keys($haulingByMaterial)) !!},
+                datasets: [{
+                    label: 'Tonnage',
+                    data: {!! json_encode(array_values($haulingByMaterial)) !!},
+                    backgroundColor: '#1e3a5f',
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { color: '#e2e8f0' }, ticks: { color: '#475569' } },
+                    y: { grid: { display: false }, ticks: { color: '#1e3a5f', font: { weight: 'bold' } } }
+                }
+            }
+        });
+    }
+});
+</script>
+@endpush
