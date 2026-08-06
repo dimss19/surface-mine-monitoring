@@ -38,7 +38,7 @@
                 </div>
 
                 <div class="flex items-center justify-between mt-6">
-                    <a class="text-sm font-medium text-[var(--accent)] hover:text-[var(--accent-hover)]" href="{{ route('login') }}">
+                    <a class="text-sm font-medium text-[var(--primary)] underline hover:text-[var(--primary-dark)]" href="{{ route('login') }}">
                         {{ __('Already registered?') }}
                     </a>
 
