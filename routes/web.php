@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminUnitController;
 use App\Http\Controllers\AdminMaterialController;
 use App\Http\Controllers\AdminAreaController;
 use App\Http\Controllers\AdminTargetController;
+use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdminSpvController;
 use App\Http\Controllers\AdminPegawaiController;
 use App\Http\Controllers\PegawaiController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\PegawaiRitasiController;
 use App\Http\Controllers\PegawaiNonRitasiController;
 use App\Http\Controllers\PegawaiGeneralController;
 use App\Http\Controllers\UtilizationController;
+use Illuminate\Http\Request;
 use App\Http\Controllers\RekapanController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
@@ -69,7 +71,14 @@ Route::middleware('auth')->group(function () {
         Route::get('dashboard/export', [DashboardController::class, 'export'])->name('dashboard.export');
 
         // Master Data
-        Route::get('master-data', [AdminUnitController::class, 'index'])->name('master-data.index');
+        Route::get('master-data', function (Request $request) {
+            $tab = $request->query('tab', 'unit');
+            return match ($tab) {
+                'user' => app(\App\Http\Controllers\AdminUserController::class)->index($request),
+                'target' => app(\App\Http\Controllers\AdminTargetController::class)->index($request),
+                default => app(\App\Http\Controllers\AdminUnitController::class)->index($request),
+            };
+        })->name('master-data.index');
         Route::post('unit', [AdminUnitController::class, 'store'])->name('unit.store');
         Route::put('unit/{unit}', [AdminUnitController::class, 'update'])->name('unit.update');
         Route::delete('unit/{unit}', [AdminUnitController::class, 'destroy'])->name('unit.destroy');
@@ -86,8 +95,18 @@ Route::middleware('auth')->group(function () {
         Route::get('area/{area}/edit', [AdminAreaController::class, 'edit'])->name('area.edit');
         
         // Target Harian
+        Route::get('target', [AdminTargetController::class, 'index'])->name('target.index');
         Route::post('target', [AdminTargetController::class, 'store'])->name('target.store');
+        Route::get('target/{target}/edit', [AdminTargetController::class, 'edit'])->name('target.edit');
+        Route::put('target/{target}', [AdminTargetController::class, 'update'])->name('target.update');
         Route::delete('target/{target}', [AdminTargetController::class, 'destroy'])->name('target.destroy');
+
+        // User Management
+        Route::get('user', [AdminUserController::class, 'index'])->name('user.index');
+        Route::post('user', [AdminUserController::class, 'store'])->name('user.store');
+        Route::get('user/{user}/edit', [AdminUserController::class, 'edit'])->name('user.edit');
+        Route::put('user/{user}', [AdminUserController::class, 'update'])->name('user.update');
+        Route::delete('user/{user}', [AdminUserController::class, 'destroy'])->name('user.destroy');
 
         // Utilization
         Route::get('utilization', [UtilizationController::class, 'index'])->name('utilization.index');

@@ -1,5 +1,4 @@
 <div class="card">
-    {{-- Search --}}
     <div class="p-4 border-b border-[var(--border)] flex items-center justify-between">
         <div class="flex items-center gap-4">
             <div class="relative">
@@ -8,11 +7,7 @@
                 </span>
                 <form method="GET" action="{{ route('admin.master-data.index') }}">
                     <input type="hidden" name="tab" value="target">
-                    <input type="text"
-                           name="search"
-                           value="{{ request('search') }}"
-                           placeholder="Cari material..."
-                           class="form-input pl-10 w-64">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari material..." class="form-input pl-10 w-64">
                 </form>
             </div>
         </div>
@@ -22,7 +17,6 @@
         </button>
     </div>
 
-    {{-- Table --}}
     <div class="overflow-x-auto">
         <table class="w-full">
             <thead class="bg-slate-50">
@@ -37,14 +31,22 @@
             <tbody class="divide-y divide-[var(--border)]">
                 @forelse($targets as $index => $target)
                     <tr class="hover:bg-slate-50">
-                        <td class="px-4 py-3 text-sm text-[var(--text)]">{{ str_pad($targets->firstItem() + $index, 2, '0', STR_PAD_LEFT) }}</td>
+                        <td class="px-4 py-3 text-sm text-[var(--text)]">{{ $targets->firstItem() + $index }}</td>
                         <td class="px-4 py-3 text-sm font-medium text-[var(--text)]">{{ $target->material->nama }}</td>
                         <td class="px-4 py-3 text-sm text-[var(--text-muted)]">{{ \Carbon\Carbon::parse($target->tanggal)->format('d M Y') }}</td>
                         <td class="px-4 py-3 text-sm text-[var(--text)]">{{ $target->target_ritasi }}</td>
                         <td class="px-4 py-3">
-                            <button class="text-red-600 hover:text-red-700" onclick="deleteTarget({{ $target->id }})">
-                                <span class="material-symbols-outlined text-lg">delete</span>
-                            </button>
+                            <div class="flex items-center gap-2">
+                                <button class="text-[var(--primary)] hover:opacity-75" onclick="editTarget({{ $target->id }})">
+                                    <span class="material-symbols-outlined text-lg">edit</span>
+                                </button>
+                                <form id="delete-target-{{ $target->id }}" action="{{ route('admin.target.destroy', $target->id) }}" method="POST" style="display:inline">
+                                    @csrf @method('DELETE')
+                                </form>
+                                <button class="text-red-600 hover:text-red-700" onclick="deleteTarget({{ $target->id }})">
+                                    <span class="material-symbols-outlined text-lg">delete</span>
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 @empty
@@ -56,7 +58,6 @@
         </table>
     </div>
 
-    {{-- Pagination --}}
     <div class="p-4 border-t border-[var(--border)] flex items-center justify-between">
         <p class="text-sm text-[var(--text-muted)]">
             Showing {{ $targets->firstItem() }} to {{ $targets->lastItem() }} of {{ $targets->total() }} entries
@@ -101,6 +102,37 @@
     </div>
 </div>
 
+{{-- Modal Edit Target --}}
+<div id="editTargetModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+    <div class="bg-white rounded-xl w-full max-w-lg mx-4">
+        <div class="p-4 border-b border-[var(--border)] flex items-center justify-between">
+            <h3 class="font-heading font-bold text-[var(--primary)]">Edit Target Harian</h3>
+            <button onclick="closeModal('editTargetModal')" class="text-slate-400 hover:text-slate-600">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <form id="editTargetForm" method="POST" class="p-4 space-y-4">
+            @csrf @method('PUT')
+            <div>
+                <label class="form-label">Material</label>
+                <input type="text" id="edit_target_material" class="form-input" readonly disabled>
+            </div>
+            <div>
+                <label class="form-label">Tanggal</label>
+                <input type="text" id="edit_target_tanggal" class="form-input" readonly disabled>
+            </div>
+            <div>
+                <label class="form-label">Target Ritasi</label>
+                <input type="number" name="target_ritasi" id="edit_target_ritasi" class="form-input" min="0" required>
+            </div>
+            <div class="flex justify-end gap-3 pt-4 border-t border-[var(--border)]">
+                <button type="button" onclick="closeModal('editTargetModal')" class="btn-secondary">Batal</button>
+                <button type="submit" class="btn-primary">Simpan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
 function openModal(id) {
     document.getElementById(id).classList.remove('hidden');
@@ -108,17 +140,23 @@ function openModal(id) {
 function closeModal(id) {
     document.getElementById(id).classList.add('hidden');
 }
+function editTarget(id) {
+    fetch(`/admin/target/${id}/edit`)
+        .then(r => r.json())
+        .then(data => {
+            document.getElementById('editTargetForm').action = `/admin/target/${id}`;
+            document.getElementById('edit_target_material').value = data.material?.nama || '-';
+            document.getElementById('edit_target_tanggal').value = new Date(data.tanggal).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('edit_target_ritasi').value = data.target_ritasi;
+            openModal('editTargetModal');
+        })
+        .catch(() => {
+            alert('Gagal memuat data target');
+        });
+}
 function deleteTarget(id) {
     if (confirm('Yakin ingin menghapus target ini?')) {
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = `/admin/target/${id}`;
-        form.innerHTML = `
-            @csrf
-            <input type="hidden" name="_method" value="DELETE">
-        `;
-        document.body.appendChild(form);
-        form.submit();
+        document.getElementById('delete-target-' + id).submit();
     }
 }
 </script>
