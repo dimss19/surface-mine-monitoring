@@ -12,7 +12,7 @@
                            name="search"
                            value="{{ request('search') }}"
                            placeholder="Cari data..."
-                           class="pl-10 pr-4 py-2 border border-[var(--border)] rounded-lg w-64 text-sm focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent">
+                           class="form-input pl-10 w-64">
                 </form>
             </div>
         </div>
@@ -61,7 +61,7 @@
                         </td>
                         <td class="px-4 py-3">
                             <div class="flex items-center gap-2">
-                                <button class="text-blue-600 hover:text-blue-700" onclick="editArea({{ $area->id }})">
+                                <button class="text-[var(--primary)] hover:opacity-75" onclick="editArea({{ $area->id }})">
                                     <span class="material-symbols-outlined text-lg">edit</span>
                                 </button>
                                 <button class="text-red-600 hover:text-red-700" onclick="deleteArea({{ $area->id }})">

@@ -12,7 +12,7 @@
                            name="search"
                            value="{{ request('search') }}"
                            placeholder="Cari material..."
-                           class="pl-10 pr-4 py-2 border border-[var(--border)] rounded-lg w-64 text-sm focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent">
+                           class="form-input pl-10 w-64">
                 </form>
             </div>
         </div>

@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="mb-6">
-    <h1 class="text-2xl font-heading font-bold text-[var(--primary)]">Mining Oprationals Civil Departement</h1>
+    <h1 class="text-2xl font-heading font-bold text-[var(--primary)]">Mining Operationals Civil Department</h1>
 </div>
 
 {{-- Tabs --}}

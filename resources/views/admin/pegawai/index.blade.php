@@ -32,7 +32,7 @@
                         <td class="px-4 py-3 text-sm font-medium text-[var(--text)]">{{ $pegawai->nama }}</td>
                         <td class="px-4 py-3">
                             <div class="flex items-center gap-2">
-                                <a href="{{ route('admin.pegawai.edit', $pegawai) }}" class="text-blue-600 hover:text-blue-700">
+                                <a href="{{ route('admin.pegawai.edit', $pegawai) }}" class="text-[var(--primary)] hover:opacity-75">
                                     <span class="material-symbols-outlined text-lg">edit</span>
                                 </a>
                                 <button class="text-red-600 hover:text-red-700" onclick="deletePegawai({{ $pegawai->id }})">

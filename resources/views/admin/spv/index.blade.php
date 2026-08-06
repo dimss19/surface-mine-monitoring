@@ -42,7 +42,7 @@
                         </td>
                         <td class="px-4 py-3">
                             <div class="flex items-center gap-2">
-                                <a href="{{ route('admin.spv.edit', $spv) }}" class="text-blue-600 hover:text-blue-700">
+                                <a href="{{ route('admin.spv.edit', $spv) }}" class="text-[var(--primary)] hover:opacity-75">
                                     <span class="material-symbols-outlined text-lg">edit</span>
                                 </a>
                                 <button class="text-red-600 hover:text-red-700" onclick="deleteSpv({{ $spv->id }})">

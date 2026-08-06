@@ -17,12 +17,12 @@
         @method('PUT')
         <div class="p-6 space-y-4">
             <div>
-                <label for="name" class="block text-sm font-medium text-[var(--text)] mb-1">Nama Lengkap</label>
+                <label for="name" class="form-label">Nama Lengkap</label>
                 <input type="text"
                        id="name"
                        name="name"
                        value="{{ old('name', $spv->name) }}"
-                       class="w-full px-4 py-2 border border-[var(--border)] rounded-lg focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent"
+                       class="form-input"
                        required>
                 @error('name')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -30,12 +30,12 @@
             </div>
 
             <div>
-                <label for="username" class="block text-sm font-medium text-[var(--text)] mb-1">Username</label>
+                <label for="username" class="form-label">Username</label>
                 <input type="text"
                        id="username"
                        name="username"
                        value="{{ old('username', $spv->username) }}"
-                       class="w-full px-4 py-2 border border-[var(--border)] rounded-lg focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent"
+                       class="form-input"
                        required>
                 @error('username')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -43,18 +43,18 @@
             </div>
 
             <div>
-                <label for="password" class="block text-sm font-medium text-[var(--text)] mb-1">Password <span class="text-slate-400 font-normal">(Kosongkan jika tidak ingin mengubah)</span></label>
+                <label for="password" class="form-label">Password <span class="text-slate-400 font-normal">(Kosongkan jika tidak ingin mengubah)</span></label>
                 <input type="password"
                        id="password"
                        name="password"
-                       class="w-full px-4 py-2 border border-[var(--border)] rounded-lg focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent">
+                       class="form-input">
                 @error('password')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
             <div>
-                <label class="block text-sm font-medium text-[var(--text)] mb-2">Area Tugas</label>
+                <label class="form-label mb-2">Area Tugas</label>
                 <div class="grid grid-cols-2 gap-2">
                     @foreach($areas as $area)
                         <label class="flex items-center gap-2 p-2 border border-[var(--border)] rounded-lg cursor-pointer hover:bg-slate-50">

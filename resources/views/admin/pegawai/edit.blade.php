@@ -17,12 +17,12 @@
         @method('PUT')
         <div class="p-6 space-y-4">
             <div>
-                <label for="nama" class="block text-sm font-medium text-[var(--text)] mb-1">Nama Pegawai</label>
+                <label for="nama" class="form-label">Nama Pegawai</label>
                 <input type="text"
                        id="nama"
                        name="nama"
                        value="{{ old('nama', $pegawai->nama) }}"
-                       class="w-full px-4 py-2 border border-[var(--border)] rounded-lg focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent"
+                       class="form-input"
                        required>
                 @error('nama')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
