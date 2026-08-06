@@ -85,18 +85,44 @@ document.addEventListener('DOMContentLoaded', function() {
     const matCtx = document.getElementById('weeklyMaterialChart');
     if (matCtx) {
         const materialPalette = ['#1e3a5f', '#d97706', '#059669', '#dc2626', '#7c3aed', '#0284c7', '#ca8a04', '#db2777', '#475569', '#0d9488'];
-        const materialLabels = {!! json_encode(array_keys($haulingByMaterial)) !!};
-        const materialColors = materialLabels.map((_, i) => materialPalette[i % materialPalette.length]);
+        const mc = {!! json_encode($materialChart ?? ['names' => [], 'tonnage' => [], 'target' => [], 'gap' => []]) !!};
+        const materialColors = mc.names.map((_, i) => materialPalette[i % materialPalette.length]);
+        const targetReached = mc.names.map((_, i) => mc.gap[i] <= 0);
+        // Only show a target marker for materials that actually have a target.
+        const targetValues = mc.target.map((v, i) => mc.target[i] > 0 ? v : null);
+
         new Chart(matCtx, {
             type: 'bar',
             data: {
-                labels: materialLabels,
-                datasets: [{
-                    label: 'Tonnage',
-                    data: {!! json_encode(array_values($haulingByMaterial)) !!},
-                    backgroundColor: materialColors,
-                    borderRadius: 4
-                }]
+                labels: mc.names,
+                datasets: [
+                    {
+                        label: 'Tonase (ton)',
+                        data: mc.tonnage,
+                        backgroundColor: materialColors,
+                        borderRadius: 4
+                    },
+                    {
+                        label: 'Sisa target (ritasi)',
+                        type: 'bar',
+                        data: mc.gap,
+                        backgroundColor: 'rgba(239, 68, 68, 0.30)',
+                        borderRadius: 2,
+                        xAxisID: 'x1'
+                    },
+                    {
+                        label: 'Target (ritasi)',
+                        type: 'line',
+                        data: targetValues,
+                        xAxisID: 'x1',
+                        showLine: false,
+                        pointStyle: 'line',
+                        pointRadius: 7,
+                        pointBorderWidth: 3,
+                        pointBackgroundColor: 'transparent',
+                        pointBorderColor: mc.names.map((_, i) => targetReached[i] ? '#10b981' : '#f59e0b')
+                    }
+                ]
             },
             options: {
                 indexAxis: 'y',
@@ -104,7 +130,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
                 scales: {
-                    x: { grid: { color: '#e2e8f0' }, ticks: { color: '#475569' } },
+                    x: { grid: { color: '#e2e8f0' }, ticks: { color: '#475569' }, title: { display: true, text: 'Tonase (ton)' } },
+                    x1: { position: 'top', grid: { drawOnChartArea: false }, ticks: { color: '#94a3b8' }, title: { display: true, text: 'Ritasi (target)' } },
                     y: { grid: { display: false }, ticks: { color: '#1e3a5f', font: { weight: 'bold' } } }
                 }
             }

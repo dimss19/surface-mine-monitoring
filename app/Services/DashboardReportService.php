@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Ritasi;
 use App\Models\Unit;
 use App\Models\UnitUtilization;
+use App\Models\DailyTarget;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Carbon;
@@ -154,6 +155,25 @@ class DashboardReportService
             ->map(fn ($items) => round((float) $items->sum(fn ($r) => $r->quantity_tonnes), 2))
             ->sortDesc()->all();
 
+        // Daily target per material (ritasi) for the hauling-by-material chart overlay.
+        $targetsByName = DailyTarget::with('material')->get()
+            ->mapWithKeys(fn ($t) => [$t->material->nama => (int) $t->target_ritasi]);
+
+        $ritasiByName = $ritasis->groupBy(fn ($r) => $r->material->nama ?? 'Lainnya')
+            ->map(fn ($items) => (int) $items->sum(fn ($r) => $r->jumlah_ritasi));
+
+        $materialNames = array_keys($haulingByMaterial);
+        $materialChart = [
+            'names'        => $materialNames,
+            'tonnage'      => array_values($haulingByMaterial),
+            'target'       => array_map(fn ($n) => $targetsByName[$n] ?? 0, $materialNames),
+            'actualRitasi' => array_map(fn ($n) => $ritasiByName[$n] ?? 0, $materialNames),
+            'gap'          => array_map(
+                fn ($n) => max(0, ($targetsByName[$n] ?? 0) - ($ritasiByName[$n] ?? 0)),
+                $materialNames
+            ),
+        ];
+
         $oreNames = ['Bauxite Ore (Raw)', 'Processed Alumina', 'Pasir Hitam', 'Mining Tuff', 'Batu Pica (5/15)', 'Tuff Off', 'KCN', 'Cake', 'DSTuff'];
         $dailyOreOthers = $this->dailyOreOthers($start, $end, $ritasis, $oreNames);
 
@@ -182,6 +202,7 @@ class DashboardReportService
             'units'             => $units,
             'periodLabel'       => $this->periodLabel($period, $start, $end),
             'haulingByMaterial' => $haulingByMaterial,
+            'materialChart'     => $materialChart,
             'dailyOreOthers'    => $dailyOreOthers,
             'availability'      => $availability,
             'uoa'               => $uoa,
