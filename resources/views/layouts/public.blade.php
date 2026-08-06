@@ -11,7 +11,7 @@
         [x-cloak] { display: none !important; }
     </style>
 </head>
-<body class="bg-[#0f172a] min-h-screen font-['Inter',sans-serif]">
+<body class="bg-[var(--bg)] min-h-screen font-['Inter',sans-serif]">
     @yield('content')
 </body>
 </html>

@@ -14,7 +14,7 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="bg-[#0f172a] min-h-screen font-['Inter',sans-serif]">
+    <body class="bg-[var(--bg)] min-h-screen font-['Inter',sans-serif]">
         {{ $slot }}
     </body>
 </html>
