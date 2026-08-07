@@ -1,12 +1,15 @@
-﻿@extends('layouts.app', ['headerTitle' => 'Manajemen SPV'])
+@extends('layouts.app', ['headerTitle' => 'Manajemen SPV'])
 
 @section('title', 'Manajemen SPV')
 
 @section('content')
 
-<div class="card">
+<div class="card !p-0 overflow-hidden">
     <div class="p-4 border-b border-[var(--border)] flex items-center justify-between">
-        <div></div>
+        <h2 class="section-title mb-0 flex items-center gap-2">
+            <span class="material-symbols-outlined text-[var(--primary)]">badge</span>
+            Daftar SPV
+        </h2>
         <a href="{{ route('admin.spv.create') }}" class="btn-primary flex items-center gap-2">
             <span class="material-symbols-outlined text-lg">add</span>
             Tambah SPV

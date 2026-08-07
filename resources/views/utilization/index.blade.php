@@ -5,22 +5,30 @@
 @section('content')
 @php $role = Auth::user()->role; @endphp
 
-<div class="card p-4 mb-6">
-    <form method="GET" action="{{ route("$role.utilization.index") }}" class="flex items-center gap-4 flex-wrap">
-        <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-slate-400">calendar_today</span>
-            <input type="date" name="tanggal_start" value="{{ request('tanggal_start') }}" class="form-input w-40">
-            <span class="text-slate-400">-</span>
-            <input type="date" name="tanggal_end" value="{{ request('tanggal_end') }}" class="form-input w-40">
-        </div>
-        <button type="submit" class="btn-primary flex items-center gap-2">
-            <span class="material-symbols-outlined text-lg">filter_alt</span>
-            Filter
-        </button>
-        @if(request()->filled('tanggal_start'))
-            <a href="{{ route("$role.utilization.index") }}" class="btn-secondary">Reset</a>
-        @endif
-    </form>
+<div class="card mb-6 overflow-hidden !p-0">
+    <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+        <h2 class="section-title mb-0 flex items-center gap-2">
+            <span class="material-symbols-outlined text-[var(--primary)]">filter_alt</span>
+            Filter Utilization
+        </h2>
+    </div>
+    <div class="p-4">
+        <form method="GET" action="{{ route("$role.utilization.index") }}" class="flex items-center gap-4 flex-wrap">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-slate-400">calendar_today</span>
+                <input type="date" name="tanggal_start" value="{{ request('tanggal_start') }}" class="form-input w-40">
+                <span class="text-slate-400">-</span>
+                <input type="date" name="tanggal_end" value="{{ request('tanggal_end') }}" class="form-input w-40">
+            </div>
+            <button type="submit" class="btn-primary flex items-center gap-2">
+                <span class="material-symbols-outlined text-lg">filter_alt</span>
+                Filter
+            </button>
+            @if(request()->filled('tanggal_start'))
+                <a href="{{ route("$role.utilization.index") }}" class="btn-secondary">Reset</a>
+            @endif
+        </form>
+    </div>
 </div>
 
 @php
@@ -53,7 +61,13 @@
     </div>
 </div>
 
-<div class="card overflow-hidden">
+<div class="card overflow-hidden !p-0">
+    <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+        <h2 class="section-title mb-0 flex items-center gap-2">
+            <span class="material-symbols-outlined text-[var(--primary)]">list_alt</span>
+            Riwayat Status Utilization
+        </h2>
+    </div>
     <div class="overflow-x-auto">
         <table class="w-full">
             <thead class="bg-slate-50">

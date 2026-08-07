@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -22,7 +22,7 @@
             .main-content {
                 margin-left: 0 !important;
                 padding: 1rem !important;
-                padding-top: 5rem !important;
+                padding-top: 6rem !important;
             }
             
             .stat-card {
@@ -96,7 +96,7 @@
             }
             
             .main-content {
-                padding-top: calc(5rem + env(safe-area-inset-top));
+                padding-top: calc(6rem + env(safe-area-inset-top));
             }
         }
     </style>
@@ -107,7 +107,7 @@
     @include('components.sidebar', ['role' => $role])
     @include('components.topbar', ['role' => $role, 'headerTitle' => $headerTitle ?? '', 'headerDate' => $headerDate])
 
-    <main class="ml-56 pt-20 min-h-screen p-6 main-content">
+    <main class="ml-56 pt-28 min-h-screen p-6 main-content">
         @if(session('success'))
             <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-4 flex items-center justify-between">
                 <div class="flex items-center gap-2">

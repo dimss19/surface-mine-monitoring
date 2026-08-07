@@ -3,8 +3,8 @@
 @section('title', 'Edit Operator')
 
 @section('content')
-<div class="flex items-center justify-between mb-6">
-    <a href="{{ route('admin.pegawai.index') }}" class="btn-secondary">
+<div class="mb-6">
+    <a href="{{ route('admin.pegawai.index') }}" class="btn-secondary inline-flex items-center gap-2">
         <span class="material-symbols-outlined text-lg">arrow_back</span>
         Kembali
     </a>
