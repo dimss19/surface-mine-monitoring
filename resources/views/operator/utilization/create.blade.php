@@ -4,25 +4,9 @@
 
 @section('content')
 
-@if ($errors->any())
-<div class="bg-red-50 border border-red-200 text-red-700 rounded-lg p-3 text-sm mb-6">
-    <ul class="list-disc list-inside space-y-1">
-        @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-</div>
-@endif
+@include('operator.partials.validation-errors')
 
-<div class="bg-[var(--primary)] text-white rounded-lg p-4 mb-6">
-    <div class="flex items-center gap-3">
-        <span class="material-symbols-outlined">info</span>
-        <div>
-            <p class="font-semibold">Sesi Aktif</p>
-            <p class="text-sm text-slate-300">Catat kondisi unit: pilih Breakdown jika unit rusak, atau Servis jika unit telah ditangani.</p>
-        </div>
-    </div>
-</div>
+@include('operator.partials.session-info', ['description' => 'Catat kondisi unit: pilih Breakdown jika unit rusak, atau Servis jika unit telah ditangani.'])
 
 <form action="{{ route('pegawai.utilization.store') }}" method="POST" data-offline-form data-sync-tag="utilization-sync">
     @csrf
