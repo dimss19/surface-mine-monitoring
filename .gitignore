@@ -32,7 +32,8 @@ memory.md
 .opencode/
 .superpowers/
 openspec/
-docs/superpowers/
+/design-system/
+/docs/
 
 # Test artifacts
 /test-results/
