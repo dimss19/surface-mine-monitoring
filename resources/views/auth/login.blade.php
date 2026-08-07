@@ -4,7 +4,7 @@
         <div class="absolute top-0 right-0 w-96 h-96 bg-blue-900/20 rounded-full blur-3xl opacity-50 -translate-y-1/3 translate-x-1/3"></div>
         <div class="absolute bottom-0 left-0 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl opacity-50 translate-y-1/3 -translate-x-1/3"></div>
 
-        <div class="fade-in w-full max-w-md bg-[#0f1d36]/45 backdrop-blur-md rounded-2xl shadow-2xl border border-slate-800/80 p-8 flex flex-col items-center relative z-10">
+        <div class="fade-in w-full max-w-md bg-white rounded-2xl shadow-2xl border border-slate-100 p-8 flex flex-col items-center relative z-10">
             {{-- Logo --}}
             <div class="mb-6">
                 <img src="{{ asset('images/company-logo.png') }}" alt="Company Logo" class="h-20 w-auto object-contain">
@@ -12,8 +12,8 @@
 
             {{-- Title --}}
             <div class="text-center mb-8">
-                <h1 class="font-heading text-xl font-bold text-white tracking-wide uppercase">Surface Mine</h1>
-                <p class="text-xs text-slate-400 mt-1 font-medium">Civil Department Operational Record</p>
+                <h1 class="font-heading text-xl font-bold text-[var(--primary)] tracking-wide uppercase">Surface Mine</h1>
+                <p class="text-xs text-[var(--text-secondary)] mt-1 font-medium">Civil Department Operational Record</p>
             </div>
 
             {{-- Form --}}
@@ -22,16 +22,16 @@
 
                 {{-- Username / Email --}}
                 <div>
-                    <label class="block text-xs font-semibold mb-1.5 text-slate-300">Username</label>
+                    <label class="form-label text-xs">Username</label>
                     <div class="relative">
-                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
                             <span class="material-symbols-outlined text-base">person</span>
                         </span>
                         <input type="text"
                                name="login"
                                value="{{ old('login') }}"
                                placeholder="Masukkan username"
-                               class="w-full px-4 py-2.5 pl-10 border rounded-lg text-xs outline-none bg-[#08101d]/60 border-slate-800/80 text-white placeholder-slate-500 focus:border-amber-500 focus:ring-4 focus:ring-amber-500/20 transition-all"
+                               class="form-input pl-10 text-xs py-2.5"
                                required
                                autofocus>
                     </div>
@@ -40,15 +40,15 @@
 
                 {{-- Password / ID Pekerja --}}
                 <div>
-                    <label class="block text-xs font-semibold mb-1.5 text-slate-300">ID Pekerja (Password)</label>
+                    <label class="form-label text-xs">ID Pekerja (Password)</label>
                     <div class="relative">
-                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
                             <span class="material-symbols-outlined text-base">lock</span>
                         </span>
                         <input type="password"
                                name="password"
                                placeholder="Masukkan ID Pekerja"
-                               class="w-full px-4 py-2.5 pl-10 border rounded-lg text-xs outline-none bg-[#08101d]/60 border-slate-800/80 text-white placeholder-slate-500 focus:border-amber-500 focus:ring-4 focus:ring-amber-500/20 transition-all"
+                               class="form-input pl-10 text-xs py-2.5"
                                required
                                autocomplete="current-password">
                     </div>
@@ -57,7 +57,7 @@
 
                 {{-- Error message --}}
                 @if(session('error'))
-                    <div class="bg-red-950/40 border border-red-900/50 text-red-400 px-3.5 py-2.5 rounded-lg text-xs flex items-start gap-2">
+                    <div class="bg-red-50 border border-red-200 text-red-600 px-3.5 py-2.5 rounded-lg text-xs flex items-start gap-2">
                         <span class="material-symbols-outlined text-sm mt-0.5 text-red-500">error</span>
                         <span>{{ session('error') }}</span>
                     </div>
@@ -73,8 +73,8 @@
             </form>
 
             {{-- Back button to landing --}}
-            <div class="mt-8 text-center w-full border-t border-slate-800/80 pt-4">
-                <a href="{{ route('landing') }}" class="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors">
+            <div class="mt-8 text-center w-full border-t border-slate-100 pt-4">
+                <a href="{{ route('landing') }}" class="inline-flex items-center gap-1.5 text-xs text-[var(--text-muted)] hover:text-[var(--primary)] transition-colors">
                     <span class="material-symbols-outlined text-sm">arrow_back</span>
                     Kembali ke Beranda
                 </a>
