@@ -1,15 +1,12 @@
-@extends('layouts.app')
+@extends('layouts.app', ['headerTitle' => 'Detail Rekapan Operator'])
 
 @section('title', 'Detail Rekapan Operator')
 
 @section('content')
 @php $role = Auth::user()->role; @endphp
 
-<div class="mb-6 flex items-center justify-between">
-    <div>
-        <h1 class="text-2xl font-heading font-bold text-[var(--primary)]">Detail Rekapan Operator</h1>
-        <p class="text-sm text-slate-500 mt-1">Operator: <strong>{{ $pegawai->nama }}</strong></p>
-    </div>
+<div class="flex items-center justify-between mb-6">
+    <p class="text-sm text-slate-500">Operator: <strong>{{ $pegawai->nama }}</strong></p>
     <a href="{{ route("$role.rekapan.index", request()->query()) }}" class="btn-secondary flex items-center gap-2">
         <span class="material-symbols-outlined text-lg">arrow_back</span>
         Kembali

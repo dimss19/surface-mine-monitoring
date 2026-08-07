@@ -82,14 +82,20 @@
         </div>
         <form action="{{ route('admin.target.store') }}" method="POST" class="p-4 space-y-4">
             @csrf
-            <div>
-                <label class="form-label">Material</label>
-                <select name="material_id" class="form-input" required>
-                    <option value="">Pilih Material</option>
-                    @foreach($materials as $material)
-                        <option value="{{ $material->id }}">{{ $material->nama }} ({{ $material->kode }})</option>
-                    @endforeach
-                </select>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="form-label">Material</label>
+                    <select name="material_id" class="form-input" required>
+                        <option value="">Pilih Material</option>
+                        @foreach($materials as $material)
+                            <option value="{{ $material->id }}">{{ $material->nama }} ({{ $material->kode }})</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label">Tanggal</label>
+                    <input type="date" name="tanggal" class="form-input" required value="{{ date('Y-m-d') }}">
+                </div>
             </div>
             <div>
                 <label class="form-label">Periode</label>

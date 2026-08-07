@@ -1,10 +1,9 @@
-﻿@extends('layouts.app')
+@extends('layouts.app', ['headerTitle' => 'Tambah Operator'])
 
-@section('title', 'Tambah Pegawai')
+@section('title', 'Tambah Operator')
 
 @section('content')
-<div class="mb-6 flex items-center justify-between">
-    <h1 class="text-2xl font-heading font-bold text-[var(--primary)]">Tambah Pegawai</h1>
+<div class="flex items-center justify-between mb-6">
     <a href="{{ route('admin.pegawai.index') }}" class="btn-secondary">
         <span class="material-symbols-outlined text-lg">arrow_back</span>
         Kembali
@@ -16,7 +15,7 @@
         @csrf
         <div class="p-6 space-y-4">
             <div>
-                <label for="nama" class="form-label">Nama Pegawai</label>
+                <label for="nama" class="form-label">Nama Operator</label>
                 <input type="text"
                        id="nama"
                        name="nama"

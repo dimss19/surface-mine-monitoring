@@ -1,12 +1,8 @@
-﻿@extends('layouts.app')
+﻿@extends('layouts.app', ['headerTitle' => 'Riwayat Ritasi'])
 
 @section('title', 'Riwayat Ritasi')
 
 @section('content')
-<div class="mb-6">
-    <h1 class="text-2xl font-heading font-bold text-[var(--primary)]">Riwayat Ritasi</h1>
-    <p class="text-slate-500">Data ritasi sebelumnya</p>
-</div>
 
 <div class="card p-4 mb-6">
     <form method="GET" class="grid grid-cols-1 sm:grid-cols-3 gap-3 items-end">

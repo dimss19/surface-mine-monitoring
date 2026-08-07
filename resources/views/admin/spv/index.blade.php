@@ -1,11 +1,8 @@
-﻿@extends('layouts.app')
+﻿@extends('layouts.app', ['headerTitle' => 'Manajemen SPV'])
 
 @section('title', 'Manajemen SPV')
 
 @section('content')
-<div class="mb-6">
-    <h1 class="text-2xl font-heading font-bold text-[var(--primary)]">Manajemen SPV</h1>
-</div>
 
 <div class="card">
     <div class="p-4 border-b border-[var(--border)] flex items-center justify-between">

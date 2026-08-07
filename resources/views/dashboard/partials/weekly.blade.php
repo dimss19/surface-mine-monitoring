@@ -51,7 +51,7 @@
                 <span class="material-symbols-outlined text-[var(--primary)] text-xl">trending_up</span>
                 <h3 class="font-heading font-bold text-[var(--primary)]">UoA</h3>
             </div>
-            <p class="text-xs text-slate-500 mb-4">Unit Operating Availability — waktu unit benar-benar bekerja dari waktu tersedia</p>
+            <p class="text-xs text-slate-500 mb-4">Unit Operating Availability &mdash; waktu unit benar-benar bekerja dari waktu tersedia</p>
             <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
                 @foreach ($uoa as $u)
                     @php
@@ -69,12 +69,12 @@
         </div>
     </div>
 </div>
-<p class="text-xs text-slate-400 mb-6 px-1">Grafik batang = total tonase mingguan per material. Gauge = persentase Availability (ketersediaan unit) dan UoA (unit benar-benar bekerja) per tipe unit. Warna hijau ≥80% (baik), kuning 50–79% (kurang), merah &lt;50% (rendah).</p>
+<p class="text-xs text-slate-400 mb-6 px-1">Grafik batang = total tonase mingguan per material. Gauge = persentase Availability (ketersediaan unit) dan UoA (unit benar-benar bekerja) per tipe unit. Warna hijau &ge;80% (baik), kuning 50&ndash;79% (kurang), merah &lt;50% (rendah).</p>
 
 <div class="card p-4 mb-6">
     <div class="flex flex-wrap items-center justify-center gap-6 text-xs text-slate-500">
-        <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-green-500"></span> Baik (≥80%)</span>
-        <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-amber-500"></span> Kurang (50–79%)</span>
+        <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-green-500"></span> Baik (&ge;80%)</span>
+        <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-amber-500"></span> Kurang (50&ndash;79%)</span>
         <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-red-500"></span> Rendah (&lt;50%)</span>
     </div>
 </div>
@@ -88,7 +88,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const mc = {!! json_encode($materialChart ?? ['names' => [], 'tonnage' => [], 'target' => [], 'gap' => []]) !!};
         const materialColors = mc.names.map((_, i) => materialPalette[i % materialPalette.length]);
         const targetReached = mc.names.map((_, i) => mc.gap[i] <= 0);
-        // Only show a target marker for materials that actually have a target.
         const targetValues = mc.target.map((v, i) => mc.target[i] > 0 ? v : null);
 
         new Chart(matCtx, {
@@ -97,30 +96,32 @@ document.addEventListener('DOMContentLoaded', function() {
                 labels: mc.names,
                 datasets: [
                     {
-                        label: 'Tonase (ton)',
-                        data: mc.tonnage,
+                        label: 'Ritasi aktual',
+                        data: mc.actualRitasi,
                         backgroundColor: materialColors,
-                        borderRadius: 4
+                        borderRadius: 4,
+                        stack: 'main',
+                        order: 2
                     },
                     {
-                        label: 'Sisa target (ritasi)',
-                        type: 'bar',
+                        label: 'Sisa target',
                         data: mc.gap,
-                        backgroundColor: 'rgba(239, 68, 68, 0.30)',
+                        backgroundColor: 'rgba(239, 68, 68, 0.25)',
                         borderRadius: 2,
-                        xAxisID: 'x1'
+                        stack: 'main',
+                        order: 3
                     },
                     {
                         label: 'Target (ritasi)',
                         type: 'line',
                         data: targetValues,
-                        xAxisID: 'x1',
                         showLine: false,
                         pointStyle: 'line',
-                        pointRadius: 7,
-                        pointBorderWidth: 3,
-                        pointBackgroundColor: 'transparent',
-                        pointBorderColor: mc.names.map((_, i) => targetReached[i] ? '#10b981' : '#f59e0b')
+                        pointRadius: 0, // No dot, just line
+                        pointBorderWidth: 2, // Line thickness
+                        pointBorderColor: '#000',
+                        pointRotation: 90, // Rotate horizontal line to vertical
+                        order: 1
                     }
                 ]
             },
@@ -130,9 +131,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
                 scales: {
-                    x: { grid: { color: '#e2e8f0' }, ticks: { color: '#475569' }, title: { display: true, text: 'Tonase (ton)' } },
-                    x1: { position: 'top', grid: { drawOnChartArea: false }, ticks: { color: '#94a3b8' }, title: { display: true, text: 'Ritasi (target)' } },
-                    y: { grid: { display: false }, ticks: { color: '#1e3a5f', font: { weight: 'bold' } } }
+                    x: { stacked: true, grid: { color: '#e2e8f0' }, ticks: { color: '#475569' } },
+                    y: { stacked: true, grid: { display: false }, ticks: { color: '#1e3a5f', font: { weight: 'bold' } } }
                 }
             }
         });
@@ -165,20 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     duration: 1200,
                     easing: 'easeOutQuart'
                 }
-            },
-            plugins: [{
-                id: 'centerText',
-                afterDraw: function(chart) {
-                    const { ctx: c, width, height } = chart;
-                    c.save();
-                    c.font = 'bold 13px Inter, sans-serif';
-                    c.fillStyle = color;
-                    c.textAlign = 'center';
-                    c.textBaseline = 'middle';
-                    c.fillText(pct + '%', width / 2, height - 14);
-                    c.restore();
-                }
-            }]
+            }
         });
     }
 

@@ -1,18 +1,15 @@
-﻿@extends('layouts.app')
+@extends('layouts.app', ['headerTitle' => 'Manajemen Operator'])
 
-@section('title', 'Manajemen Pegawai')
+@section('title', 'Manajemen Operator')
 
 @section('content')
-<div class="mb-6">
-    <h1 class="text-2xl font-heading font-bold text-[var(--primary)]">Manajemen Pegawai</h1>
-</div>
 
 <div class="card">
     <div class="p-4 border-b border-[var(--border)] flex items-center justify-between">
         <div></div>
         <a href="{{ route('admin.pegawai.create') }}" class="btn-primary flex items-center gap-2">
             <span class="material-symbols-outlined text-lg">add</span>
-            Tambah Pegawai
+            Tambah Operator
         </a>
     </div>
 
@@ -43,7 +40,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="3" class="px-4 py-8 text-center text-[var(--text-muted)]">Tidak ada data pegawai</td>
+                        <td colspan="3" class="px-4 py-8 text-center text-[var(--text-muted)]">Tidak ada data operator</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -57,7 +54,7 @@
 
 <script>
 function deletePegawai(id) {
-    if (confirm('Yakin ingin menghapus pegawai ini?')) {
+    if (confirm('Yakin ingin menghapus operator ini?')) {
         fetch(`/admin/pegawai/${id}`, {
             method: 'DELETE',
             headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }

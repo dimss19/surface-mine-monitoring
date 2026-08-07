@@ -1,11 +1,8 @@
-﻿@extends('layouts.app')
+﻿@extends('layouts.app', ['headerTitle' => 'Master Data'])
 
 @section('title', 'Master Data')
 
 @section('content')
-<div class="mb-6">
-    <h1 class="text-2xl font-heading font-bold text-[var(--primary)]">Mining Operationals Civil Department</h1>
-</div>
 
 {{-- Tabs --}}
 <div class="border-b border-[var(--border)] mb-6">

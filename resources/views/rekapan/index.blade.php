@@ -1,13 +1,9 @@
-@extends('layouts.app')
+@extends('layouts.app', ['headerTitle' => 'Rekapan Operator'])
 
 @section('title', 'Rekapan Operator')
 
-        @section('content')
+@section('content')
 @php $role = Auth::user()->role; @endphp
-
-<div class="mb-6">
-    <h1 class="text-2xl font-heading font-bold text-[var(--primary)]">Rekapan Operator</h1>
-</div>
 
 <div class="mb-4 flex gap-3">
     <form method="POST" action="{{ route("$role.rekapan.export") }}" class="flex items-center gap-2">

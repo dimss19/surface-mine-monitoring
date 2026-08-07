@@ -1,13 +1,9 @@
-@extends('layouts.app')
+@extends('layouts.app', ['headerTitle' => 'Dashboard'])
 
 @section('title', 'Dashboard')
 
 @section('content')
-<div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-    <div>
-        <h1 class="text-2xl font-heading font-bold text-[var(--primary)]">Dashboard</h1>
-        <p class="text-sm text-slate-500 mt-1">{{ $periodLabel ?? '' }}</p>
-    </div>
+<div class="mb-6 flex justify-end">
     <div class="text-right">
         <button type="button" onclick="location.href='{{ route(auth()->user()->role . '.dashboard.export') }}?{{ http_build_query(request()->collect()->except('tab')->all()) }}'"
                 class="btn-secondary flex items-center gap-2">

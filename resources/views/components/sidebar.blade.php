@@ -27,7 +27,7 @@
             <a href="{{ route('admin.rekapan.index') }}"
                class="sidebar-nav-item {{ request()->routeIs('admin.rekapan.*') ? 'active' : '' }}">
                 <span class="material-symbols-outlined">receipt_long</span>
-                Rekapan Pegawai
+                Rekapan Operator
             </a>
             <a href="{{ route('admin.utilization.index') }}"
                class="sidebar-nav-item {{ request()->routeIs('admin.utilization.*') ? 'active' : '' }}">
@@ -48,7 +48,7 @@
             <a href="{{ route('spv.rekapan.index') }}"
                class="sidebar-nav-item {{ request()->routeIs('spv.rekapan.*') ? 'active' : '' }}">
                 <span class="material-symbols-outlined">receipt_long</span>
-                Rekapan Pegawai
+                Rekapan Operator
             </a>
             <a href="{{ route('spv.utilization.index') }}"
                class="sidebar-nav-item {{ request()->routeIs('spv.utilization.*') ? 'active' : '' }}">
@@ -77,15 +77,13 @@
                 Utilization
             </a>
         @endif
-
-        <div class="border-t border-white/10 my-4 mx-4"></div>
-
-        <form method="POST" action="{{ route('logout') }}" class="mt-auto px-2">
-            @csrf
-            <button type="submit" class="sidebar-nav-item w-full text-left text-red-400 hover:text-red-300 hover:bg-red-500/10">
-                <span class="material-symbols-outlined">logout</span>
-                Logout
-            </button>
-        </form>
     </nav>
+
+    <form method="POST" action="{{ route('logout') }}" class="mt-auto p-4 border-t border-white/10 flex justify-center">
+        @csrf
+        <button type="submit" class="flex items-center justify-center gap-2 w-36 py-2.5 bg-red-600 hover:bg-red-700 text-white font-medium text-sm rounded-lg transition-colors">
+            <span class="material-symbols-outlined">logout</span>
+            Logout
+        </button>
+    </form>
 </aside>

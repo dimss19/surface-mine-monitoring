@@ -1,13 +1,9 @@
-@extends('layouts.app')
+@extends('layouts.app', ['headerTitle' => 'Utilization Unit'])
 
 @section('title', 'Utilization')
 
 @section('content')
 @php $role = Auth::user()->role; @endphp
-
-<div class="mb-6">
-    <h1 class="text-2xl font-heading font-bold text-[var(--primary)]">Utilization Unit</h1>
-</div>
 
 <div class="card p-4 mb-6">
     <form method="GET" action="{{ route("$role.utilization.index") }}" class="flex items-center gap-4 flex-wrap">

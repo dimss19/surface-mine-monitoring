@@ -1,9 +1,8 @@
-﻿@extends('layouts.app')
+﻿@extends('layouts.app', ['headerTitle' => 'Form Pekerjaan General'])
 
 @section('title', 'Form Pekerjaan General')
 
 @section('content')
-<h1 class="text-2xl font-heading font-bold text-[var(--primary)] mb-4">Form Pekerjaan General</h1>
 
 @if ($errors->any())
 <div class="bg-red-50 border border-red-200 text-red-700 rounded-lg p-3 text-sm mb-6">

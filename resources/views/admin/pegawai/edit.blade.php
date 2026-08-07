@@ -1,10 +1,9 @@
-﻿@extends('layouts.app')
+@extends('layouts.app', ['headerTitle' => 'Edit Operator'])
 
-@section('title', 'Edit Pegawai')
+@section('title', 'Edit Operator')
 
 @section('content')
-<div class="mb-6 flex items-center justify-between">
-    <h1 class="text-2xl font-heading font-bold text-[var(--primary)]">Edit Pegawai</h1>
+<div class="flex items-center justify-between mb-6">
     <a href="{{ route('admin.pegawai.index') }}" class="btn-secondary">
         <span class="material-symbols-outlined text-lg">arrow_back</span>
         Kembali
@@ -17,7 +16,7 @@
         @method('PUT')
         <div class="p-6 space-y-4">
             <div>
-                <label for="nama" class="form-label">Nama Pegawai</label>
+                <label for="nama" class="form-label">Nama Operator</label>
                 <input type="text"
                        id="nama"
                        name="nama"

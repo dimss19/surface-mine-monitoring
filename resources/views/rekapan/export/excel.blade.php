@@ -2,7 +2,7 @@
     <thead>
         <tr>
             <th style="background: #1e3a5f; color: #ffffff; padding: 8px 12px; text-align: left;">No</th>
-            <th style="background: #1e3a5f; color: #ffffff; padding: 8px 12px; text-align: left;">Nama Pegawai</th>
+            <th style="background: #1e3a5f; color: #ffffff; padding: 8px 12px; text-align: left;">Nama Operator</th>
             <th style="background: #1e3a5f; color: #ffffff; padding: 8px 12px; text-align: left;">Jumlah Ritasi</th>
             <th style="background: #1e3a5f; color: #ffffff; padding: 8px 12px; text-align: left;">HM Ritasi</th>
             <th style="background: #1e3a5f; color: #ffffff; padding: 8px 12px; text-align: left;">Jumlah Non-Ritasi</th>

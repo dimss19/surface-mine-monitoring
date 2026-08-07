@@ -17,7 +17,7 @@ class DashboardController extends Controller
             default    => $reports->dailyData($request),
         };
 
-        return view('dashboard.index', $data + ['tab' => $tab]);
+        return view('dashboard.index', $data + ['tab' => $tab, 'headerDate' => $data['periodLabel'] ?? '']);
     }
 
     public function export(Request $request, DashboardReportService $reports)

@@ -25,7 +25,7 @@ class AdminPegawaiController extends Controller
         ]);
 
         Pegawai::create($validated);
-        return redirect()->route('admin.pegawai.index')->with('success', 'Data pegawai berhasil ditambahkan.');
+        return redirect()->route('admin.pegawai.index')->with('success', 'Data operator berhasil ditambahkan.');
     }
 
     public function edit(Pegawai $pegawai)
@@ -40,12 +40,12 @@ class AdminPegawaiController extends Controller
         ]);
 
         $pegawai->update($validated);
-        return redirect()->route('admin.pegawai.index')->with('success', 'Data pegawai berhasil diperbarui.');
+        return redirect()->route('admin.pegawai.index')->with('success', 'Data operator berhasil diperbarui.');
     }
 
     public function destroy(Pegawai $pegawai)
     {
         $pegawai->delete();
-        return redirect()->route('admin.pegawai.index')->with('success', 'Data pegawai berhasil dihapus.');
+        return redirect()->route('admin.pegawai.index')->with('success', 'Data operator berhasil dihapus.');
     }
 }

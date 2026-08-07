@@ -47,7 +47,7 @@
 
     /* Sidebar */
     .sidebar {
-        @apply fixed left-0 top-0 bottom-0 w-64 z-40 flex flex-col;
+        @apply fixed left-0 top-0 bottom-0 w-56 z-40 flex flex-col;
         background: linear-gradient(180deg, var(--sidebar-bg) 0%, #0a1628 100%);
         color: var(--sidebar-text);
         box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
@@ -80,7 +80,7 @@
 
     /* Topbar */
     .topbar {
-        @apply fixed top-0 left-64 right-0 h-16 z-30 flex items-center justify-between px-6;
+        @apply fixed top-0 left-56 right-0 h-20 z-30 flex items-center justify-between px-6;
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(12px);
         border-bottom: 1px solid var(--border);
@@ -329,6 +329,7 @@
     .main-content {
         margin-left: 0 !important;
         padding: 1rem !important;
+        padding-top: 5rem !important;
     }
 
     .stat-card {

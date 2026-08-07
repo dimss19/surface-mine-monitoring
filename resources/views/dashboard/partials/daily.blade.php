@@ -271,24 +271,7 @@ function renderDonut(canvasId, data) {
                     }
                 }
             }
-        },
-        plugins: [{
-            id: 'donutCenterText',
-            afterDraw: function(chart) {
-                const { ctx: c, width, height } = chart;
-                const t = chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
-                c.save();
-                c.font = 'bold 16px Inter, sans-serif';
-                c.fillStyle = '#1e3a5f';
-                c.textAlign = 'center';
-                c.textBaseline = 'middle';
-                c.fillText(t.toFixed(1) + 'j', width / 2, height / 2 - 8);
-                c.font = '11px Inter, sans-serif';
-                c.fillStyle = '#64748b';
-                c.fillText('rata-rata', width / 2, height / 2 + 10);
-                c.restore();
-            }
-        }]
+        }
     });
 }
 
@@ -308,30 +291,32 @@ document.addEventListener('DOMContentLoaded', function() {
                 labels: mc.names,
                 datasets: [
                     {
-                        label: 'Tonase (ton)',
-                        data: mc.tonnage,
+                        label: 'Ritasi aktual',
+                        data: mc.actualRitasi,
                         backgroundColor: materialColors,
-                        borderRadius: 4
+                        borderRadius: 4,
+                        stack: 'main',
+                        order: 2
                     },
                     {
-                        label: 'Sisa target (ritasi)',
-                        type: 'bar',
+                        label: 'Sisa target',
                         data: mc.gap,
-                        backgroundColor: 'rgba(239, 68, 68, 0.30)',
+                        backgroundColor: 'rgba(239, 68, 68, 0.25)',
                         borderRadius: 2,
-                        xAxisID: 'x1'
+                        stack: 'main',
+                        order: 3
                     },
                     {
                         label: 'Target (ritasi)',
                         type: 'line',
                         data: targetValues,
-                        xAxisID: 'x1',
                         showLine: false,
                         pointStyle: 'line',
-                        pointRadius: 7,
-                        pointBorderWidth: 3,
-                        pointBackgroundColor: 'transparent',
-                        pointBorderColor: mc.names.map((_, i) => targetReached[i] ? '#10b981' : '#f59e0b')
+                        pointRadius: 0, // No dot, just line
+                        pointBorderWidth: 2, // Line thickness
+                        pointBorderColor: '#000',
+                        pointRotation: 90, // Rotate horizontal line to vertical
+                        order: 1
                     }
                 ]
             },
@@ -341,9 +326,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
                 scales: {
-                    x: { grid: { color: '#e2e8f0' }, ticks: { color: '#475569' }, title: { display: true, text: 'Tonase (ton)' } },
-                    x1: { position: 'top', grid: { drawOnChartArea: false }, ticks: { color: '#94a3b8' }, title: { display: true, text: 'Ritasi (target)' } },
-                    y: { grid: { display: false }, ticks: { color: '#1e3a5f', font: { weight: 'bold' } } }
+                    x: { stacked: true, grid: { color: '#e2e8f0' }, ticks: { color: '#475569' } },
+                    y: { stacked: true, grid: { display: false }, ticks: { color: '#1e3a5f', font: { weight: 'bold' } } }
                 }
             }
         });

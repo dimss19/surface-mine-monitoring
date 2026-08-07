@@ -30,18 +30,19 @@ class AdminTargetController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'material_id' => 'required|exists:materials,id',
+            'tanggal' => 'required|date',
             'periode' => 'required|in:harian,mingguan,bulanan',
             'target_ritasi' => 'required|integer|min:0',
         ]);
 
         DailyTarget::updateOrCreate(
-            ['material_id' => $request->material_id, 'periode' => $request->periode],
-            ['target_ritasi' => $request->target_ritasi]
+            ['material_id' => $validated['material_id'], 'tanggal' => $validated['tanggal']],
+            ['periode' => $validated['periode'], 'target_ritasi' => $validated['target_ritasi']]
         );
 
-                return redirect()->route('admin.master-data.index', ['tab' => 'target'])
+        return redirect()->route('admin.master-data.index', ['tab' => 'target'])
             ->with('success', 'Target berhasil disimpan');
     }
 

@@ -1,21 +1,26 @@
-@props(['role' => 'admin'])
+@props(['role' => 'admin', 'headerTitle' => '', 'headerDate' => ''])
 
-<header class="topbar">
-    <div class="flex items-center gap-3">
+<header class="topbar flex items-center justify-between">
+    <div class="flex items-center gap-2">
         <button id="sidebar-toggle" class="md:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors duration-200">
             <span class="material-symbols-outlined text-slate-600">menu</span>
         </button>
-        <div class="hidden sm:block">
-            <h1 class="text-lg font-bold font-heading" style="color: var(--text);">Mining Operationals Civil Department</h1>
-            <p class="text-xs text-slate-500">Rekapan & Utilization</p>
-        </div>
+        @if($headerTitle)
+            <h1 class="text-base font-heading font-bold text-[var(--primary)] hidden sm:block">{{ $headerTitle }}</h1>
+        @endif
     </div>
 
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-2 sm:gap-3">
+        @if($headerDate)
+            <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-slate-50 rounded-lg border border-slate-200">
+                <span class="material-symbols-outlined text-slate-500 text-base">calendar_today</span>
+                <span class="text-sm font-medium text-slate-700">{{ $headerDate }}</span>
+            </div>
+        @endif
         {{-- User Badge --}}
-        <div class="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-lg border border-slate-200">
-            <div class="w-7 h-7 rounded-full bg-gradient-to-br from-[#2d5a8a] to-[#15294a] flex items-center justify-center">
-                <span class="material-symbols-outlined text-white text-sm">person</span>
+        <div class="flex items-center gap-2 px-2.5 py-1 bg-slate-50 rounded-lg border border-slate-200">
+            <div class="w-6 h-6 rounded-full bg-gradient-to-br from-[#2d5a8a] to-[#15294a] flex items-center justify-center">
+                <span class="material-symbols-outlined text-white text-xs">person</span>
             </div>
             <span class="text-sm font-medium text-slate-700 hidden sm:inline">{{ Auth::user()->name ?? ucfirst($role) }}</span>
         </div>

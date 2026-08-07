@@ -25,7 +25,7 @@
                     <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">NAMA</th>
                     <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">USERNAME</th>
                     <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">ROLE</th>
-                    <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">PEGAWAI</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">OPERATOR</th>
                     <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">AKSI</th>
                 </tr>
             </thead>
@@ -103,11 +103,11 @@
                     <option value="">Pilih Role</option>
                     <option value="admin">Admin</option>
                     <option value="spv">Supervisor</option>
-                    <option value="pegawai">Pegawai</option>
+                    <option value="pegawai">Operator</option>
                 </select>
             </div>
             <div>
-                <label class="form-label">Pegawai (opsional)</label>
+                <label class="form-label">Operator (opsional)</label>
                 <select name="pegawai_id" class="form-input">
                     <option value="">-- Tidak ada --</option>
                     @foreach(\App\Models\Pegawai::orderBy('nama')->get() as $peg)
@@ -144,18 +144,18 @@
             </div>
             <div>
                 <label class="form-label">Password (kosongkan jika tidak diubah)</label>
-                <input type="password" name="password" class="form-input" minlength="6" placeholder="Kosongkan jika tidak diubah">
+                <input type="password" name="password" id="edit_user_password" class="form-input" minlength="6" placeholder="Kosongkan jika tidak diubah">
             </div>
             <div>
                 <label class="form-label">Role</label>
                 <select name="role" id="edit_user_role" class="form-input" required>
                     <option value="admin">Admin</option>
                     <option value="spv">Supervisor</option>
-                    <option value="pegawai">Pegawai</option>
+                    <option value="pegawai">Operator</option>
                 </select>
             </div>
             <div>
-                <label class="form-label">Pegawai (opsional)</label>
+                <label class="form-label">Operator (opsional)</label>
                 <select name="pegawai_id" id="edit_user_pegawai" class="form-input">
                     <option value="">-- Tidak ada --</option>
                     @foreach(\App\Models\Pegawai::orderBy('nama')->get() as $peg)
