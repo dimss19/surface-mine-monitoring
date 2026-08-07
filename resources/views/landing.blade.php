@@ -145,15 +145,5 @@
     </div>
 </div>
 
-{{-- Footer --}}
-<footer class="bg-[#08101d] text-slate-400 py-12 border-t border-slate-800">
-    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-        <div class="flex items-center gap-2">
-            <span class="font-heading font-bold text-white text-base tracking-wide">SURFACE MINE PRODUCTION</span>
-        </div>
-        <p class="text-xs text-slate-500">
-            &copy; {{ date('Y') }} Civil Department. Hak Cipta Dilindungi Undang-Undang.
-        </p>
-    </div>
-</footer>
+
 @endsection
