@@ -98,9 +98,10 @@ class AdminUnitController extends Controller
             'tahun' => 'nullable|integer|min:1900|max:' . (date('Y') + 1),
             'kapasitas' => 'nullable|numeric|min:0',
             'fuel_consumption_rate' => 'nullable|numeric|min:0',
-            'status' => 'required|in:active,maintenance,breakdown,standby',
             'keterangan' => 'nullable|string',
         ]);
+
+        $validated['status'] = 'active';
 
         Unit::create($validated);
 
@@ -124,9 +125,10 @@ class AdminUnitController extends Controller
             'tahun' => 'nullable|integer|min:1900|max:' . (date('Y') + 1),
             'kapasitas' => 'nullable|numeric|min:0',
             'fuel_consumption_rate' => 'nullable|numeric|min:0',
-            'status' => 'required|in:active,maintenance,breakdown,standby',
             'keterangan' => 'nullable|string',
         ]);
+
+        $validated['status'] = 'active';
 
         $unit->update($validated);
 

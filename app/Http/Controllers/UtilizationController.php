@@ -59,6 +59,12 @@ class UtilizationController extends Controller
                 }
                 return back()->with('error', 'Tidak ada maintenance aktif untuk unit ini.');
             }
+            if ($current->user_id !== auth()->id()) {
+                if ($request->header('X-Offline-Replay') === '1') {
+                    return response()->json(['success' => true, 'replayed' => true], 200);
+                }
+                return back()->with('error', 'Hanya operator yang melaporkan maintenance ini yang dapat menyelesaikan.');
+            }
         }
 
         // Idempotency for offline replay: same payload as an existing row.

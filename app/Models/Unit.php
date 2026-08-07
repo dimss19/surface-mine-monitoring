@@ -50,4 +50,43 @@ class Unit extends Model
             default => 'badge-standby',
         };
     }
+
+    public function getRealStatusAttribute()
+    {
+        // 1. Check if unit is in active maintenance (breakdown or servis in active utilization)
+        $activeUtilization = \App\Models\UnitUtilization::where('unit_id', $this->id)
+            ->whereNull('ended_at')
+            ->latest('started_at')
+            ->first();
+            
+        if ($activeUtilization) {
+            return $activeUtilization->status; // 'breakdown' or 'servis'
+        }
+        
+        // 2. Check if unit is active (used by any operator in the current shift)
+        $today = now()->toDateString();
+        $hour = now()->hour;
+        $shift = ($hour >= 6 && $hour < 18) ? 'siang' : 'malam';
+        
+        $hasRitasi = $this->ritasis()->where('tanggal', $today)->where('shift', $shift)->exists();
+        $hasNonRitasi = $this->nonRitasis()->where('tanggal', $today)->where('shift', $shift)->exists();
+        
+        if ($hasRitasi || $hasNonRitasi) {
+            return 'active';
+        }
+        
+        // 3. Otherwise standby
+        return 'standby';
+    }
+
+    public function getRealStatusBadgeAttribute()
+    {
+        return match($this->real_status) {
+            'active' => 'badge-active',
+            'servis' => 'badge-maintenance',
+            'breakdown' => 'badge-breakdown',
+            'standby' => 'badge-standby',
+            default => 'badge-standby',
+        };
+    }
 }

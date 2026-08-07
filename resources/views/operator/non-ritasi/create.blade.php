@@ -23,17 +23,19 @@
         
         {{-- Detail Pekerjaan --}}
         <h2 class="section-title mb-4 flex items-center gap-2 pb-3 border-b">
-            <span class="material-symbols-outlined text-blue-500">work</span>
+            <span class="material-symbols-outlined text-[var(--primary)]">work</span>
             Detail Pekerjaan
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
                 <label class="form-label">Lokasi Pekerjaan (Pit / Disposal)</label>
                 <input type="text" name="lokasi_pekerjaan" class="form-input" placeholder="Contoh: Pit 1 North">
+                <p class="mt-1.5 text-xs sm:text-sm text-slate-500">Lokasi spesifik pengerjaan non-ritasi shift ini.</p>
             </div>
             <div class="col-span-2">
                 <label class="form-label">Deskripsi Pekerjaan / Kendala (Opsional)</label>
                 <textarea name="deskripsi_pekerjaan" class="form-input" rows="3" placeholder="Tambahkan catatan khusus bila ada kendala operasional..."></textarea>
+                <p class="mt-1.5 text-xs sm:text-sm text-slate-500">Tuliskan detail pekerjaan non-ritasi (seperti standby, cleaning, loading) atau kendala operasional.</p>
             </div>
         </div>
         

@@ -6,7 +6,7 @@
             <span class="material-symbols-outlined text-slate-600">menu</span>
         </button>
         @if($headerTitle)
-            <h1 class="text-base font-heading font-bold text-[var(--primary)] hidden sm:block">{{ $headerTitle }}</h1>
+            <h1 class="text-lg sm:text-xl font-heading font-bold text-[var(--primary)] hidden sm:block">{{ $headerTitle }}</h1>
         @endif
     </div>
 

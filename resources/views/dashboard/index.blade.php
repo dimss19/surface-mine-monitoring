@@ -16,14 +16,14 @@
     $currentShift = request('shift', '');
 @endphp
 
-<div class="mb-6 border-b border-slate-200 flex flex-wrap items-center justify-between gap-4 pb-1">
+<div class="mb-6 border-b border-slate-100 flex flex-wrap items-center justify-between gap-4 pb-1">
     <nav class="-mb-px flex gap-6 overflow-x-auto">
         @foreach ($tabs as $key => $t)
             @php $active = ($tab === $key); @endphp
             <a href="{{ request()->fullUrlWithQuery(array_merge($q, ['tab' => $key])) }}"
-               class="py-2.5 px-1 border-b-2 font-medium text-sm flex items-center gap-2 whitespace-nowrap
-                      {{ $active ? 'border-[var(--primary)] text-[var(--primary)] font-semibold' : 'border-transparent text-slate-500 hover:text-slate-700' }}">
-                <span class="material-symbols-outlined text-base">{{ $t['icon'] }}</span>
+               class="py-2.5 px-1 border-b-2 font-bold text-sm sm:text-base flex items-center gap-2 whitespace-nowrap transition-colors
+                      {{ $active ? 'border-[var(--accent)] text-[var(--primary)]' : 'border-transparent text-slate-500 hover:text-slate-800' }}">
+                <span class="material-symbols-outlined text-base {{ $active ? 'text-[var(--accent)]' : 'text-slate-400' }}">{{ $t['icon'] }}</span>
                 {{ $t['label'] }}
             </a>
         @endforeach
@@ -35,34 +35,34 @@
     </button>
 </div>
 
-<div class="flex flex-wrap items-center gap-4 mb-6 py-3 px-4 bg-slate-50 rounded-lg">
+<div class="flex flex-wrap items-center gap-6 mb-6 py-4 px-5 bg-white border border-slate-100 rounded-2xl shadow-sm">
     @if ($tab === 'daily')
-        <div class="flex items-center gap-2">
-            <label class="text-xs font-medium text-slate-500 whitespace-nowrap">Tanggal</label>
+        <div class="flex items-center gap-2.5">
+            <label class="text-sm font-bold text-slate-700 whitespace-nowrap">Tanggal</label>
             <input type="date" id="filterDate" value="{{ $currentDate }}"
-                   class="text-sm border border-slate-300 rounded-lg px-3 py-1.5 focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none"
+                   class="text-sm border border-slate-300 rounded-lg px-3 py-1.5 focus:ring-4 focus:ring-[var(--accent)]/15 focus:border-[var(--accent)] outline-none bg-slate-50/50 hover:border-slate-400 transition-all"
                    onchange="applyFilter({date: this.value})">
         </div>
     @elseif ($tab === 'weekly')
-        <div class="flex items-center gap-2">
-            <label class="text-xs font-medium text-slate-500 whitespace-nowrap">Minggu</label>
+        <div class="flex items-center gap-2.5">
+            <label class="text-sm font-bold text-slate-700 whitespace-nowrap">Minggu</label>
             <input type="week" id="filterWeek" value="{{ $currentWeek }}"
-                   class="text-sm border border-slate-300 rounded-lg px-3 py-1.5 focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none"
+                   class="text-sm border border-slate-300 rounded-lg px-3 py-1.5 focus:ring-4 focus:ring-[var(--accent)]/15 focus:border-[var(--accent)] outline-none bg-slate-50/50 hover:border-slate-400 transition-all"
                    onchange="applyFilter({week: this.value})">
         </div>
     @elseif ($tab === 'monthly')
-        <div class="flex items-center gap-2">
-            <label class="text-xs font-medium text-slate-500 whitespace-nowrap">Bulan</label>
+        <div class="flex items-center gap-2.5">
+            <label class="text-sm font-bold text-slate-700 whitespace-nowrap">Bulan</label>
             <input type="month" id="filterMonth" value="{{ $currentMonth }}"
-                   class="text-sm border border-slate-300 rounded-lg px-3 py-1.5 focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none"
+                   class="text-sm border border-slate-300 rounded-lg px-3 py-1.5 focus:ring-4 focus:ring-[var(--accent)]/15 focus:border-[var(--accent)] outline-none bg-slate-50/50 hover:border-slate-400 transition-all"
                    onchange="applyFilter({month: this.value})">
         </div>
     @endif
 
-    <div class="flex items-center gap-2">
-        <label class="text-xs font-medium text-slate-500 whitespace-nowrap">Shift</label>
+    <div class="flex items-center gap-2.5">
+        <label class="text-sm font-bold text-slate-700 whitespace-nowrap">Shift</label>
         <select id="filterShift"
-                class="text-sm border border-slate-300 rounded-lg px-3 py-1.5 w-32 focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none"
+                class="text-sm border border-slate-300 rounded-lg px-3 py-1.5 w-32 focus:ring-4 focus:ring-[var(--accent)]/15 focus:border-[var(--accent)] outline-none bg-slate-50/50 hover:border-slate-400 transition-all"
                 onchange="applyFilter({shift: this.value})">
             <option value="" {{ $currentShift === '' ? 'selected' : '' }}>Semua</option>
             <option value="siang" {{ $currentShift === 'siang' ? 'selected' : '' }}>Siang</option>

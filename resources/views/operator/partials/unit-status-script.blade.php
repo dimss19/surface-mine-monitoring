@@ -35,6 +35,10 @@ document.addEventListener('DOMContentLoaded', function() {
             if (status === 'breakdown' || status === 'servis') {
                 opt.style.color = '#dc2626';
                 opt.style.fontWeight = 'bold';
+                opt.disabled = true;
+                if (!opt.textContent.includes('Sedang Maintenance')) {
+                    opt.textContent += ' (Sedang Maintenance - Tidak Bisa Digunakan)';
+                }
             }
         });
         unitSelect.addEventListener('change', function() {

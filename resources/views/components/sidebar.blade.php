@@ -6,8 +6,8 @@
         <a href="{{ route($role === 'pegawai' ? 'pegawai.dashboard' : "$role.rekapan.index") }}" class="flex items-center gap-3 group">
             <img src="{{ asset('images/company-logo.png') }}" alt="Logo" class="h-9 w-auto object-contain transition-transform group-hover:scale-105">
             <div class="flex flex-col">
-                <span class="text-base font-bold text-white leading-tight tracking-wide group-hover:text-amber-400 transition-colors">Surface Mine</span>
-                <span class="text-[10px] font-medium text-slate-400 tracking-wider uppercase">Mining Operations</span>
+                <span class="text-base font-bold text-white leading-tight tracking-wide group-hover:text-[var(--accent)] transition-colors">Surface Mine</span>
+                <span class="text-[10px] font-semibold text-slate-400 tracking-wider uppercase">Mining Operations</span>
             </div>
         </a>
     </div>
@@ -83,7 +83,7 @@
     <div class="p-4 border-t border-white/10 mt-auto">
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-            <button type="submit" class="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white border border-red-500/20 hover:border-red-600 font-medium text-sm rounded-lg transition-all duration-200 shadow-sm">
+            <button type="submit" class="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-red-500/10 hover:bg-red-500 text-red-400 hover:text-white border border-red-500/30 hover:border-red-500 font-semibold text-sm rounded-lg transition-all duration-200">
                 <span class="material-symbols-outlined text-lg">logout</span>
                 <span>Logout</span>
             </button>

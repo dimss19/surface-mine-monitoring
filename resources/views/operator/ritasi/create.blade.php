@@ -20,13 +20,14 @@
 
         {{-- Produksi --}}
         <h2 class="section-title mb-4 flex items-center gap-2 pb-3 border-b">
-            <span class="material-symbols-outlined text-blue-500">scale</span>
+            <span class="material-symbols-outlined text-[var(--primary)]">scale</span>
             Produksi
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <div>
                 <label class="form-label">Quantity</label>
                 <input type="number" name="quantity" step="0.01" min="0" class="form-input" value="0.00" placeholder="0.00">
+                <p class="mt-1.5 text-xs sm:text-sm text-slate-500">Berat/tonase material yang diangkut. Jika tidak tahu pasti, isi 0.00.</p>
             </div>
             <div>
                 <label class="form-label">Satuan</label>
@@ -35,6 +36,7 @@
                     <option value="cbm">CBM</option>
                     <option value="m3">M3</option>
                 </select>
+                <p class="mt-1.5 text-xs sm:text-sm text-slate-500">Pilih satuan ukuran (biasanya Ton).</p>
             </div>
         </div>
 
@@ -43,39 +45,44 @@
         
         {{-- Detail Pekerjaan --}}
         <h2 class="section-title mb-4 flex items-center gap-2 pb-3 border-b">
-            <span class="material-symbols-outlined text-blue-500">work</span>
+            <span class="material-symbols-outlined text-[var(--primary)]">work</span>
             Detail Pekerjaan
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
                 <label class="form-label">Jenis Material</label>
                 <select name="material_id" class="form-input" required>
-                    <option value="">Overburden (OB)</option>
+                    <option value="">Pilih Jenis Material</option>
                     @foreach($materials as $id => $nama)
                         <option value="{{ $id }}">{{ $nama }}</option>
                     @endforeach
                 </select>
+                <p class="mt-1.5 text-xs sm:text-sm text-slate-500">Contoh: Overburden (OB) atau Batubara (Coal).</p>
             </div>
             <div>
                 <label class="form-label">Area</label>
                 <select name="area_id" class="form-input" required>
-                    <option value="">Pilih Area</option>
+                    <option value="">Pilih Area Kerja</option>
                     @foreach($areas as $id => $nama)
                         <option value="{{ $id }}">{{ $nama }}</option>
                     @endforeach
                 </select>
+                <p class="mt-1.5 text-xs sm:text-sm text-slate-500">Area/lokasi tambang tempat Anda bekerja shift ini.</p>
             </div>
             <div>
                 <label class="form-label">Jumlah Ritasi (Trip)</label>
                 <input type="number" name="jumlah_ritasi" class="form-input" min="0" value="0" required>
+                <p class="mt-1.5 text-xs sm:text-sm text-slate-500">Total berapa kali (rit/trip) Anda mengangkut material hari ini.</p>
             </div>
             <div>
                 <label class="form-label">Lokasi Pekerjaan (Pit / Disposal)</label>
                 <input type="text" name="lokasi_pekerjaan" class="form-input" placeholder="Contoh: Pit 1 North">
+                <p class="mt-1.5 text-xs sm:text-sm text-slate-500">Nama pit atau pembuangan material.</p>
             </div>
             <div class="col-span-2">
                 <label class="form-label">Deskripsi Pekerjaan / Kendala (Opsional)</label>
                 <textarea name="deskripsi_pekerjaan" class="form-input" rows="3" placeholder="Tambahkan catatan khusus bila ada kendala operasional..."></textarea>
+                <p class="mt-1.5 text-xs sm:text-sm text-slate-500">Tuliskan jika ada kendala mesin, hujan, antrean, atau hal penting lainnya.</p>
             </div>
         </div>
         

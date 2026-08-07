@@ -107,7 +107,7 @@
     @include('components.sidebar', ['role' => $role])
     @include('components.topbar', ['role' => $role, 'headerTitle' => $headerTitle ?? '', 'headerDate' => $headerDate])
 
-    <main class="ml-56 pt-28 min-h-screen p-6 main-content">
+    <main class="ml-60 pt-28 min-h-screen p-6 main-content">
         @if(session('success'))
             <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-4 flex items-center justify-between">
                 <div class="flex items-center gap-2">

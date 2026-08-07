@@ -14,8 +14,8 @@
 </div>
 
 @if(request()->has('tanggal_start') || request()->has('tanggal_end') || request()->has('shift'))
-<div class="mb-6 p-4 bg-blue-50 border border-blue-100 rounded-lg flex items-center gap-2 text-sm text-blue-700">
-    <span class="material-symbols-outlined text-blue-500">info</span>
+<div class="mb-6 p-4 bg-amber-50 border border-amber-100 rounded-xl flex items-center gap-3 text-sm text-amber-900 shadow-sm">
+    <span class="material-symbols-outlined text-amber-600 text-xl">info</span>
     <div>
         Menampilkan data berdasarkan filter:
         @if(request('tanggal_start')) <strong>Dari:</strong> {{ request('tanggal_start') }} @endif

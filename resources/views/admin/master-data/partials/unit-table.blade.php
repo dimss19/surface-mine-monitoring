@@ -43,16 +43,16 @@
                         <td class="px-4 py-3 text-sm text-[var(--text-muted)]">{{ $unit->nama }}</td>
                         <td class="px-4 py-3 text-sm text-[var(--text-muted)]">{{ $unit->tahun ?? '-' }}</td>
                         <td class="px-4 py-3">
-                            <span class="badge {{ $unit->status_badge }}">
+                            <span class="badge {{ $unit->real_status_badge }}">
                                 <span class="w-1.5 h-1.5 rounded-full
-                                    {{ match($unit->status) {
+                                    {{ match($unit->real_status) {
                                         'active' => 'bg-green-500',
-                                        'maintenance' => 'bg-yellow-500',
+                                        'servis' => 'bg-yellow-500',
                                         'breakdown' => 'bg-red-500',
                                         'standby' => 'bg-gray-400',
                                         default => 'bg-gray-400',
                                     } }}"></span>
-                                {{ ucfirst($unit->status) }}
+                                {{ ucfirst($unit->real_status) }}
                             </span>
                         </td>
                         <td class="px-4 py-3">
@@ -142,15 +142,7 @@
                     <input type="number" name="tahun" class="form-input" placeholder="2021" min="1900" max="{{ date('Y') + 1 }}">
                 </div>
             </div>
-            <div>
-                <label class="form-label">Status</label>
-                <select name="status" class="form-input" required>
-                    <option value="active">Active</option>
-                    <option value="maintenance">Maintenance</option>
-                    <option value="breakdown">Breakdown</option>
-                    <option value="standby">Standby</option>
-                </select>
-            </div>
+            {{-- Status is always active on master data, handled by backend --}}
             <div>
                 <label class="form-label">Keterangan</label>
                 <textarea name="keterangan" class="form-input" rows="2" placeholder="Keterangan opsional..."></textarea>
@@ -210,15 +202,7 @@
                     <input type="number" name="tahun" id="edit_tahun" class="form-input">
                 </div>
             </div>
-            <div>
-                <label class="form-label">Status</label>
-                <select name="status" id="edit_status" class="form-input" required>
-                    <option value="active">Active</option>
-                    <option value="maintenance">Maintenance</option>
-                    <option value="breakdown">Breakdown</option>
-                    <option value="standby">Standby</option>
-                </select>
-            </div>
+            {{-- Status is always active on master data, handled by backend --}}
             <div>
                 <label class="form-label">Keterangan</label>
                 <textarea name="keterangan" id="edit_keterangan" class="form-input" rows="2"></textarea>
@@ -249,7 +233,6 @@ function editUnit(id) {
             document.getElementById('edit_merk').value = data.merk || '';
             document.getElementById('edit_model').value = data.model || '';
             document.getElementById('edit_tahun').value = data.tahun || '';
-            document.getElementById('edit_status').value = data.status;
             document.getElementById('edit_keterangan').value = data.keterangan || '';
             openModal('unitEditModal');
         })

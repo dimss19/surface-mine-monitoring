@@ -1,12 +1,12 @@
-﻿@extends('layouts.app', ['headerTitle' => 'Master Data'])
+@extends('layouts.app', ['headerTitle' => 'Master Data'])
 
 @section('title', 'Master Data')
 
 @section('content')
 
 {{-- Tabs --}}
-<div class="border-b border-[var(--border)] mb-6">
-    <nav class="flex gap-8">
+<div class="border-b border-slate-100 mb-6">
+    <nav class="flex gap-8 overflow-x-auto">
         @php
             $tabs = [
                 'user' => 'User',
@@ -18,8 +18,8 @@
         @endphp
         @foreach($tabs as $key => $label)
             <a href="?tab={{ $key }}"
-               class="pb-3 px-1 text-sm font-medium border-b-2 transition-colors
-                      {{ ($activeTab ?? 'user') === $key ? 'border-[var(--primary)] text-[var(--primary)]' : 'border-transparent text-[var(--text-muted)] hover:text-[var(--text)]' }}">
+               class="pb-3 px-1 text-sm sm:text-base font-bold border-b-2 transition-colors whitespace-nowrap
+                      {{ ($activeTab ?? 'user') === $key ? 'border-[var(--accent)] text-[var(--primary)]' : 'border-transparent text-slate-500 hover:text-slate-800' }}">
                 {{ $label }}
             </a>
         @endforeach
