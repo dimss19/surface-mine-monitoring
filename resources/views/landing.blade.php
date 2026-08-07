@@ -3,26 +3,8 @@
 @section('title', 'Surface Mine Production Operational Record')
 
 @section('content')
-{{-- Navbar --}}
-<nav class="bg-white/80 backdrop-blur-md border-b border-[var(--border)] sticky top-0 z-30 transition-all">
-    <div class="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-            <div class="h-10 w-10 rounded-lg bg-[var(--primary)] flex items-center justify-center shadow-md">
-                <span class="material-symbols-outlined text-white text-xl">layers</span>
-            </div>
-            <span class="font-heading font-bold text-lg text-[var(--primary)] tracking-wide">SURFACE MINE PRODUCTION</span>
-        </div>
-        <div class="flex items-center gap-4">
-            <a href="{{ route('login') }}" class="btn-primary flex items-center gap-2 text-sm px-5 py-2">
-                Masuk
-                <span class="material-symbols-outlined text-sm">arrow_forward</span>
-            </a>
-        </div>
-    </div>
-</nav>
-
 {{-- Hero Section --}}
-<div class="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-100 min-h-[calc(100vh-72px)] flex items-center">
+<div class="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-100 min-h-screen flex items-center">
     {{-- Decorative Background Glows --}}
     <div class="absolute top-0 left-1/4 w-96 h-96 bg-blue-100 rounded-full blur-3xl opacity-30 -translate-y-1/2"></div>
     <div class="absolute bottom-0 right-10 w-96 h-96 bg-amber-100 rounded-full blur-3xl opacity-40 translate-y-1/4"></div>
