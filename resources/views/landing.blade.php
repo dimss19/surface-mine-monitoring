@@ -29,9 +29,8 @@
             </p>
             
             <div class="flex flex-wrap gap-4 pt-2">
-                <a href="{{ route('login') }}" class="btn-primary inline-flex items-center justify-center gap-2 px-8 py-3.5 text-base shadow-lg shadow-amber-500/20">
-                    Masuk ke Dashboard
-                    <span class="material-symbols-outlined">dashboard</span>
+                <a href="{{ route('login') }}" class="btn-primary inline-flex items-center justify-center px-8 py-3.5 text-base shadow-lg shadow-amber-500/20">
+                    LOGIN
                 </a>
             </div>
             
