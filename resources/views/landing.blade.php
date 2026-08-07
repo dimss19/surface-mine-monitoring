@@ -145,27 +145,6 @@
     </div>
 </div>
 
-{{-- Call to Action Card Section --}}
-<div class="bg-slate-50 py-16">
-    <div class="max-w-5xl mx-auto px-6">
-        <div class="bg-gradient-to-r from-[var(--primary)] to-[var(--primary-dark)] rounded-2xl shadow-xl p-8 sm:p-12 text-center text-white relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500 rounded-full blur-3xl opacity-20 -translate-y-1/2 translate-x-1/2"></div>
-            <div class="relative z-10 space-y-6 max-w-2xl mx-auto">
-                <h2 class="font-heading text-2xl sm:text-3xl font-bold">Siap Mengelola Data Produksi Anda?</h2>
-                <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-                    Masuk dengan akun operator, supervisor, atau admin Anda untuk mulai mencatat dan menganalisis laporan.
-                </p>
-                <div class="pt-2">
-                    <a href="{{ route('login') }}" class="btn-primary inline-flex items-center justify-center gap-2 px-8 py-3 text-base shadow-md bg-amber-500 hover:bg-amber-600 text-white">
-                        Mulai Pencatatan
-                        <span class="material-symbols-outlined">login</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 {{-- Footer --}}
 <footer class="bg-[#08101d] text-slate-400 py-12 border-t border-slate-800">
     <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
