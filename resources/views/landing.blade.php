@@ -1,34 +1,198 @@
 @extends('layouts.public')
 
-@section('title', 'Surface Mine Production')
+@section('title', 'Surface Mine Production Operational Record')
 
 @section('content')
-<nav class="bg-white/95 backdrop-blur border-b border-[var(--border)] sticky top-0 z-20">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <span class="font-heading font-bold text-lg text-[var(--primary)] tracking-wide">SURFACE MINE PRODUCTION</span>
-        <a href="{{ route('login') }}" class="btn-primary px-5 py-2 text-sm">LOGIN</a>
+{{-- Navbar --}}
+<nav class="bg-white/80 backdrop-blur-md border-b border-[var(--border)] sticky top-0 z-30 transition-all">
+    <div class="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="h-10 w-10 rounded-lg bg-[var(--primary)] flex items-center justify-center shadow-md">
+                <span class="material-symbols-outlined text-white text-xl">layers</span>
+            </div>
+            <span class="font-heading font-bold text-lg text-[var(--primary)] tracking-wide">SURFACE MINE PRODUCTION</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <a href="{{ route('login') }}" class="btn-primary flex items-center gap-2 text-sm px-5 py-2">
+                Masuk
+                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </a>
+        </div>
     </div>
 </nav>
 
-<div class="min-h-[calc(100vh-73px)] flex items-center relative overflow-hidden bg-gradient-to-br from-[var(--bg)] to-[var(--bg-secondary)]">
-    {{-- Left side - Text --}}
-    <div class="relative z-10 w-full lg:w-1/2 px-6 md:px-16 lg:pl-24 py-12">
-        <h1 class="font-heading text-4xl lg:text-5xl font-bold leading-tight mb-6 text-[var(--primary)]">
-            Surface Mine<br>
-            Production Operational<br>
-            Record
-        </h1>
-        <p class="text-lg text-[var(--text-secondary)] mb-8 max-w-md leading-relaxed">
-            A centralized dashboard to monitor daily operational activities across Civil Departments, providing real-time insights
-        </p>
-        <a href="{{ route('login') }}" class="btn-primary inline-block px-10 py-3 text-lg">
-            LOGIN
-        </a>
-    </div>
+{{-- Hero Section --}}
+<div class="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-100 min-h-[calc(100vh-72px)] flex items-center">
+    {{-- Decorative Background Glows --}}
+    <div class="absolute top-0 left-1/4 w-96 h-96 bg-blue-100 rounded-full blur-3xl opacity-30 -translate-y-1/2"></div>
+    <div class="absolute bottom-0 right-10 w-96 h-96 bg-amber-100 rounded-full blur-3xl opacity-40 translate-y-1/4"></div>
 
-    {{-- Right side - Image --}}
-    <div class="hidden lg:flex absolute right-0 bottom-0 top-0 w-1/2 items-end justify-center">
-        <img src="{{ asset('images/worker-hero.jpg') }}" alt="Mining Worker" class="max-h-[90%] w-auto object-contain object-bottom">
+    <div class="max-w-7xl mx-auto px-6 w-full py-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+        {{-- Left side - Content --}}
+        <div class="fade-in space-y-8">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-semibold tracking-wide uppercase">
+                <span class="material-symbols-outlined text-sm">verified</span>
+                Civil Department System
+            </div>
+            
+            <h1 class="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-[var(--primary)]">
+                Surface Mine <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-amber-500">
+                    Production Record
+                </span>
+            </h1>
+            
+            <p class="text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed max-w-lg">
+                Pencatatan operational tambang harian yang tersentralisasi untuk Civil Department. Memantau ritasi, utilitas unit, dan kendala operasional secara real-time.
+            </p>
+            
+            <div class="flex flex-wrap gap-4 pt-2">
+                <a href="{{ route('login') }}" class="btn-primary inline-flex items-center justify-center gap-2 px-8 py-3.5 text-base shadow-lg shadow-amber-500/20">
+                    Masuk ke Dashboard
+                    <span class="material-symbols-outlined">dashboard</span>
+                </a>
+            </div>
+            
+            {{-- Quick Stats Row --}}
+            <div class="grid grid-cols-3 gap-6 pt-6 border-t border-slate-200/80 max-w-md">
+                <div>
+                    <p class="text-2xl font-bold text-[var(--primary)]">99.8%</p>
+                    <p class="text-xs text-[var(--text-muted)] font-medium uppercase tracking-wider">Sync Online</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold text-[var(--primary)]">Real-time</p>
+                    <p class="text-xs text-[var(--text-muted)] font-medium uppercase tracking-wider">Reporting</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold text-[var(--primary)]">PWA</p>
+                    <p class="text-xs text-[var(--text-muted)] font-medium uppercase tracking-wider">Offline First</p>
+                </div>
+            </div>
+        </div>
+
+        {{-- Right side - Image & Visual Elements --}}
+        <div class="relative flex justify-center items-center lg:h-[500px]">
+            {{-- Main Hero Image Container --}}
+            <div class="relative w-full max-w-md lg:max-w-none h-[380px] sm:h-[420px] rounded-2xl overflow-hidden shadow-2xl border-4 border-white bg-slate-200">
+                <img src="{{ asset('images/worker-hero.jpg') }}" alt="Mining Worker" class="w-full h-full object-cover object-center">
+                {{-- Gradient Overlay --}}
+                <div class="absolute inset-0 bg-gradient-to-t from-[var(--primary)]/50 via-transparent to-transparent"></div>
+            </div>
+
+            {{-- Floating Glass Cards --}}
+            <div class="absolute -left-6 top-1/4 backdrop-blur-md bg-white/70 border border-white/60 p-4 rounded-xl shadow-lg flex items-center gap-3 animate-[pulse_3s_infinite] hidden sm:flex">
+                <div class="h-10 w-10 rounded-lg bg-green-500/10 flex items-center justify-center text-green-600">
+                    <span class="material-symbols-outlined">wifi</span>
+                </div>
+                <div>
+                    <p class="text-xs font-semibold text-slate-800">Status Sistem</p>
+                    <p class="text-2xs text-green-600 font-medium flex items-center gap-1">
+                        Terhubung & Aktif
+                    </p>
+                </div>
+            </div>
+
+            <div class="absolute -right-4 bottom-1/4 backdrop-blur-md bg-white/75 border border-white/60 p-4 rounded-xl shadow-lg flex items-center gap-3 hidden sm:flex">
+                <div class="h-10 w-10 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-600">
+                    <span class="material-symbols-outlined">electric_bolt</span>
+                </div>
+                <div>
+                    <p class="text-xs font-semibold text-slate-800">Offline-Ready</p>
+                    <p class="text-2xs text-slate-500 font-medium">Input data tanpa sinyal</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+{{-- Features Grid Section --}}
+<div class="bg-white py-24 border-t border-[var(--border)]">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center max-w-xl mx-auto mb-16 space-y-4">
+            <h2 class="font-heading text-3xl font-bold text-[var(--primary)]">Efisiensi Operasional Terjamin</h2>
+            <p class="text-[var(--text-secondary)] text-sm sm:text-base leading-relaxed">
+                Platform dirancang khusus untuk mempercepat pencatatan dan pelaporan produksi tambang dengan arsitektur modern.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {{-- Feature Card 1 --}}
+            <div class="bg-slate-50/50 hover:bg-white rounded-xl border border-slate-100 p-6 shadow-sm hover:shadow-md transition-all duration-300 group">
+                <div class="h-12 w-12 rounded-lg bg-blue-50 group-hover:bg-[var(--primary)] text-[var(--primary)] group-hover:text-white flex items-center justify-center transition-all duration-300 mb-6">
+                    <span class="material-symbols-outlined text-2xl">monitoring</span>
+                </div>
+                <h3 class="text-base font-bold text-[var(--primary)] mb-2">Real-time Monitoring</h3>
+                <p class="text-xs text-[var(--text-secondary)] leading-relaxed">
+                    Lihat ritasi harian, progres pencapaian target, dan performa operator secara langsung dari dashboard terintegrasi.
+                </p>
+            </div>
+
+            {{-- Feature Card 2 --}}
+            <div class="bg-slate-50/50 hover:bg-white rounded-xl border border-slate-100 p-6 shadow-sm hover:shadow-md transition-all duration-300 group">
+                <div class="h-12 w-12 rounded-lg bg-amber-50 group-hover:bg-amber-500 text-amber-600 group-hover:text-white flex items-center justify-center transition-all duration-300 mb-6">
+                    <span class="material-symbols-outlined text-2xl">cloud_off</span>
+                </div>
+                <h3 class="text-base font-bold text-[var(--primary)] mb-2">Offline-First Sync</h3>
+                <p class="text-xs text-[var(--text-secondary)] leading-relaxed">
+                    Simpan data di IndexedDB lokal saat di area tambang tanpa sinyal. Otomatis sinkronisasi saat kembali online.
+                </p>
+            </div>
+
+            {{-- Feature Card 3 --}}
+            <div class="bg-slate-50/50 hover:bg-white rounded-xl border border-slate-100 p-6 shadow-sm hover:shadow-md transition-all duration-300 group">
+                <div class="h-12 w-12 rounded-lg bg-purple-50 group-hover:bg-purple-600 text-purple-600 group-hover:text-white flex items-center justify-center transition-all duration-300 mb-6">
+                    <span class="material-symbols-outlined text-2xl">engineering</span>
+                </div>
+                <h3 class="text-base font-bold text-[var(--primary)] mb-2">Utilization Tracking</h3>
+                <p class="text-xs text-[var(--text-secondary)] leading-relaxed">
+                    Catat breakdown, servis, dan status standby unit DT (Dump Truck) guna meminimalkan downtime alat berat.
+                </p>
+            </div>
+
+            {{-- Feature Card 4 --}}
+            <div class="bg-slate-50/50 hover:bg-white rounded-xl border border-slate-100 p-6 shadow-sm hover:shadow-md transition-all duration-300 group">
+                <div class="h-12 w-12 rounded-lg bg-emerald-50 group-hover:bg-emerald-600 text-emerald-600 group-hover:text-white flex items-center justify-center transition-all duration-300 mb-6">
+                    <span class="material-symbols-outlined text-2xl">description</span>
+                </div>
+                <h3 class="text-base font-bold text-[var(--primary)] mb-2">Export Data Laporan</h3>
+                <p class="text-xs text-[var(--text-secondary)] leading-relaxed">
+                    Ekspor seluruh data harian, mingguan, maupun bulanan ke dalam format Excel dan PDF siap cetak kapan saja.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Call to Action Card Section --}}
+<div class="bg-slate-50 py-16">
+    <div class="max-w-5xl mx-auto px-6">
+        <div class="bg-gradient-to-r from-[var(--primary)] to-[var(--primary-dark)] rounded-2xl shadow-xl p-8 sm:p-12 text-center text-white relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500 rounded-full blur-3xl opacity-20 -translate-y-1/2 translate-x-1/2"></div>
+            <div class="relative z-10 space-y-6 max-w-2xl mx-auto">
+                <h2 class="font-heading text-2xl sm:text-3xl font-bold">Siap Mengelola Data Produksi Anda?</h2>
+                <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                    Masuk dengan akun operator, supervisor, atau admin Anda untuk mulai mencatat dan menganalisis laporan.
+                </p>
+                <div class="pt-2">
+                    <a href="{{ route('login') }}" class="btn-primary inline-flex items-center justify-center gap-2 px-8 py-3 text-base shadow-md bg-amber-500 hover:bg-amber-600 text-white">
+                        Mulai Pencatatan
+                        <span class="material-symbols-outlined">login</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Footer --}}
+<footer class="bg-[#08101d] text-slate-400 py-12 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-2">
+            <span class="font-heading font-bold text-white text-base tracking-wide">SURFACE MINE PRODUCTION</span>
+        </div>
+        <p class="text-xs text-slate-500">
+            &copy; {{ date('Y') }} Civil Department. Hak Cipta Dilindungi Undang-Undang.
+        </p>
+    </div>
+</footer>
 @endsection
