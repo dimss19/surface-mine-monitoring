@@ -7,7 +7,7 @@
         <div class="fade-in w-full max-w-md bg-white rounded-2xl shadow-2xl border border-slate-100 p-8 flex flex-col items-center relative z-10">
             {{-- Logo --}}
             <div class="mb-6">
-                <img src="{{ asset('images/company-logo.png') }}" alt="Company Logo" class="h-20 w-auto object-contain">
+                <img src="{{ asset('images/company-logo.png') }}" alt="Company Logo" class="h-28 w-auto object-contain">
             </div>
 
             {{-- Title --}}
