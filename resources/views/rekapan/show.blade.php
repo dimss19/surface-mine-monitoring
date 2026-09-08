@@ -170,6 +170,16 @@
                         <td class="px-4 py-3 text-sm">
                             <div class="font-medium">{{ $gen->lokasi_pekerjaan }}</div>
                             <div class="text-xs text-slate-500">{{ $gen->deskripsi_pekerjaan }}</div>
+                            @if($gen->supervisor || $gen->seniorSpv)
+                                <div class="text-xs text-slate-400 mt-1 flex flex-wrap gap-x-2">
+                                    @if($gen->supervisor)
+                                        <span>SPV: {{ $gen->supervisor->name }}</span>
+                                    @endif
+                                    @if($gen->seniorSpv)
+                                        <span>Sr. SPV: {{ $gen->seniorSpv->name }}</span>
+                                    @endif
+                                </div>
+                            @endif
                         </td>
                         <td class="px-4 py-3 text-sm text-center font-mono">{{ substr($gen->jam_mulai, 0, 5) }}</td>
                         <td class="px-4 py-3 text-sm text-center font-mono">{{ substr($gen->jam_selesai, 0, 5) }}</td>

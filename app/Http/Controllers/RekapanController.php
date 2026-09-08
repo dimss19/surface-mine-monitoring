@@ -98,7 +98,7 @@ class RekapanController extends Controller
             ->orderBy('tanggal', 'desc')
             ->orderBy('created_at', 'desc');
             
-        $generalQuery = NonRitasi::with(['unit', 'area'])
+        $generalQuery = NonRitasi::with(['unit', 'area', 'supervisor', 'seniorSpv'])
             ->where('pegawai_id', $id)
             ->whereNotNull('jam_mulai')
             ->orderBy('tanggal', 'desc')

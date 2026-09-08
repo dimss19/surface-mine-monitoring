@@ -13,7 +13,7 @@
     
     <div class="card p-6">
         {{-- Data Dasar --}}
-        @include('operator.partials.data-dasar', ['units' => $units, 'latestStatus' => $latestStatus, 'showSupervisor' => true])
+        @include('operator.partials.data-dasar', ['showUnit' => false, 'showSupervisor' => true, 'spvs' => $spvs])
         
         {{-- Jam Kerja --}}
         <h2 class="section-title mb-4 flex items-center gap-2 pb-3 border-b">
@@ -79,13 +79,9 @@
             <button type="reset" class="btn-secondary">Reset</button>
             <button type="submit" class="btn-primary flex items-center gap-2">
                 <span class="material-symbols-outlined">save</span>
-                Simpan Data Ritasi
-                        </button>
+                Simpan Pekerjaan General
+            </button>
         </div>
     </div>
 </form>
-
-@push('scripts')
-@include('operator.partials.unit-status-script', ['withHmCalculator' => false])
-@endpush
 @endsection

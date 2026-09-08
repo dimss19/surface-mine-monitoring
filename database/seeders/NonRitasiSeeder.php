@@ -19,7 +19,8 @@ class NonRitasiSeeder extends Seeder
             ->where('is_active', true)
             ->get();
         $areas = Area::where('status', 'active')->get();
-        $spvUser = User::where('role', 'spv')->first();
+        $spvs = User::where('role', 'spv')->get();
+        $spvUser = $spvs->first();
 
         if ($pegawais->isEmpty() || $supportUnits->isEmpty() || $areas->isEmpty()) {
             return;
@@ -58,15 +59,20 @@ class NonRitasiSeeder extends Seeder
                     $hmAkhir = $hmAwal + $hmTotal;
                     $isValidated = $day > 1;
 
+                    $selectedSpv = $isGeneral && $spvs->isNotEmpty() ? $spvs->random()->id : null;
+                    $selectedSrSpv = $isGeneral && $spvs->count() > 1 ? $spvs->random()->id : null;
+
                     $rows[] = [
                         'pegawai_id' => $peg->id,
-                        'unit_id' => $unit->id,
+                        'unit_id' => $isGeneral ? null : $unit->id,
+                        'supervisor_id' => $selectedSpv,
+                        'senior_spv_id' => $selectedSrSpv,
                         'area_id' => $area->id,
                         'tanggal' => $tanggal,
                         'shift' => $shift,
-                        'hm_awal' => $hmAwal,
-                        'hm_akhir' => $hmAkhir,
-                        'hm_total' => $hmTotal,
+                        'hm_awal' => $isGeneral ? null : $hmAwal,
+                        'hm_akhir' => $isGeneral ? null : $hmAkhir,
+                        'hm_total' => $isGeneral ? null : $hmTotal,
                         'jam_mulai' => $isGeneral ? $jamMulaiList[array_rand($jamMulaiList)] : null,
                         'jam_selesai' => $isGeneral ? $jamSelesaiList[array_rand($jamSelesaiList)] : null,
                         'is_overtime' => $isGeneral ? (rand(0, 100) < 25) : false,
@@ -74,7 +80,7 @@ class NonRitasiSeeder extends Seeder
                         'deskripsi_pekerjaan' => $isGeneral
                             ? $deskripsiGeneral[array_rand($deskripsiGeneral)]
                             : $deskripsiNonRitasi[array_rand($deskripsiNonRitasi)],
-                        'fuel_consumption' => round($hmTotal * rand(25, 45), 2),
+                        'fuel_consumption' => $isGeneral ? null : round($hmTotal * rand(25, 45), 2),
                         'kendala' => rand(0, 10) > 8 ? 'Kondisi hujan licin 30 menit' : null,
                         'status' => $isValidated ? 'validated' : 'pending',
                         'validated_by' => $isValidated ? $spvUser?->id : null,
