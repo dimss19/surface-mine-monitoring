@@ -20,6 +20,7 @@ class NonRitasiSeeder extends Seeder
             ->get();
         $areas = Area::where('status', 'active')->get();
         $spvs = User::where('role', 'spv')->get();
+        $seniorSpvs = User::where('role', 'senior_spv')->get();
         $spvUser = $spvs->first();
 
         if ($pegawais->isEmpty() || $supportUnits->isEmpty() || $areas->isEmpty()) {
@@ -60,7 +61,7 @@ class NonRitasiSeeder extends Seeder
                     $isValidated = $day > 1;
 
                     $selectedSpv = $isGeneral && $spvs->isNotEmpty() ? $spvs->random()->id : null;
-                    $selectedSrSpv = $isGeneral && $spvs->count() > 1 ? $spvs->random()->id : null;
+                    $selectedSrSpv = $isGeneral && $seniorSpvs->isNotEmpty() ? $seniorSpvs->random()->id : null;
 
                     $rows[] = [
                         'pegawai_id' => $peg->id,

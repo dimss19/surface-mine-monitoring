@@ -62,7 +62,12 @@ class User extends Authenticatable
 
     public function isSpv(): bool
     {
-        return $this->role === 'spv';
+        return in_array($this->role, ['spv', 'senior_spv']);
+    }
+
+    public function isSeniorSpv(): bool
+    {
+        return $this->role === 'senior_spv';
     }
 
     public function isAdmin(): bool

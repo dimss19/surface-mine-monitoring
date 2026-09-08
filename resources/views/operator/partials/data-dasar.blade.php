@@ -4,6 +4,7 @@
     'showSupervisor' => false,
     'showUnit' => true,
     'spvs' => [],
+    'seniorSpvs' => [],
 ])
 <h2 class="section-title mb-4 flex items-center gap-2 pb-3 border-b">
     <span class="material-symbols-outlined text-[var(--primary)]">description</span>
@@ -60,9 +61,9 @@
             <label class="form-label">Senior SPV</label>
             <select name="senior_spv_id" id="seniorSpvSelect" class="form-input">
                 <option value="">Pilih Senior SPV (Opsional)</option>
-                @foreach($spvs as $spv)
-                    <option value="{{ $spv->id }}" {{ old('senior_spv_id') == $spv->id ? 'selected' : '' }}>
-                        {{ $spv->name }}
+                @foreach($seniorSpvs as $srSpv)
+                    <option value="{{ $srSpv->id }}" {{ old('senior_spv_id') == $srSpv->id ? 'selected' : '' }}>
+                        {{ $srSpv->name }}
                     </option>
                 @endforeach
             </select>

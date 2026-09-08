@@ -3,7 +3,10 @@
 @section('title', 'Rekapan Operator')
 
 @section('content')
-@php $role = Auth::user()->role; @endphp
+@php
+    $userRole = Auth::user()->role;
+    $role = in_array($userRole, ['spv', 'senior_spv']) ? 'spv' : $userRole;
+@endphp
 
 <div class="card mb-6 overflow-hidden !p-0">
     <div class="p-4 border-b border-slate-100 flex items-center justify-between">

@@ -16,9 +16,10 @@ class PegawaiGeneralController extends Controller
         $pegawai = $user->pegawai;
         
         $spvs = User::where('role', 'spv')->orderBy('name')->get();
+        $seniorSpvs = User::where('role', 'senior_spv')->orderBy('name')->get();
         $areas = Area::orderBy('nama')->pluck('nama', 'id')->toArray();
 
-        return view('operator.general.create', compact('pegawai', 'areas', 'spvs'));
+        return view('operator.general.create', compact('pegawai', 'areas', 'spvs', 'seniorSpvs'));
     }
 
     public function store(Request $request)

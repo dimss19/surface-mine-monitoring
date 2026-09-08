@@ -13,7 +13,7 @@
     
     <div class="card p-6">
         {{-- Data Dasar --}}
-        @include('operator.partials.data-dasar', ['showUnit' => false, 'showSupervisor' => true, 'spvs' => $spvs])
+        @include('operator.partials.data-dasar', ['showUnit' => false, 'showSupervisor' => true, 'spvs' => $spvs, 'seniorSpvs' => $seniorSpvs])
         
         {{-- Jam Kerja --}}
         <h2 class="section-title mb-4 flex items-center gap-2 pb-3 border-b">

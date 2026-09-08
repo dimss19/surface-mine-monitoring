@@ -3,7 +3,10 @@
 @section('title', 'Detail Rekapan Operator')
 
 @section('content')
-@php $role = Auth::user()->role; @endphp
+@php
+    $userRole = Auth::user()->role;
+    $role = in_array($userRole, ['spv', 'senior_spv']) ? 'spv' : $userRole;
+@endphp
 
 <div class="flex items-center justify-between mb-6">
     <p class="text-sm text-slate-500">Operator: <strong>{{ $pegawai->nama }}</strong></p>

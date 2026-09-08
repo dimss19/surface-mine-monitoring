@@ -28,7 +28,7 @@ Route::get('/rekapan', function () {
     if ($role === 'admin') {
         return redirect()->route('admin.rekapan.index');
     }
-    if ($role === 'spv') {
+    if ($role === 'spv' || $role === 'senior_spv') {
         return redirect()->route('spv.rekapan.index');
     }
     return redirect()->route('pegawai.ritasi.create');
@@ -62,7 +62,7 @@ Route::middleware('auth')->group(function () {
     });
 
     // SPV
-    Route::middleware('role:spv')->prefix('spv')->name('spv.')->group(function () {
+    Route::middleware('role:spv,senior_spv')->prefix('spv')->name('spv.')->group(function () {
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
         Route::get('dashboard/export', [DashboardController::class, 'export'])->name('dashboard.export');
 
