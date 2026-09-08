@@ -46,7 +46,7 @@
     @if($showSupervisor)
         <div>
             <label class="form-label">Supervisor <span class="text-red-500">*</span></label>
-            <select name="supervisor_id" class="form-input" required>
+            <select name="supervisor_id" id="supervisorSelect" class="form-input" required>
                 <option value="">Pilih Supervisor</option>
                 @foreach($spvs as $spv)
                     <option value="{{ $spv->id }}" {{ old('supervisor_id') == $spv->id ? 'selected' : '' }}>
@@ -58,7 +58,7 @@
         </div>
         <div>
             <label class="form-label">Senior SPV</label>
-            <select name="senior_spv_id" class="form-input">
+            <select name="senior_spv_id" id="seniorSpvSelect" class="form-input">
                 <option value="">Pilih Senior SPV (Opsional)</option>
                 @foreach($spvs as $spv)
                     <option value="{{ $spv->id }}" {{ old('senior_spv_id') == $spv->id ? 'selected' : '' }}>
@@ -68,5 +68,44 @@
             </select>
             <p class="mt-1.5 text-xs sm:text-sm text-slate-500">Pilih senior supervisor shift ini (bila ada).</p>
         </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const spvSelect = document.getElementById('supervisorSelect');
+                const srSelect = document.getElementById('seniorSpvSelect');
+
+                if (spvSelect && srSelect) {
+                    function syncSpvOptions() {
+                        const spvVal = spvSelect.value;
+                        const srVal = srSelect.value;
+
+                        Array.from(srSelect.options).forEach(opt => {
+                            if (opt.value && opt.value === spvVal) {
+                                opt.disabled = true;
+                                if (srSelect.value === opt.value) {
+                                    srSelect.value = '';
+                                }
+                            } else if (opt.value) {
+                                opt.disabled = false;
+                            }
+                        });
+
+                        Array.from(spvSelect.options).forEach(opt => {
+                            if (opt.value && opt.value === srVal) {
+                                opt.disabled = true;
+                                if (spvSelect.value === opt.value) {
+                                    spvSelect.value = '';
+                                }
+                            } else if (opt.value) {
+                                opt.disabled = false;
+                            }
+                        });
+                    }
+
+                    spvSelect.addEventListener('change', syncSpvOptions);
+                    srSelect.addEventListener('change', syncSpvOptions);
+                    syncSpvOptions();
+                }
+            });
+        </script>
     @endif
 </div>
