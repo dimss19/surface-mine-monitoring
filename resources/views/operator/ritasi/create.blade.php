@@ -85,12 +85,6 @@
                         <option value="{{ $id }}">{{ $nama }}</option>
                     @endforeach
                 </select>
-                <p class="mt-1.5 text-xs sm:text-sm text-slate-500">Area/lokasi tambang tempat Anda bekerja shift ini.</p>
-            </div>
-            <div class="col-span-2">
-                <label class="form-label">Lokasi Pekerjaan (Pit / Disposal)</label>
-                <input type="text" name="lokasi_pekerjaan" class="form-input" placeholder="Contoh: Pit 1 North / Disposal 1">
-                <p class="mt-1.5 text-xs sm:text-sm text-slate-500">Nama pit atau lokasi pembuangan/stockpile spesifik.</p>
             </div>
             <div class="col-span-2">
                 <label class="form-label">Deskripsi Pekerjaan / Kendala (Opsional)</label>

@@ -59,7 +59,7 @@
             <span class="material-symbols-outlined text-[var(--primary)]">work</span>
             Detail Pekerjaan
         </h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="grid grid-cols-1 gap-6 mb-6">
             <div>
                 <label class="form-label">Area Kerja <span class="text-red-500">*</span></label>
                 <select name="area_id" class="form-input" required>
@@ -71,11 +71,6 @@
                 <p class="mt-1.5 text-xs sm:text-sm text-slate-500">Area kerja shift ini.</p>
             </div>
             <div>
-                <label class="form-label">Lokasi Pekerjaan (Pit / Disposal)</label>
-                <input type="text" name="lokasi_pekerjaan" class="form-input" placeholder="Contoh: Pit 1 North">
-                <p class="mt-1.5 text-xs sm:text-sm text-slate-500">Lokasi spesifik pengerjaan shift ini.</p>
-            </div>
-            <div class="col-span-2">
                 <label class="form-label">Deskripsi Pekerjaan / Kendala (Opsional)</label>
                 <textarea name="deskripsi_pekerjaan" class="form-input" rows="3" placeholder="Tambahkan catatan khusus bila ada kendala operasional..."></textarea>
                 <p class="mt-1.5 text-xs sm:text-sm text-slate-500">Tuliskan detail pekerjaan general atau kendala operasional.</p>

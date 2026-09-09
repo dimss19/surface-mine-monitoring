@@ -1,4 +1,4 @@
-﻿@extends('layouts.app', ['headerTitle' => 'Riwayat Non-Ritasi'])
+@extends('layouts.app', ['headerTitle' => 'Riwayat Non-Ritasi'])
 
 @section('title', 'Riwayat Non-Ritasi')
 
@@ -33,7 +33,7 @@
                     <th class="px-4 py-3 text-left">Tanggal</th>
                     <th class="px-4 py-3 text-left">Shift</th>
                     <th class="px-4 py-3 text-left">Unit</th>
-                    <th class="px-4 py-3 text-left">Lokasi</th>
+                    <th class="px-4 py-3 text-left">Area</th>
                     <th class="px-4 py-3 text-left">HM Awal</th>
                     <th class="px-4 py-3 text-left">HM Akhir</th>
                     <th class="px-4 py-3 text-left">Total</th>
@@ -46,7 +46,7 @@
                     <td class="px-4 py-3">{{ $nr->tanggal }}</td>
                     <td class="px-4 py-3">{{ $nr->shift === 'siang' ? 'Day' : 'Night' }}</td>
                     <td class="px-4 py-3">{{ $nr->unit->kode ?? '-' }}</td>
-                    <td class="px-4 py-3">{{ $nr->lokasi_pekerjaan ?? '-' }}</td>
+                    <td class="px-4 py-3">{{ $nr->area->nama ?? '-' }}</td>
                     <td class="px-4 py-3">{{ number_format($nr->hm_awal, 1) }}</td>
                     <td class="px-4 py-3">{{ number_format($nr->hm_akhir, 1) }}</td>
                     <td class="px-4 py-3">{{ number_format($nr->hm_total, 1) }}</td>

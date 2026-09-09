@@ -50,15 +50,13 @@ class RekapanController extends Controller
             $ritasiQuery->where(function ($q) use ($searchLower) {
                 $q->whereHas('pegawai', fn ($pq) => $pq->whereRaw('LOWER(nama) LIKE ?', [$searchLower]))
                    ->orWhereHas('unit', fn ($uq) => $uq->whereRaw('LOWER(kode) LIKE ?', [$searchLower]))
-                   ->orWhereHas('area', fn ($aq) => $aq->whereRaw('LOWER(nama) LIKE ?', [$searchLower]))
-                   ->orWhereRaw('LOWER(lokasi_pekerjaan) LIKE ?', [$searchLower]);
+                   ->orWhereHas('area', fn ($aq) => $aq->whereRaw('LOWER(nama) LIKE ?', [$searchLower]));
             });
 
             $nonRitasiQuery->where(function ($q) use ($searchLower) {
                 $q->whereHas('pegawai', fn ($pq) => $pq->whereRaw('LOWER(nama) LIKE ?', [$searchLower]))
                    ->orWhereHas('unit', fn ($uq) => $uq->whereRaw('LOWER(kode) LIKE ?', [$searchLower]))
-                   ->orWhereHas('area', fn ($aq) => $aq->whereRaw('LOWER(nama) LIKE ?', [$searchLower]))
-                   ->orWhereRaw('LOWER(lokasi_pekerjaan) LIKE ?', [$searchLower]);
+                   ->orWhereHas('area', fn ($aq) => $aq->whereRaw('LOWER(nama) LIKE ?', [$searchLower]));
             });
         }
 
@@ -80,8 +78,7 @@ class RekapanController extends Controller
                 'pegawai' => $item->pegawai,
                 'unit_kode' => $item->unit?->kode ?? '-',
                 'unit_model' => $item->unit?->model ?? '',
-                'area_nama' => $item->area?->nama ?? ($item->lokasi_pekerjaan ?? '-'),
-                'lokasi_pekerjaan' => $item->lokasi_pekerjaan,
+                'area_nama' => $item->area?->nama ?? '-',
                 'hm_awal' => $item->hm_awal,
                 'hm_akhir' => $item->hm_akhir,
                 'hm_total' => $item->hm_total,
@@ -113,8 +110,7 @@ class RekapanController extends Controller
                 'pegawai' => $item->pegawai,
                 'unit_kode' => $item->unit?->kode ?? '-',
                 'unit_model' => $item->unit?->model ?? '',
-                'area_nama' => $item->area?->nama ?? ($item->lokasi_pekerjaan ?? '-'),
-                'lokasi_pekerjaan' => $item->lokasi_pekerjaan,
+                'area_nama' => $item->area?->nama ?? '-',
                 'hm_awal' => $item->hm_awal,
                 'hm_akhir' => $item->hm_akhir,
                 'hm_total' => $item->hm_total,

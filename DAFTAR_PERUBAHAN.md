@@ -30,3 +30,4 @@ Berikut adalah daftar lengkap berkas yang diubah dan dibuat pada proses audit, p
 | 24 | **MODIFIED** | `database/seeders/RitasiSeeder.php` | Menyertakan data tanggal hari ini (day 0) dan menyaring area penugasan non-hauling (Workshop & Fuel Station). |
 | 25 | **MODIFIED** | `public/sw.js` | Menaikkan versi cache ke `surface-mine-v5` dan mendaftarkan rute create/riwayat operator ke App Shell. |
 | 26 | **MODIFIED** | `resources/js/offline-sync.js` | Penambahan error handling dan verifikasi respons JSON pada pengambilan CSRF token offline replay. |
+| 27 | **NEW** | `database/migrations/2026_09_09_000002_drop_lokasi_pekerjaan_columns.php` | Migrasi penghapusan kolom `lokasi_pekerjaan` dari tabel `ritasis` dan `non_ritasis`, menyatukan lokasi penugasan murni ke `Area Kerja` (`area_id`). |

@@ -20,7 +20,6 @@ class Ritasi extends Model
         'hm_akhir',
         'hm_total',
         'jumlah_ritasi',
-        'lokasi_pekerjaan',
         'deskripsi_pekerjaan',
         'status',
         'fuel_consumption',

@@ -64,9 +64,6 @@
                     </td>
                     <td class="px-4 py-3">
                         <span class="font-medium text-slate-800">{{ $g->area->nama ?? '-' }}</span>
-                        @if($g->lokasi_pekerjaan)
-                            <span class="block text-xs text-slate-400">{{ $g->lokasi_pekerjaan }}</span>
-                        @endif
                     </td>
                     <td class="px-4 py-3 font-mono text-xs">
                         {{ $g->jam_mulai ? substr($g->jam_mulai, 0, 5) : '-' }} - {{ $g->jam_selesai ? substr($g->jam_selesai, 0, 5) : '-' }}

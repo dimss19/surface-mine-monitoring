@@ -43,7 +43,6 @@ class PegawaiRitasiController extends Controller
             'fuel_consumption' => 'nullable|numeric|min:0',
             'quantity' => 'nullable|numeric|min:0',
             'quantity_unit' => 'nullable|string|max:20',
-            'lokasi_pekerjaan' => 'nullable|string',
             'deskripsi_pekerjaan' => 'nullable|string',
             'kendala' => 'nullable|string',
         ]);

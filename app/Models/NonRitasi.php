@@ -23,7 +23,6 @@ class NonRitasi extends Model
         'jam_mulai',
         'jam_selesai',
         'is_overtime',
-        'lokasi_pekerjaan',
         'deskripsi_pekerjaan',
         'status',
         'fuel_consumption',

@@ -135,9 +135,6 @@
                         </td>
                         <td class="px-4 py-3 text-sm">
                             <span class="font-medium text-slate-700">{{ $r['area_nama'] }}</span>
-                            @if($r['lokasi_pekerjaan'] && $r['lokasi_pekerjaan'] !== $r['area_nama'])
-                                <span class="block text-xs text-slate-500">{{ $r['lokasi_pekerjaan'] }}</span>
-                            @endif
                         </td>
                         <td class="px-4 py-3 text-sm whitespace-nowrap">
                             @if($r['source_type'] === 'general')

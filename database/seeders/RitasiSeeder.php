@@ -29,7 +29,6 @@ class RitasiSeeder extends Seeder
             return;
         }
 
-        $lokasiList = ['Pit A North', 'Pit B South', 'Disposal 1', 'Hauling Road A', 'Stockpile 1', 'Pit C East'];
         $deskripsiList = ['Hauling Bauxite Ore ke Stockpile', 'Hauling Overburden ke Disposal 1', 'Hauling Mining Tuff ke Crusher'];
         $shifts = ['siang', 'malam'];
 
@@ -40,21 +39,28 @@ class RitasiSeeder extends Seeder
             $tanggal = now()->subDays($day)->format('Y-m-d');
 
             foreach ($shifts as $shift) {
-                // Select a subset of pegawais for this shift
-                $shiftPegawais = $pegawais->shuffle()->take(rand(5, 10));
+                $shiftPegawais = $pegawais->shuffle()->take(rand(3, 5));
+                $usedUnits = [];
 
                 foreach ($shiftPegawais as $peg) {
-                    $unit = $dtUnits->random();
-                    $material = $materials->random();
-                    $area = $areas->random();
+                    $availableUnits = $dtUnits->whereNotIn('id', $usedUnits);
+                    if ($availableUnits->isEmpty()) {
+                        break;
+                    }
+                    $unit = $availableUnits->random();
+                    $usedUnits[] = $unit->id;
 
-                    $hmAwal = 5000 + ($day * 12) + rand(0, 50) + (rand(0, 99) / 100);
-                    $hmTotal = rand(6, 10) + (rand(0, 99) / 100);
+                    $area = $areas->random();
+                    $material = $materials->random();
+
+                    $hmTotal = round(rand(70, 105) / 10, 1);
+                    $hmAwal = 1250.0 + ($day * 15) + rand(1, 10);
                     $hmAkhir = $hmAwal + $hmTotal;
-                    $ritasi = rand(10, 24);
-                    $quantity = $ritasi * ($material->kategori === 'ore' ? rand(45, 85) : rand(40, 75));
-                    $fuel = round($hmTotal * rand(30, 42), 2);
-                    $isValidated = $day > 1;
+                    $ritasi = rand(10, 22);
+                    $quantity = round($ritasi * ($unit->kapasitas ? $unit->kapasitas * 0.9 : 85.0), 2);
+                    $fuel = round($hmTotal * ($unit->fuel_consumption_rate ?: 35.0) * 0.95, 1);
+
+                    $isValidated = $day > 0 || rand(0, 1) === 1;
 
                     $rows[] = [
                         'pegawai_id' => $peg->id,
@@ -70,7 +76,6 @@ class RitasiSeeder extends Seeder
                         'quantity' => $quantity,
                         'quantity_unit' => 'ton',
                         'fuel_consumption' => $fuel,
-                        'lokasi_pekerjaan' => $lokasiList[array_rand($lokasiList)],
                         'deskripsi_pekerjaan' => $deskripsiList[array_rand($deskripsiList)],
                         'kendala' => rand(0, 10) > 8 ? 'Antrean di crusher sempat padat 15 menit' : null,
                         'status' => $isValidated ? 'validated' : 'pending',
