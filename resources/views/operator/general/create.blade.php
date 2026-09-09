@@ -4,6 +4,14 @@
 
 @section('content')
 
+<div class="flex items-center justify-between mb-4">
+    <p class="text-sm text-slate-500">Form pelaporan pekerjaan harian general (pekerjaan manual tanpa alat berat).</p>
+    <a href="{{ route('pegawai.general.riwayat') }}" class="btn-secondary flex items-center gap-1.5 text-xs sm:text-sm py-1.5 px-3">
+        <span class="material-symbols-outlined text-base">history</span>
+        Lihat Riwayat
+    </a>
+</div>
+
 @include('operator.partials.validation-errors')
 
 @include('operator.partials.session-info', ['description' => 'Silakan isi data pekerjaan general harian. Pastikan durasi Jam Kerja sesuai (6 - 11 Jam).'])

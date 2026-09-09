@@ -36,12 +36,24 @@ class NonRitasiSeeder extends Seeder
 
         $rows = [];
 
-        // Past 30 days of support activities (days 1 to 30)
-        for ($day = 1; $day <= 30; $day++) {
+        // Support and general activities including day 0 (today) and past 30 days
+        for ($day = 0; $day <= 30; $day++) {
             $tanggal = now()->subDays($day)->format('Y-m-d');
 
             foreach ($shifts as $shift) {
-                $shiftPegawais = $pegawais->shuffle()->take(rand(4, 7));
+                // Avoid assigning pegawais who are already in ritasi for this tanggal + shift
+                $ritasiAssigned = DB::table('ritasis')
+                    ->where('tanggal', $tanggal)
+                    ->where('shift', $shift)
+                    ->pluck('pegawai_id')
+                    ->toArray();
+
+                $availablePegawais = $pegawais->whereNotIn('id', $ritasiAssigned);
+                if ($availablePegawais->isEmpty()) {
+                    continue;
+                }
+
+                $shiftPegawais = $availablePegawais->shuffle()->take(rand(1, 4));
                 $usedSlot = [];
 
                 foreach ($shiftPegawais as $peg) {

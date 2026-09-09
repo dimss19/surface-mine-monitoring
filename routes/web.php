@@ -34,10 +34,10 @@ Route::get('/rekapan', function () {
     return redirect()->route('pegawai.ritasi.create');
 })->name('rekapan');
 
-Route::middleware('auth')->group(function () {
-    // CSRF token refresh for offline sync (see resources/js/offline-sync.js)
-    Route::get('/csrf-token', fn () => response()->json(['token' => csrf_token()]))->name('csrf-token');
+// CSRF token refresh for offline sync (see resources/js/offline-sync.js)
+Route::get('/csrf-token', fn () => response()->json(['token' => csrf_token()]))->name('csrf-token');
 
+Route::middleware('auth')->group(function () {
     // Pegawai (Operator)
     Route::middleware('role:pegawai')->prefix('pegawai')->name('pegawai.')->group(function () {
         Route::get('/', [PegawaiController::class, 'dashboard'])->name('dashboard');
@@ -55,6 +55,7 @@ Route::middleware('auth')->group(function () {
         // General
         Route::get('general/create', [PegawaiGeneralController::class, 'create'])->name('general.create');
         Route::post('general', [PegawaiGeneralController::class, 'store'])->name('general.store');
+        Route::get('general/riwayat', [PegawaiGeneralController::class, 'riwayat'])->name('general.riwayat');
 
         // Utilization
         Route::get('utilization/create', [UtilizationController::class, 'create'])->name('utilization.create');

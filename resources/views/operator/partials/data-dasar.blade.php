@@ -25,7 +25,7 @@
     </div>
     @if($showUnit)
     <div>
-        <label class="form-label">Nomor Unit (Dump Truck) <span class="text-red-500">*</span></label>
+        <label class="form-label">{{ $unitLabel ?? 'Nomor Unit' }} <span class="text-red-500">*</span></label>
         <select name="unit_id" id="unitSelect" class="form-input" required>
             <option value="">Contoh: DT-1042</option>
             @foreach($units as $id => $kode)

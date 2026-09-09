@@ -49,6 +49,7 @@ class PegawaiGeneralController extends Controller
         $validated['unit_id'] = null;
 
         $exists = NonRitasi::where('pegawai_id', $pegawaiId)
+            ->whereNull('unit_id')
             ->where('tanggal', $validated['tanggal'])
             ->where('shift', $validated['shift'])
             ->exists();
@@ -58,9 +59,9 @@ class PegawaiGeneralController extends Controller
                 return response()->json(['success' => true, 'replayed' => true], 200);
             }
             if ($request->ajax() || $request->wantsJson()) {
-                return response()->json(['message' => 'Anda sudah melakukan input pekerjaan pada shift dan tanggal tersebut.'], 422);
+                return response()->json(['message' => 'Anda sudah melakukan input pekerjaan general pada shift dan tanggal tersebut.'], 422);
             }
-            return back()->with('error', 'Anda sudah melakukan input pekerjaan pada shift dan tanggal tersebut.');
+            return back()->with('error', 'Anda sudah melakukan input pekerjaan general pada shift dan tanggal tersebut.');
         }
 
         $validated['pegawai_id'] = $pegawaiId;
@@ -76,5 +77,28 @@ class PegawaiGeneralController extends Controller
         }
 
         return back()->with('success', 'Data pekerjaan general berhasil disimpan!');
+    }
+
+    public function riwayat(Request $request)
+    {
+        $pegawaiId = Auth::user()->pegawai_id;
+
+        $query = NonRitasi::with(['area', 'supervisor', 'seniorSpv'])
+            ->where('pegawai_id', $pegawaiId)
+            ->whereNull('unit_id')
+            ->orderBy('tanggal', 'desc')
+            ->orderBy('created_at', 'desc');
+
+        if ($request->filled('tanggal')) {
+            $query->whereDate('tanggal', $request->tanggal);
+        }
+
+        if ($request->filled('shift')) {
+            $query->where('shift', $request->shift);
+        }
+
+        $generals = $query->paginate(15);
+
+        return view('operator.general.index', compact('generals'));
     }
 }
