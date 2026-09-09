@@ -38,11 +38,10 @@ class DashboardReportService
         $data = $this->build($start, $end, $period, $request);
         $rows = Ritasi::whereBetween('tanggal', [$start->toDateString(), $end->toDateString()])
             ->when($request->filled('shift'), fn ($q) => $q->where('shift', $request->shift))
-            ->with(['unit', 'material', 'pegawai'])
+            ->with(['unit', 'material', 'pegawai', 'area'])
             ->orderBy('tanggal', 'desc')->orderBy('shift')
             ->get();
-        return [
-            'kpi'          => $data['kpi'],
+        return array_merge($data, [
             'rows'         => $rows,
             'selectedUnit' => $data['selectedUnit'] ?? 'ton',
             'meta'         => [
@@ -51,7 +50,7 @@ class DashboardReportService
                 'end'    => $end->toDateString(),
                 'unit'   => $data['selectedUnit'] ?? 'ton',
             ],
-        ];
+        ]);
     }
 
     public function activeUnitCount(Carbon $at): int

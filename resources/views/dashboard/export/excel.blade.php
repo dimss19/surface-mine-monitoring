@@ -31,7 +31,7 @@
     <table border="1" class="w-full text-sm">
         <thead class="h">
             <tr>
-                <th>Tanggal</th><th>Shift</th><th>Unit</th><th>Material</th>
+                <th>Tanggal</th><th>Shift</th><th>Unit</th><th>Area Kerja</th><th>Material</th>
                 <th class="num">HM Total</th><th class="num">Qty ({{ $unitLabel }})</th>
                 <th class="num">Input Qty</th><th>Input Satuan</th><th class="num">Fuel (L)</th>
             </tr>
@@ -42,6 +42,7 @@
                 <td>{{ $r->tanggal?->format('d M Y') }}</td>
                 <td>{{ $r->shift === 'siang' ? 'Day' : 'Night' }}</td>
                 <td>{{ $r->unit->kode ?? '-' }}</td>
+                <td>{{ $r->area->nama ?? '-' }}</td>
                 <td>{{ $r->material->nama ?? '-' }}</td>
                 <td class="num">{{ number_format((float)($r->hm_total ?? 0), 2) }}</td>
                 <td class="num">{{ number_format((float)($r->quantityInUnit($targetUnit)), 2) }}</td>
@@ -50,7 +51,7 @@
                 <td class="num">{{ number_format((float)($r->fuel_consumption ?? 0), 2) }}</td>
             </tr>
             @empty
-            <tr><td colspan="9" class="p-4 text-center">Tidak ada data</td></tr>
+            <tr><td colspan="10" class="p-4 text-center">Tidak ada data</td></tr>
             @endforelse
         </tbody>
     </table>

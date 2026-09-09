@@ -42,3 +42,8 @@ Berikut adalah daftar lengkap berkas yang diubah dan dibuat pada proses audit, p
 | 36 | **MODIFIED** | `resources/views/operator/ritasi/create.blade.php` | Menambahkan opsi satuan `bcm` (Bank Cubic Meter) pada dropdown form input operator. |
 | 37 | **MODIFIED** | `resources/views/operator/ritasi/index.blade.php` | Menampilkan kuantitas muatan dan satuan yang diinput operator pada riwayat ritasi operator. |
 | 38 | **MODIFIED** | `resources/views/rekapan/show.blade.php` | Menampilkan nilai ekuivalen tonase (`≈ X Ton`) pada tabel detail ritasi jika operator menginput dalam satuan non-ton. |
+| 39 | **MODIFIED** | `resources/views/dashboard/index.blade.php` | Menambahkan modal interaktif pemilihan format ekspor (**Excel (.xls)** untuk data mentah vs **PDF (.pdf)** untuk laporan visual) sebelum proses download/render berjalan. |
+| 40 | **MODIFIED** | `resources/views/dashboard/export/pdf.blade.php` | Menampilkan laporan visual lengkap siap cetak dengan grafik operasional identik dashboard (Hauling by Material, Proporsi Pemakaian Donut, Gauge Availability/UoA, dan Kumulatif Ore) serta tabel data & lembar pengesahan. |
+| 41 | **MODIFIED** | `resources/views/dashboard/export/excel.blade.php` | Menambahkan kolom Area Kerja pada tabel data tabular Excel untuk kelengkapan identifikasi lokasi kerja hauling. |
+| 42 | **MODIFIED** | `app/Services/DashboardReportService.php` | Menggabungkan seluruh data grafik dashboard (`materialChart`, `timelineAvg`, `availability`, `uoa`, dll.) serta eager-loading `area` ke dalam `exportData()` agar view PDF dapat merender grafik secara utuh. |
+| 43 | **MODIFIED** | `app/Http/Controllers/DashboardController.php` | Menyesuaikan fallback periode export dari tab aktif dan passing variabel `headerDate` ke view PDF. |
