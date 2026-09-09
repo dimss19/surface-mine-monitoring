@@ -387,26 +387,6 @@
             </table>
         </div>
     </div>
-
-    {{-- SECTION 4: TANDA TANGAN RESMI / PENGESAHAN --}}
-    <div class="mt-10 pt-6 border-t border-slate-200 grid grid-cols-3 gap-6 text-center text-xs print-card break-inside-avoid">
-        <div>
-            <p class="text-slate-400 mb-14">Dibuat Oleh,</p>
-            <p class="font-bold text-slate-800 underline uppercase">{{ Auth::user()->name ?? 'Administrator' }}</p>
-            <p class="text-[11px] text-slate-500">Admin Operasional</p>
-        </div>
-        <div>
-            <p class="text-slate-400 mb-14">Diperiksa Oleh,</p>
-            <p class="font-bold text-slate-800 underline uppercase">( ........................................ )</p>
-            <p class="text-[11px] text-slate-500">Pengawas Tambang / SPV</p>
-        </div>
-        <div>
-            <p class="text-slate-400 mb-14">Disetujui Oleh,</p>
-            <p class="font-bold text-slate-800 underline uppercase">( ........................................ )</p>
-            <p class="text-[11px] text-slate-500">Superintendent Operasi Tambang</p>
-        </div>
-    </div>
-
 </div>
 
 @push('scripts')
