@@ -21,7 +21,12 @@
     
     <div class="card p-6">
         {{-- Data Dasar --}}
-        @include('operator.partials.data-dasar', ['units' => $units, 'latestStatus' => $latestStatus])
+        @include('operator.partials.data-dasar', [
+            'units' => $units,
+            'latestStatus' => $latestStatus,
+            'unitLabel' => 'Nomor Unit Dump Truck (Hauling)',
+            'unitPlaceholder' => 'Pilih Unit Dump Truck'
+        ])
         
         {{-- Hour Meter --}}
         @include('operator.partials.hour-meter')

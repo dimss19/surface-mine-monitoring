@@ -27,7 +27,7 @@
     <div>
         <label class="form-label">{{ $unitLabel ?? 'Nomor Unit' }} <span class="text-red-500">*</span></label>
         <select name="unit_id" id="unitSelect" class="form-input" required>
-            <option value="">Contoh: DT-1042</option>
+            <option value="">{{ $unitPlaceholder ?? ('Pilih ' . ($unitLabel ?? 'Unit')) }}</option>
             @foreach($units as $id => $kode)
                 @php
                     $status = $latestStatus[$id] ?? 'ready';

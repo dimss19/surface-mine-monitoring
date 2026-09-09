@@ -17,7 +17,11 @@ class PegawaiRitasiController extends Controller
         $user = Auth::user();
         $pegawai = $user->pegawai;
         
-        $units = Unit::where('is_active', true)->orderBy('kode')->pluck('kode', 'id')->toArray();
+        $units = Unit::where('is_active', true)
+            ->where('tipe', 'dump_truck')
+            ->orderBy('kode')
+            ->pluck('kode', 'id')
+            ->toArray();
         $latestStatus = UnitUtilization::latestPerUnit()->pluck('status', 'unit_id')->toArray();
         $areas = Area::orderBy('nama')->pluck('nama', 'id')->toArray();
         $materials = Material::where('is_active', true)->where('status', 'active')->orderBy('nama')->pluck('nama', 'id')->toArray();
@@ -50,6 +54,17 @@ class PegawaiRitasiController extends Controller
             $user->update(['pegawai_id' => $pegawai->id]);
         }
         $pegawaiId = $user->pegawai_id;
+
+        $unit = Unit::find($validated['unit_id']);
+        if (! $unit || $unit->tipe !== 'dump_truck') {
+            if ($request->header('X-Offline-Replay') === '1') {
+                return response()->json(['success' => false, 'message' => 'Unit ritasi harus berupa Dump Truck.'], 422);
+            }
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json(['message' => 'Unit ritasi harus berupa Dump Truck.'], 422);
+            }
+            return back()->withInput()->with('error', 'Unit untuk pelaporan ritasi (hauling) harus berupa Dump Truck.');
+        }
 
         if (UnitUtilization::active()->where('unit_id', $validated['unit_id'])->exists()) {
             if ($request->header('X-Offline-Replay') === '1') {
