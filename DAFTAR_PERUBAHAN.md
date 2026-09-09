@@ -31,3 +31,14 @@ Berikut adalah daftar lengkap berkas yang diubah dan dibuat pada proses audit, p
 | 25 | **MODIFIED** | `public/sw.js` | Menaikkan versi cache ke `surface-mine-v5` dan mendaftarkan rute create/riwayat operator ke App Shell. |
 | 26 | **MODIFIED** | `resources/js/offline-sync.js` | Penambahan error handling dan verifikasi respons JSON pada pengambilan CSRF token offline replay. |
 | 27 | **NEW** | `database/migrations/2026_09_09_000002_drop_lokasi_pekerjaan_columns.php` | Migrasi penghapusan kolom `lokasi_pekerjaan` dari tabel `ritasis` dan `non_ritasis`, menyatukan lokasi penugasan murni ke `Area Kerja` (`area_id`). |
+| 28 | **MODIFIED** | `app/Models/Ritasi.php` | Menambahkan method `quantityInUnit(string $targetUnit = 'ton')` untuk konversi dua arah antara bobot (Ton) dan volume (BCM, M³, CBM) berbasis densitas material (`to_ton_factor`). |
+| 29 | **MODIFIED** | `app/Services/DashboardReportService.php` | Menyesuaikan kalkulasi KPI total produksi, grafik hauling per material, shift pie, breakdown harian/bulanan ore vs lainnya, serta export report agar dinamis mengikuti parameter satuan (`unit=ton/bcm/m3/cbm`). |
+| 30 | **MODIFIED** | `resources/views/dashboard/index.blade.php` | Menambahkan dropdown filter satuan (`Ton`, `BCM`, `M³`, `CBM`) pada header filter bar dashboard. |
+| 31 | **MODIFIED** | `resources/views/dashboard/partials/daily.blade.php` | Mengubah judul kartu metrik menjadi `TOTAL PRODUKSI`, menampilkan satuan dinamis, serta menampilkan kuantitas terkonversi dan kuantitas asli input operator pada tabel hauling. |
+| 32 | **MODIFIED** | `resources/views/dashboard/partials/weekly.blade.php` | Menampilkan label satuan terpilih secara dinamis pada ringkasan metrik mingguan dan teks penjelas. |
+| 33 | **MODIFIED** | `resources/views/dashboard/partials/monthly.blade.php` | Menampilkan label satuan terpilih secara dinamis pada metrik bulanan dan penjelas grafik kumulatif. |
+| 34 | **MODIFIED** | `resources/views/dashboard/export/excel.blade.php` | Menyesuaikan header kolom dan baris data export Excel dengan kuantitas yang dikonversi ke satuan terpilih, serta menyertakan kuantitas & satuan asli operator. |
+| 35 | **MODIFIED** | `resources/views/dashboard/export/pdf.blade.php` | Menyesuaikan header laporan dan baris data cetak PDF dengan kuantitas pada satuan terpilih beserta data asli input operator. |
+| 36 | **MODIFIED** | `resources/views/operator/ritasi/create.blade.php` | Menambahkan opsi satuan `bcm` (Bank Cubic Meter) pada dropdown form input operator. |
+| 37 | **MODIFIED** | `resources/views/operator/ritasi/index.blade.php` | Menampilkan kuantitas muatan dan satuan yang diinput operator pada riwayat ritasi operator. |
+| 38 | **MODIFIED** | `resources/views/rekapan/show.blade.php` | Menampilkan nilai ekuivalen tonase (`≈ X Ton`) pada tabel detail ritasi jika operator menginput dalam satuan non-ton. |

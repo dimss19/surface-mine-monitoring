@@ -16,6 +16,10 @@ h1 { color: #1e3a5f; }
 @endpush
 
 @section('content')
+@php
+    $targetUnit = strtolower($selectedUnit ?? $meta['unit'] ?? 'ton');
+    $unitLabel = strtoupper($targetUnit);
+@endphp
 <div class="p-4 no-print">
     <div class="flex justify-between items-center mb-4">
         <h1 class="text-xl font-bold">Laporan PA/UA - {{ ucfirst($meta['period'] ?? 'daily') }}</h1>
@@ -25,10 +29,10 @@ h1 { color: #1e3a5f; }
     </div>
 </div>
 <div class="p-4 print-area">
-    <p class="text-sm text-slate-600 mb-4">{{ $meta['start'] ?? '' }} s/d {{ $meta['end'] ?? '' }}</p>
+    <p class="text-sm text-slate-600 mb-4">{{ $meta['start'] ?? '' }} s/d {{ $meta['end'] ?? '' }} | Satuan: {{ $unitLabel }}</p>
     <table class="w-full mb-4">
         <tr><td class="num"><b>Petrol (L)</b></td><td class="num">{{ number_format((float)($kpi['fuel'] ?? 0), 2) }}</td>
-            <td class="num"><b>Tonnage (ton)</b></td><td class="num">{{ number_format((float)($kpi['tonnage'] ?? 0), 2) }}</td></tr>
+            <td class="num"><b>Produksi ({{ $unitLabel }})</b></td><td class="num">{{ number_format((float)($kpi['tonnage'] ?? 0), 2) }}</td></tr>
         <tr><td class="num"><b>PA %</b></td><td class="num">{{ number_format((float)($kpi['pa'] ?? 0), 2) }}</td>
             <td class="num"><b>UA %</b></td><td class="num">{{ number_format((float)($kpi['ua'] ?? 0), 2) }}</td></tr>
         <tr><td class="num"><b>Active Units</b></td><td class="num">{{ (int)($kpi['active_units'] ?? 0) }}</td>
@@ -37,14 +41,14 @@ h1 { color: #1e3a5f; }
     <table border="1" class="w-full text-sm">
         <thead class="h">
             <tr><th>Tanggal</th><th>Shift</th><th>Unit</th><th>Material</th>
-                <th class="num">HM Total</th><th class="num">Ton</th>
-                <th class="num">Quantity</th><th>Satuan</th><th class="num">Fuel (L)</th></tr>
+                <th class="num">HM Total</th><th class="num">Qty ({{ $unitLabel }})</th>
+                <th class="num">Input Qty</th><th>Input Satuan</th><th class="num">Fuel (L)</th></tr>
         </thead>
         @forelse ($rows as $r)
             <tr><td>{{ $r->tanggal?->format('d M Y') }}</td><td>{{ $r->shift === 'siang' ? 'Day' : 'Night' }}</td>
                 <td>{{ $r->unit->kode ?? '-' }}</td><td>{{ $r->material->nama ?? '-' }}</td>
-                <td class="num">{{ number_format((float)($r->hm_total ?? 0), 2) }}</td><td class="num">{{ number_format((float)($r->quantity_tonnes ?? 0), 2) }}</td>
-                <td class="num">{{ number_format((float)($r->quantity ?? 0), 2) }}</td><td>{{ $r->quantity_unit ?? 'ton' }}</td>
+                <td class="num">{{ number_format((float)($r->hm_total ?? 0), 2) }}</td><td class="num">{{ number_format((float)($r->quantityInUnit($targetUnit)), 2) }}</td>
+                <td class="num">{{ number_format((float)($r->quantity ?? 0), 2) }}</td><td>{{ strtoupper($r->quantity_unit ?? 'ton') }}</td>
                 <td class="num">{{ number_format((float)($r->fuel_consumption ?? 0), 2) }}</td></tr>
         @empty
             <tr><td colspan="9" class="p-4 text-center">Tidak ada data</td></tr>

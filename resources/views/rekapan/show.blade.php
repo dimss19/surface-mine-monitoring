@@ -75,7 +75,7 @@
                     <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600">TANGGAL</th>
                     <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600">SHIFT</th>
                     <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600">UNIT</th>
-                    <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600">AREA & LOKASI</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600">AREA KERJA</th>
                     <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600">MATERIAL</th>
                     <th class="px-4 py-3 text-right text-xs font-semibold text-slate-600">HM AWAL</th>
                     <th class="px-4 py-3 text-right text-xs font-semibold text-slate-600">HM AKHIR</th>
@@ -98,7 +98,12 @@
                         <td class="px-4 py-3 text-sm text-right font-mono">{{ number_format($r->hm_akhir, 1) }}</td>
                         <td class="px-4 py-3 text-sm text-right font-medium text-[var(--primary)]">{{ number_format($r->hm_total, 1) }}</td>
                         <td class="px-4 py-3 text-sm text-right font-semibold">{{ $r->jumlah_ritasi }}</td>
-                        <td class="px-4 py-3 text-sm text-right">{{ number_format($r->quantity, 2) }} {{ $r->quantity_unit }}</td>
+                        <td class="px-4 py-3 text-sm text-right">
+                            <div class="font-medium text-slate-800">{{ number_format($r->quantity, 2) }} {{ strtoupper($r->quantity_unit ?? 'ton') }}</div>
+                            @if(($r->quantity_unit ?? 'ton') !== 'ton')
+                                <div class="text-[11px] text-slate-400">≈ {{ number_format($r->quantity_tonnes, 2) }} Ton</div>
+                            @endif
+                        </td>
                     </tr>
                 @empty
                     <tr>

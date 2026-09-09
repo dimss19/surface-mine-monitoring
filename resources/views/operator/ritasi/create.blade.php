@@ -50,11 +50,12 @@
             <div>
                 <label class="form-label">Satuan</label>
                 <select name="quantity_unit" class="form-input">
-                    <option value="ton">Ton (default)</option>
-                    <option value="cbm">CBM</option>
-                    <option value="m3">M3</option>
+                    <option value="ton" {{ old('quantity_unit', 'ton') === 'ton' ? 'selected' : '' }}>Ton (Berat)</option>
+                    <option value="bcm" {{ old('quantity_unit') === 'bcm' ? 'selected' : '' }}>BCM (Bank Cubic Meter)</option>
+                    <option value="m3" {{ old('quantity_unit') === 'm3' ? 'selected' : '' }}>M3 (Meter Kubik)</option>
+                    <option value="cbm" {{ old('quantity_unit') === 'cbm' ? 'selected' : '' }}>CBM (Cubic Meter)</option>
                 </select>
-                <p class="mt-1.5 text-xs sm:text-sm text-slate-500">Pilih satuan ukuran (biasanya Ton).</p>
+                <p class="mt-1.5 text-xs sm:text-sm text-slate-500">Pilih satuan muatan (otomatis terkonversi pada laporan).</p>
             </div>
         </div>
 
